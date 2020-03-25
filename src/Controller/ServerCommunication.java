@@ -41,17 +41,28 @@ public class ServerCommunication {
         write("get gamelist");
     }
 
+    public void subscribe(GameType gameType) {
+        if(gameType == GameType.TICTACTOE) {
+            write("subscribe Tic-tac-toe");
+        } else if(gameType == GameType.REVERSI) {
+            write("subscibe Reversi");
+        }
+    }
+
     public void read() {
         new Thread((Runnable) () -> {
             if (socket != null && reader != null && writer != null) {
                 try {
                     String input = reader.readLine().toLowerCase();
-                    String[] words = input.split(" ");
-                    while (input != null) {
+
+
+                    while (true) {
+                        System.out.println(input);
+                        String[] words = input.split(" ");
                         switch (words[0]) {
-                            case "ok":
+                            case "OK":
                                 break;
-                            case "err":
+                            case "ERR":
                                 break;
                             case "svr":
                                 System.out.println("");
@@ -76,7 +87,6 @@ public class ServerCommunication {
                                     case "draw":
                                         break;
                                 }
-                            break;
                         }
                         input = reader.readLine();
                     }
@@ -88,7 +98,7 @@ public class ServerCommunication {
 
     }
 
-    public void write(String command) {
+    private void write(String command) {
         if (socket != null && reader != null && writer != null) {
             try {
                 writer.write(command);
