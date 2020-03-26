@@ -60,5 +60,10 @@ sysinfo.txt
 *.unitypackage
 
 *.idea
+.idea/
 
 rolloutfile.tv13
+
+# vscode
+*.vscode
+.vscode/
