@@ -12,11 +12,15 @@ public class ServerCommunication {
 
 
     public ServerCommunication() {
+        connect();
+    }
+
+    public void connect() {
         socket = null;
         reader = null;
         writer = null;
         boolean connected = false;
-        while(!connected) {
+        while (!connected) {
             try {
                 socket = new Socket("localhost", 7789);
                 reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -36,10 +40,11 @@ public class ServerCommunication {
 
     public void login(String name) {
         write("login " + name);
+        System.out.println("Logged in");
     }
 
     public void logout() {
-        write("logut");
+        write("logout");
     }
 
     public void setGame(String game) {
@@ -92,8 +97,10 @@ public class ServerCommunication {
         if (socket != null && reader != null && writer != null) {
             try {
                 return reader.readLine().toLowerCase();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 System.out.println("Could not read from server");
+                System.out.println("Reconnecting");
+                connect();
             }
         }
         return null;

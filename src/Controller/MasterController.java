@@ -1,16 +1,34 @@
 package Controller;
 
-public class MasterController {
+import Games.TicTacToe;
+import Model.UserModel;
+import View.UserView;
+import javafx.stage.Stage;
+
+public class MasterController extends Controller {
     private ServerCommunication serverCommunication;
-    public MasterController() {
+    private UserController userController;
+    public MasterController(Stage stage)  {
         serverCommunication = new ServerCommunication();
+
+        UserModel userModel = new UserModel();
+        UserController userController = new UserController(userModel, serverCommunication);
+        UserView userView = new UserView(userModel, userController);
+        userView.start(stage);
+
+
+
         //First read should be empty because garbage 2 lines
         serverCommunication.read();
-        while (true) {
-            handleInput();
-        }
-    }
 
+
+        Thread handleThread = new Thread(() -> {
+            while (true) {
+                handleInput();
+            }
+        });
+        handleThread.start();
+    }
 
     private void handleInput() {
         String input = serverCommunication.read();
@@ -52,9 +70,8 @@ public class MasterController {
                             //DRAW
                             break;
                     }
-                  default:
-                      //If no OK ERR or SVR it is the first time connecting to the server --> LOGIN
-                      serverCommunication.login("itv2c6");
+                default:
+                    break;
             }
         }
     }
