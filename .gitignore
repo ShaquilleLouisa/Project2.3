@@ -67,3 +67,6 @@ rolloutfile.tv13
 # vscode
 *.vscode
 .vscode/
+
+JosInfo/
+*.iml
