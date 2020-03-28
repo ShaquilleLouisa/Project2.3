@@ -18,6 +18,10 @@ public class TicTacToeView extends GameView {
     HashMap<ArrayList<Integer>, Button> buttonLocation;
     TicTacToeController controller;
 
+    public TicTacToeView() {
+
+    }
+
     public TicTacToeView(Controller controller) {
         controller = (TicTacToeController) controller;
     }
@@ -63,5 +67,9 @@ public class TicTacToeView extends GameView {
                 }
         );
 
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }

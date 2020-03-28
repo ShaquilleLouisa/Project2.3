@@ -21,6 +21,11 @@ import javax.swing.*;
 
 public class MasterView extends View {
     MasterController controller;
+
+    public MasterView() {
+
+    }
+
     public MasterView(MasterController controller) {
         this.controller = controller;
 
@@ -77,8 +82,8 @@ public class MasterView extends View {
 
         // Window settings
         stage.setTitle("Epic game launcher");
-        stage.setMinWidth(1024);
-        stage.setMinHeight(576);
+        stage.setMinWidth(windowWidth);
+        stage.setMinHeight(windowHeight);
         stage.setMaxWidth(2560);
         stage.setMaxHeight(1440);
         stage.setScene(new Scene(pnUsername, windowWidth, windowHeight));
@@ -136,7 +141,9 @@ public class MasterView extends View {
     }
 
 
-
+    public static void main(String[] args) {
+        launch(args);
+    }
 
 //    public void update() {
 //        Platform.runLater(() -> {
