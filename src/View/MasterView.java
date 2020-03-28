@@ -28,7 +28,6 @@ public class MasterView extends View {
 
     public MasterView(MasterController controller) {
         this.controller = controller;
-
     }
 
     // Define buttons
@@ -49,6 +48,10 @@ public class MasterView extends View {
 
     // Panes
     Pane pnUsername = new Pane();
+
+    public void connected(Boolean isConnected){
+
+    }
 
     @Override
     public void start(Stage stage) {

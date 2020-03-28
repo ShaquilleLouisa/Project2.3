@@ -15,7 +15,11 @@ public class MasterController extends Controller {
 
 
     public void start(Stage stage) {
+        //Create control panel
+        view.start(stage);
+
         serverCommunication.connect();
+        view.connected(true);
         //First read should be empty because garbage 2 lines
         serverCommunication.read();
 
@@ -27,8 +31,7 @@ public class MasterController extends Controller {
         });
         handleThread.start();
 
-        //Create control panel
-        view.start(stage);
+
     }
 
 
