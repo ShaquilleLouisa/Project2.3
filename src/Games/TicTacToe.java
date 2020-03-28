@@ -12,7 +12,6 @@ public class TicTacToe extends Game {
     private TicTacToeModel model;
     private TicTacToeController controller;
 
-
     public TicTacToe() {
         controller = new TicTacToeController();
         view = new TicTacToeView(controller);
