@@ -52,7 +52,7 @@ public class MasterView extends View {
     ImageView bgUsernameUse = new ImageView("File:assets/launcher/bgUsernameEdit.png");
 
     // Panes
-    Pane pnUsername = new Pane();
+    Pane pnLauncher = new Pane();
 
 
     @Override
@@ -61,27 +61,22 @@ public class MasterView extends View {
         buttonActions();
 
         // Background
-        pnUsername.getChildren().add(bgUsernameUse);
+        pnLauncher.getChildren().add(bgUsernameUse);
 
         // Name
         //Text usernameEdit = new Text("Jos Badpak");
         usernameEdit.setFont(Font.font("Arial", FontWeight.BOLD, 28));
         //usernameEdit.setFill(Color.WHITE);
-        pnUsername.getChildren().add(usernameEdit);
-        usernameEdit.setLayoutY(8);
-        usernameEdit.setLayoutX(1600+windowWidth);
-        usernameEdit.setMaxWidth(312);
+        pnLauncher.getChildren().add(usernameEdit);
 
         // Pane username
-        pnUsername.setStyle("-fx-background-color: #262626"); // Default background color
+        pnLauncher.setStyle("-fx-background-color: #262626"); // Default background color
 
         // Change name button
         ImageView usernameEdit = new ImageView("File:assets/launcher/nameEdit.png");
-        pnUsername.getChildren().add(btnChangeName);
+        pnLauncher.getChildren().add(btnChangeName);
         btnChangeName.setStyle("-fx-background-color: #262626;");
         btnChangeName.setGraphic(usernameEdit);
-        btnChangeName.setLayoutX(1930+windowWidth);
-        btnChangeName.setLayoutY(8);
 
 
         // Window settings
@@ -90,7 +85,7 @@ public class MasterView extends View {
         stage.setMinHeight(576);
         stage.setMaxWidth(2560);
         stage.setMaxHeight(1440);
-        stage.setScene(new Scene(pnUsername, windowWidth, windowHeight));
+        stage.setScene(new Scene(pnLauncher, windowWidth, windowHeight));
         stage.show();
 
         // Update window resolution
@@ -150,7 +145,18 @@ public class MasterView extends View {
     }
 
     private void setUsernamePosition(){
-        pnUsername.setLayoutX(-3300+windowWidth); // Top right
+        // Username - background
+        bgUsernameUse.setLayoutX(-3300+windowWidth); // Top right
+
+        // Username - change name
+        btnChangeName.setLayoutX(windowWidth-80);
+        btnChangeName.setMinHeight(50);
+        btnChangeName.setLayoutY(8);
+
+        // Username - edit field
+        usernameEdit.setLayoutY(8);
+        usernameEdit.setLayoutX(windowWidth-400);
+        usernameEdit.setMaxWidth(312);
 
     }
 
