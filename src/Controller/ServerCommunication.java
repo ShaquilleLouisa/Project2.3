@@ -63,7 +63,9 @@ public class ServerCommunication {
     }
 
     public ObservableList<String> getPlayerList() {
-        write("get playerlist"); // <---- ontvang resultaat nog
+        write("get playerlist");
+
+        //System.out.println(read()); // <---- ontvang resultaat nog
 
         // Returns list with all player names
         return FXCollections.observableArrayList ("Jos Badpak", "Bart Baksteen", "Willem Pen", "Jozef Appel", "Stefan Wortelsap", "Jochem Boterham", "Herman Bananensap");

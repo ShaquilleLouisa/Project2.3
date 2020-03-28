@@ -56,10 +56,10 @@ public class MasterView extends View {
 
     // Leaderboard - list
     ListView<String> playerList = new ListView<String>();
+    ObservableList<String> players = FXCollections.observableArrayList (""); // Deze moet nog verplaatst worden
 
     @Override
     public void start(Stage stage) {
-        ObservableList<String> players = controller.getPlayerList(); //FXCollections.observableArrayList ("Geen connectie :(");
         // Define button actions
         buttonActions();
 
@@ -95,6 +95,7 @@ public class MasterView extends View {
 
 
         // Application - Window settings
+        players.clear();
         stage.setTitle("Epic game launcher");
         stage.setMinWidth(1024);
         stage.setMinHeight(576);
@@ -102,9 +103,6 @@ public class MasterView extends View {
         stage.setMaxHeight(1440);
         stage.setScene(new Scene(pnLauncher, windowWidth, windowHeight));
         stage.show();
-
-        // Testcode
-        playersOnline.setText(players.size() + " spelers online");
 
         // Update window resolution triggers
         stage.widthProperty().addListener(new ChangeListener<Number>() {
@@ -138,19 +136,22 @@ public class MasterView extends View {
                         usernameEdit.setDisable(true);
                         bgUsernameUse.setImage(bgUsernameOk);
                         controller.setLoginName(usernameEdit.getCharacters().toString());
+                        players.clear();
+                        players.addAll(controller.getPlayerList());
+                        playersOnline.setText(players.size() + " spelers online");
                     } else if (loginStatus == "short") {
                         JOptionPane.showConfirmDialog(null, "Deze naam is te kort.", "Waarschuwing", JOptionPane.CLOSED_OPTION);
                     }
                 } else {
-                    int dialogButton = JOptionPane.YES_NO_OPTION;
-                    int dialogResult = JOptionPane.showConfirmDialog (null, "Om uw naam te wijzigen moet u eerst de lobby verlaten. Wilt u de lobby nu verlaten?","Waarschuwing",dialogButton);
+                    int dialogResult = JOptionPane.showConfirmDialog (null, "Om uw naam te wijzigen moet u eerst de lobby verlaten. Wilt u de lobby nu verlaten?","Waarschuwing",JOptionPane.YES_NO_OPTION);
                     if(dialogResult == JOptionPane.YES_OPTION){
                         // Saving code here
                         controller.logout();
                         usernameEdit.setDisable(false);
                         bgUsernameUse.setImage(bgUsernameEdit);
                         controller.setLoginName(null);
-                        //nameSet = false;
+                        players.clear();
+                        playersOnline.setText("Voer rechtsboven een naam in");
                     }
                 }
             }
