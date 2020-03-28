@@ -12,8 +12,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.swing.*;
@@ -30,56 +32,56 @@ public class MasterView extends View {
         this.controller = controller;
     }
 
-    // Define buttons
+    // Username - buttons
     Button btnChangeName = new Button("");
 
-    // Define text fields
+    // Username - Text fields
     TextField usernameEdit = new TextField();
 
-    // Default window resolution
-    int windowWidth = 1280;
+    // Application - window settings
+    int windowWidth = 1280; // Default screen size
     int windowHeight = 720;
-    boolean nameSet = false;
-
-    // Get screen resolution
-//    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//    double screenWidth = screenSize.getWidth();
-//    double screenHeight = screenSize.getHeight();
+    boolean nameSet = false; // Is name set
+    Pane pnLauncher = new Pane(); // Main pane
 
     // Username backgrounds
     Image bgUsernameOk = new Image("File:assets/launcher/bgUsernameOk.png");
     Image bgUsernameEdit = new Image("File:assets/launcher/bgUsernameEdit.png");
     ImageView bgUsernameUse = new ImageView("File:assets/launcher/bgUsernameEdit.png");
 
-    // Panes
-    Pane pnLauncher = new Pane();
-
+    // Leaderboard - Textfields
+    Text playersOnline = new Text("Voer rechtsboven een naam in");
 
     @Override
     public void start(Stage stage) {
         // Define button actions
         buttonActions();
 
-        // Background
-        pnLauncher.getChildren().add(bgUsernameUse);
-
-        // Name
-        //Text usernameEdit = new Text("Jos Badpak");
-        usernameEdit.setFont(Font.font("Arial", FontWeight.BOLD, 28));
-        //usernameEdit.setFill(Color.WHITE);
-        pnLauncher.getChildren().add(usernameEdit);
-
-        // Pane username
+        // Pane - background color
         pnLauncher.setStyle("-fx-background-color: #262626"); // Default background color
 
-        // Change name button
-        ImageView usernameEdit = new ImageView("File:assets/launcher/nameEdit.png");
+        // Username - Background
+        pnLauncher.getChildren().add(bgUsernameUse);
+
+        // Username - edit field
+        usernameEdit.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+        pnLauncher.getChildren().add(usernameEdit);
+
+        // Username - edit name button
         pnLauncher.getChildren().add(btnChangeName);
+        ImageView btnUsernameEdit = new ImageView("File:assets/launcher/nameEdit.png");
         btnChangeName.setStyle("-fx-background-color: #262626;");
-        btnChangeName.setGraphic(usernameEdit);
+        btnChangeName.setGraphic(btnUsernameEdit);
+
+        // Leaderboard - players online
+        pnLauncher.getChildren().add(playersOnline);
+        playersOnline.setFill(Color.WHITE);
+        playersOnline.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+        playersOnline.setLayoutX(32);
+        playersOnline.setLayoutY(64);
 
 
-        // Window settings
+        // Application - Window settings
         stage.setTitle("Epic game launcher");
         stage.setMinWidth(1024);
         stage.setMinHeight(576);
@@ -88,7 +90,7 @@ public class MasterView extends View {
         stage.setScene(new Scene(pnLauncher, windowWidth, windowHeight));
         stage.show();
 
-        // Update window resolution
+        // Update window resolution triggers
         stage.widthProperty().addListener(new ChangeListener<Number>() {
             @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
                 windowWidth = newSceneWidth.intValue();
@@ -142,6 +144,7 @@ public class MasterView extends View {
 
     private void relocatePanes() {
         setUsernamePosition();
+        setLeaderboardPosition();
     }
 
     private void setUsernamePosition(){
@@ -159,6 +162,10 @@ public class MasterView extends View {
         usernameEdit.setMaxWidth(312);
 
     }
+
+    private void setLeaderboardPosition(){
+    }
+
 
 
     public static void main(String[] args) {
