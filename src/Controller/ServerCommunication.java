@@ -1,6 +1,8 @@
 package Controller;
 
 import Games.GameName;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.*;
 import java.net.Socket;
@@ -40,9 +42,15 @@ public class ServerCommunication {
         }
     }
 
-    public void login(String name) {
-        write("login " + name);
-        System.out.println("Logged in");
+    public String login(String name) {
+        // Check if name is longer than 0 characters
+        if (name.length() > 0) {
+            write("login " + name);
+            System.out.println("Logged in");
+            return "ok"; // Valid name
+        }
+        return "short"; // Invalid name -- To short
+        //return "inUse"; // Invalid name -- Already in use
     }
 
     public void logout() {
@@ -54,8 +62,11 @@ public class ServerCommunication {
         write("get gamelist");
     }
 
-    public void getPlayerList() {
-        write("get playerlist");
+    public ObservableList<String> getPlayerList() {
+        write("get playerlist"); // <---- ontvang resultaat nog
+
+        // Returns list with all player names
+        return FXCollections.observableArrayList ("Jos Badpak", "Bart Baksteen", "Willem Pen", "Jozef Appel", "Stefan Wortelsap", "Jochem Boterham", "Herman Bananensap");
     }
 
     public void challengeAccept(String challengeNmr) {

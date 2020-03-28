@@ -5,6 +5,8 @@ import Model.MasterModel;
 import Model.Model;
 import View.MasterView;
 import View.View;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
 public class MasterController extends Controller {
@@ -86,13 +88,17 @@ public class MasterController extends Controller {
         serverCommunication.logout();
     }
 
-    public void login(String name) {
-        serverCommunication.login(name);
+    public String login(String name) {
+        return serverCommunication.login(name);
     }
 
     public void subscribe(GameName game) {
         model.setGame(game);
         serverCommunication.subscribe(game);
+    }
+
+    public ObservableList<String> getPlayerList() {
+        return serverCommunication.getPlayerList();
     }
 
     @Override

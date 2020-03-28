@@ -4,10 +4,13 @@ import Controller.MasterController;
 import Model.MasterModel;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -52,8 +55,12 @@ public class MasterView extends View {
     // Leaderboard - Textfields
     Text playersOnline = new Text("Voer rechtsboven een naam in");
 
+    // Leaderboard - list
+    ListView<String> playerList = new ListView<String>();
+
     @Override
     public void start(Stage stage) {
+        ObservableList<String> players = controller.getPlayerList(); //FXCollections.observableArrayList ("Geen connectie :(");
         // Define button actions
         buttonActions();
 
@@ -76,9 +83,16 @@ public class MasterView extends View {
         // Leaderboard - players online
         pnLauncher.getChildren().add(playersOnline);
         playersOnline.setFill(Color.WHITE);
-        playersOnline.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+        playersOnline.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         playersOnline.setLayoutX(32);
         playersOnline.setLayoutY(64);
+
+        // Leaderboard - Players
+        pnLauncher.getChildren().add(playerList);
+        playerList.setItems(players);
+        playerList.setStyle("-fx-font-size:24.0;");
+        playerList.setLayoutX(32);
+        playerList.setLayoutY(80);
 
 
         // Application - Window settings
@@ -89,6 +103,9 @@ public class MasterView extends View {
         stage.setMaxHeight(1440);
         stage.setScene(new Scene(pnLauncher, windowWidth, windowHeight));
         stage.show();
+
+        // Testcode
+        playersOnline.setText(players.size() + " spelers online");
 
         // Update window resolution triggers
         stage.widthProperty().addListener(new ChangeListener<Number>() {
@@ -104,9 +121,11 @@ public class MasterView extends View {
             }
         });
 
-        // Trigger relocator
+        // Trigger relocators
         stage.setWidth(windowWidth+1);
         stage.setWidth(windowWidth);
+        stage.setHeight(windowHeight+1);
+        stage.setHeight(windowHeight);
     }
 
     private void buttonActions(){
@@ -115,10 +134,14 @@ public class MasterView extends View {
             @Override
             public void handle(ActionEvent event) {
                 if (nameSet == false) {
-                    controller.login((usernameEdit.getCharacters().toString()));
-                    usernameEdit.setDisable(true);
-                    bgUsernameUse.setImage(bgUsernameOk);
-                    nameSet = true;
+                    String loginStatus = controller.login((usernameEdit.getCharacters().toString()));
+                    if (loginStatus == "ok") {
+                        usernameEdit.setDisable(true);
+                        bgUsernameUse.setImage(bgUsernameOk);
+                        nameSet = true;
+                    } else if (loginStatus == "short") {
+                        JOptionPane.showConfirmDialog(null, "Deze naam is te kort.", "Waarschuwing", JOptionPane.CLOSED_OPTION);
+                    }
                 } else {
                     int dialogButton = JOptionPane.YES_NO_OPTION;
                     int dialogResult = JOptionPane.showConfirmDialog (null, "Om uw naam te wijzigen moet u eerst de lobby verlaten. Wilt u de lobby nu verlaten?","Waarschuwing",dialogButton);
@@ -164,6 +187,9 @@ public class MasterView extends View {
     }
 
     private void setLeaderboardPosition(){
+        // Leaderboard - playerList
+        playerList.setPrefHeight(windowHeight-(80+64));
+        playerList.setPrefWidth(480);
     }
 
 
