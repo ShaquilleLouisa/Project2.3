@@ -29,9 +29,7 @@ public class MasterModel extends Model {
         return loginName;
     }
 
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
-    }
+    public void setLoginName(String loginName) { this.loginName = loginName; }
 
     public void setInGame(boolean inGame) {
         this.inGame = inGame;

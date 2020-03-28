@@ -44,7 +44,6 @@ public class MasterView extends View {
     // Application - window settings
     int windowWidth = 1280; // Default screen size
     int windowHeight = 720;
-    boolean nameSet = false; // Is name set
     Pane pnLauncher = new Pane(); // Main pane
 
     // Username backgrounds
@@ -133,12 +132,12 @@ public class MasterView extends View {
         btnChangeName.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (nameSet == false) {
+                if (controller.getLoginName() == null) {
                     String loginStatus = controller.login((usernameEdit.getCharacters().toString()));
                     if (loginStatus == "ok") {
                         usernameEdit.setDisable(true);
                         bgUsernameUse.setImage(bgUsernameOk);
-                        nameSet = true;
+                        controller.setLoginName(usernameEdit.getCharacters().toString());
                     } else if (loginStatus == "short") {
                         JOptionPane.showConfirmDialog(null, "Deze naam is te kort.", "Waarschuwing", JOptionPane.CLOSED_OPTION);
                     }
@@ -150,7 +149,8 @@ public class MasterView extends View {
                         controller.logout();
                         usernameEdit.setDisable(false);
                         bgUsernameUse.setImage(bgUsernameEdit);
-                        nameSet = false;
+                        controller.setLoginName(null);
+                        //nameSet = false;
                     }
                 }
             }

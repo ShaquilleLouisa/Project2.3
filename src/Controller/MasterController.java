@@ -101,6 +101,12 @@ public class MasterController extends Controller {
         return serverCommunication.getPlayerList();
     }
 
+    public String getLoginName() {
+        return model.getLoginName();
+    }
+
+    public void setLoginName(String loginName) {model.setLoginName(loginName); }
+
     @Override
     public void addView(View view) {
         this.view = (MasterView) view;
