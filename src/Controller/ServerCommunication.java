@@ -1,5 +1,7 @@
 package Controller;
 
+import Games.GameName;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -12,7 +14,7 @@ public class ServerCommunication {
 
 
     public ServerCommunication() {
-        connect();
+
     }
 
     public void connect() {
@@ -47,11 +49,6 @@ public class ServerCommunication {
         write("logout");
     }
 
-    public void setGame(String game) {
-        if (game.equals("Tic-tac-toe") || game.equals("Reversi")) {
-            write("subscibe " + game);
-        }
-    }
 
     public void getGameList() {
         write("get gamelist");
@@ -69,12 +66,8 @@ public class ServerCommunication {
         write("forfeit");
     }
 
-    public void subscribe(GameType gameType) {
-        if (gameType == GameType.TICTACTOE) {
-            write("subscribe Tic-tac-toe");
-        } else if (gameType == GameType.REVERSI) {
-            write("subscibe Reversi");
-        }
+    public void subscribe(GameName game) {
+        write("subscribe" + game.label);
     }
 
     //HelpType can be empty

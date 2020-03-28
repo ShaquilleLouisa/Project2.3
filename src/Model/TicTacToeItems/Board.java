@@ -3,13 +3,24 @@ package Model.TicTacToeItems;
 import Exceptions.MoveException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Board {
-    public ArrayList<Field> fields = new ArrayList<>(9);
+    public ArrayList<Field> fields;
+    private HashMap<Integer, ArrayList<Integer>> moves;
 
-    public Board() {
+    public Board(int xSize, int ySize) {
+        fields = new ArrayList<>(xSize*ySize);
+        moves = new HashMap<>();
+
+        int counter = 0;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
+                ArrayList<Integer> xAndY = new ArrayList<>(2);
+                xAndY.add(i);
+                xAndY.add(j);
+                moves.put(counter,xAndY);
+                counter++;
                 Field newField = new Field(i, j);
                 fields.add(newField);
             }
@@ -37,5 +48,9 @@ public class Board {
             }
         }
         return null;
+    }
+
+    public ArrayList<Integer> getMove(int x) {
+        return moves.get(x);
     }
 }

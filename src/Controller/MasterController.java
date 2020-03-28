@@ -1,23 +1,21 @@
 package Controller;
 
-import Games.TicTacToe;
-import Model.UserModel;
-import View.UserView;
+import Games.GameName;
+import Model.MasterModel;
+import Model.Model;
+import View.MasterView;
+import View.View;
 import javafx.stage.Stage;
 
 public class MasterController extends Controller {
+    MasterModel model;
+    MasterView view;
     private ServerCommunication serverCommunication;
-    private UserController userController;
-    public MasterController(Stage stage)  {
-        serverCommunication = new ServerCommunication();
-
-        UserModel userModel = new UserModel();
-        UserController userController = new UserController(userModel, serverCommunication);
-        UserView userView = new UserView(userModel, userController);
-        userView.start(stage);
+    public MasterController() {serverCommunication = new ServerCommunication();}
 
 
-
+    public void start(Stage stage) {
+        serverCommunication.connect();
         //First read should be empty because garbage 2 lines
         serverCommunication.read();
 
@@ -28,7 +26,11 @@ public class MasterController extends Controller {
             }
         });
         handleThread.start();
+
+        //Create control panel
+        view.start(stage);
     }
+
 
     private void handleInput() {
         String input = serverCommunication.read();
@@ -74,5 +76,29 @@ public class MasterController extends Controller {
                     break;
             }
         }
+    }
+
+    public void logout() {
+        System.out.println("oef");
+        serverCommunication.logout();
+    }
+
+    public void login(String name) {
+        serverCommunication.login(name);
+    }
+
+    public void subscribe(GameName game) {
+        model.setGame(game);
+        serverCommunication.subscribe(game);
+    }
+
+    @Override
+    public void addView(View view) {
+        this.view = (MasterView) view;
+    }
+
+    @Override
+    public void addModel(Model model) {
+        this.model = (MasterModel) model;
     }
 }

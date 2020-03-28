@@ -1,5 +1,6 @@
 package View;
 
+import Controller.Controller;
 import Controller.TicTacToeController;
 import Model.TicTacToeItems.FieldStatus;
 import Model.TicTacToeModel;
@@ -9,12 +10,16 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TicTacToeView extends GameView {
     HashMap<ArrayList<Integer>, Button> buttonLocation;
-    public TicTacToeView() {
+    TicTacToeController controller;
+
+    public TicTacToeView(Controller controller) {
+        controller = (TicTacToeController) controller;
     }
 
     @Override
@@ -41,15 +46,11 @@ public class TicTacToeView extends GameView {
         stage.show();
     }
 
-    public void update(TicTacToeModel model) {
+    public void update(int move, FieldStatus status) {
         Platform.runLater(() -> {
                     for (int i = 0; i < 3; i++) {
                         for (int j = 0; j < 3; j++) {
-                            FieldStatus status =  model.getFieldStatus(i, j);
-                            ArrayList<Integer> key = new ArrayList<>();
-                            key.add(i);
-                            key.add(j);
-                            Button button = buttonLocation.get(key);
+                            Button button = buttonLocation.get(move);
                             if (status == FieldStatus.CIRCLE) {
                                 button.setText("O");
                             } else if (status == FieldStatus.CROSS) {

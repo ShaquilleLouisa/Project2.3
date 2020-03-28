@@ -1,23 +1,27 @@
 package Model;
 
-import Controller.GameType;
+import Games.GameName;
+import View.MasterView;
 
-public class UserModel {
-    private GameType game;
+public class MasterModel extends Model {
+
+    private MasterView view;
+    private GameName game;
     private String loginName;
     private boolean inGame;
 
-    public UserModel() {
+    public MasterModel(MasterView view) {
+        this.view = view;
         game = null;
         loginName = null;
         inGame = false;
     }
 
-    public GameType getGame() {
+    public GameName getGame() {
         return game;
     }
 
-    public void setGame(GameType game) {
+    public void setGame(GameName game) {
         this.game = game;
     }
 

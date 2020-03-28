@@ -1,7 +1,7 @@
 package View;
 
-import Controller.UserController;
-import Model.UserModel;
+import Controller.MasterController;
+import Model.MasterModel;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -12,20 +12,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.swing.*;
 
 
-public class UserView extends View {
-    UserModel model;
-    UserController controller;
-    public UserView(UserModel model, UserController controller) {
-        this.model = model;
+public class MasterView extends View {
+    MasterController controller;
+    public MasterView(MasterController controller) {
         this.controller = controller;
 
     }
@@ -138,6 +134,8 @@ public class UserView extends View {
         pnUsername.setLayoutX(-3300+windowWidth); // Top right
 
     }
+
+
 
 
 //    public void update() {

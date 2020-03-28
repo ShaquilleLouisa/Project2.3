@@ -1,6 +1,6 @@
-import Controller.GameType;
 import Controller.MasterController;
-import Controller.ServerCommunication;
+import Model.MasterModel;
+import View.MasterView;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -13,6 +13,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        MasterController masterController = new MasterController(stage);
+        MasterController masterController = new MasterController();
+        MasterView masterView = new MasterView(masterController);
+        MasterModel masterModel = new MasterModel(masterView);
+
+        masterController.addModel(masterModel);
+        masterController.addView(masterView);
+        masterController.start(stage);
     }
 }
