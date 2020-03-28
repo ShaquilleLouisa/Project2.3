@@ -46,12 +46,14 @@ public class MasterView extends View {
 //    double screenWidth = screenSize.getWidth();
 //    double screenHeight = screenSize.getHeight();
 
+    // Username backgrounds
+    Image bgUsernameOk = new Image("File:assets/launcher/bgUsernameOk.png");
+    Image bgUsernameEdit = new Image("File:assets/launcher/bgUsernameEdit.png");
+    ImageView bgUsernameUse = new ImageView("File:assets/launcher/bgUsernameEdit.png");
+
     // Panes
     Pane pnUsername = new Pane();
 
-    public void connected(Boolean isConnected){
-
-    }
 
     @Override
     public void start(Stage stage) {
@@ -59,8 +61,7 @@ public class MasterView extends View {
         buttonActions();
 
         // Background
-        Image usernameBG = new Image("File:assets/launcher/bg_name.png");
-        pnUsername.getChildren().add(new ImageView(usernameBG));
+        pnUsername.getChildren().add(bgUsernameUse);
 
         // Name
         //Text usernameEdit = new Text("Jos Badpak");
@@ -119,6 +120,7 @@ public class MasterView extends View {
                 if (nameSet == false) {
                     controller.login((usernameEdit.getCharacters().toString()));
                     usernameEdit.setDisable(true);
+                    bgUsernameUse.setImage(bgUsernameOk);
                     nameSet = true;
                 } else {
                     int dialogButton = JOptionPane.YES_NO_OPTION;
@@ -127,11 +129,20 @@ public class MasterView extends View {
                         // Saving code here
                         controller.logout();
                         usernameEdit.setDisable(false);
+                        bgUsernameUse.setImage(bgUsernameEdit);
                         nameSet = false;
                     }
                 }
             }
         });
+    }
+
+
+    // Executed when client has connected
+    public void connected(Boolean isConnected){
+        if (isConnected == true){
+
+        }
     }
 
     private void relocatePanes() {
