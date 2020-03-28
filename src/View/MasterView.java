@@ -82,8 +82,8 @@ public class MasterView extends View {
 
         // Window settings
         stage.setTitle("Epic game launcher");
-        stage.setMinWidth(windowWidth);
-        stage.setMinHeight(windowHeight);
+        stage.setMinWidth(1024);
+        stage.setMinHeight(576);
         stage.setMaxWidth(2560);
         stage.setMaxHeight(1440);
         stage.setScene(new Scene(pnUsername, windowWidth, windowHeight));
