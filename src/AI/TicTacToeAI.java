@@ -61,7 +61,7 @@ public class TicTacToeAI extends AI {
                         }
 
                         int moveVal = minmax(boardCopy, 0, false);
-
+                        System.out.println(moveVal);
                         try {
                             boardCopy.setFieldStatus(i, j, NONE);
                         } catch (Exception e) {
@@ -69,21 +69,22 @@ public class TicTacToeAI extends AI {
                         }
 
                         if (moveVal > bestVal) {
+                            System.out.println(i + " " + j);
                             bestMove.x = i;
                             bestMove.y = j;
                             bestVal = moveVal;
                         }
                     }
+                    counter++;
                 } catch (Exception e) {
                     e.printStackTrace();
                     e.getMessage();
                     System.out.println("OEF");
                 }
-                counter++;
+
             }
         }
 
-        System.out.println("Best move is " + bestVal);
         return bestMove;
     }
 
@@ -103,8 +104,8 @@ public class TicTacToeAI extends AI {
 
         if (isMax) {
             int best = -1000;
-            for (int i = 0; i < board.getFieldSize(); i++) {
-                for (int j = 0; j < board.getFieldSize(); j++) {
+            for (int i = 0; i < fieldSize; i++) {
+                for (int j = 0; j < fieldSize; j++) {
                     try {
                         if (board.getFieldStatus(i, j) == FieldStatus.NONE) {
                             try {
@@ -115,7 +116,6 @@ public class TicTacToeAI extends AI {
                                 System.out.println("OEF");
                             }
                             best = Math.max(best, minmax(board, depth + 1, false));
-
                             try {
                                 board.setFieldStatus(i, j, FieldStatus.NONE);
                             } catch (Exception e) {
@@ -136,8 +136,8 @@ public class TicTacToeAI extends AI {
             return best;
         } else {
             int best = 1000;
-            for (int i = 0; i < board.getFieldSize(); i++) {
-                for (int j = 0; j < board.getFieldSize(); j++) {
+            for (int i = 0; i < fieldSize; i++) {
+                for (int j = 0; j < fieldSize; j++) {
                     try {
                         if (board.getFieldStatus(i, j) == NONE) {
                             try {
@@ -202,6 +202,20 @@ public class TicTacToeAI extends AI {
                 else
                     return -10;
         }
+        if (fieldStatuses.get(3) != NONE && fieldStatuses.get(3) == fieldStatuses.get(4) && fieldStatuses.get(3) == fieldStatuses.get(5)) {
+            if (fieldStatuses.get(3) == CIRCLE)
+                if (fieldStatuses.get(0) == CIRCLE)
+                    return 10;
+                else
+                    return -10;
+        }
+        if (fieldStatuses.get(6) != NONE && fieldStatuses.get(6) == fieldStatuses.get(7) && fieldStatuses.get(6) == fieldStatuses.get(8)) {
+            if (fieldStatuses.get(0) == CIRCLE)
+                if (fieldStatuses.get(0) == CIRCLE)
+                    return 10;
+                else
+                    return -10;
+        }
 
 
         fieldStatuses = new ArrayList<>();
@@ -215,6 +229,20 @@ public class TicTacToeAI extends AI {
             }
         }
         if (fieldStatuses.get(0) != NONE && fieldStatuses.get(0) == fieldStatuses.get(1) && fieldStatuses.get(0) == fieldStatuses.get(2)) {
+            if (fieldStatuses.get(0) == CIRCLE)
+                if (fieldStatuses.get(0) == CIRCLE)
+                    return 10;
+                else
+                    return -10;
+        }
+        if (fieldStatuses.get(3) != NONE && fieldStatuses.get(3) == fieldStatuses.get(4) && fieldStatuses.get(3) == fieldStatuses.get(5)) {
+            if (fieldStatuses.get(3) == CIRCLE)
+                if (fieldStatuses.get(0) == CIRCLE)
+                    return 10;
+                else
+                    return -10;
+        }
+        if (fieldStatuses.get(6) != NONE && fieldStatuses.get(6) == fieldStatuses.get(7) && fieldStatuses.get(6) == fieldStatuses.get(8)) {
             if (fieldStatuses.get(0) == CIRCLE)
                 if (fieldStatuses.get(0) == CIRCLE)
                     return 10;

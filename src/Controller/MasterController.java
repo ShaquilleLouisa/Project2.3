@@ -95,9 +95,10 @@ public class MasterController extends Controller {
                                 case "move":
                                     System.out.println("Move has been done: " + input.substring(totalLetters));
                                     if(!input.substring(totalLetters).contains(model.getLoginName())) {
-                                        int opponentMove = Integer.parseInt(input.substring(totalLetters).substring(input.substring(totalLetters).lastIndexOf("move: ") + "move: ".length()+1, input.substring(totalLetters).lastIndexOf("move: ") + "move: ".length()+2));
+                                        int opponentMove = Integer.parseInt(input.substring(totalLetters).substring(input.substring(totalLetters).lastIndexOf("move: ") + "move: ".length() + 1, input.substring(totalLetters).lastIndexOf("move: ") + "move: ".length() + 2));
                                         model.getGame().getModel().setFieldStatus(opponentMove, FieldStatus.CROSS);
-                            }
+                                    }
+
 
                             }
                             //GAME INFO
