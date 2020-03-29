@@ -6,22 +6,24 @@ import Model.TicTacToeItems.Board;
 import Model.TicTacToeItems.FieldStatus;
 import Model.TicTacToeModel;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import static Model.TicTacToeItems.FieldStatus.*;
 
 public class TicTacToeAI extends AI {
+    private Board boardCopy;
     public TicTacToeAI(TicTacToeModel ticTacToeModel) {
         super(ticTacToeModel);
     }
 
     @Override
     public int calculateNextMove() {
+        boardCopy = aiModel.getBoard();
         Move move = findBestMove();
         System.out.println(move.x);
         System.out.println(move.y);
-
         int counter = 0;
         for (int i = 0; i < fieldSize; i++) {
             for (int j = 0; j < fieldSize; j++) {
@@ -42,7 +44,6 @@ public class TicTacToeAI extends AI {
     }
 
     private Move findBestMove() {
-        Board board = new Board(3, 3);
         Move bestMove = new Move();
         bestMove.x = -1;
         bestMove.y = -1;
@@ -54,15 +55,15 @@ public class TicTacToeAI extends AI {
                 try {
                     if (aiModel.getFieldStatus(counter) == NONE) {
                         try {
-                            board.setFieldStatus(i, j, CIRCLE);
+                            boardCopy.setFieldStatus(i, j, CIRCLE);
                         } catch (Exception e) {
                             System.out.println("OEF");
                         }
 
-                        int moveVal = minmax(board, 0, false);
+                        int moveVal = minmax(boardCopy, 0, false);
 
                         try {
-                            board.setFieldStatus(i, j, NONE);
+                            boardCopy.setFieldStatus(i, j, NONE);
                         } catch (Exception e) {
                             System.out.println("OEF");
                         }
@@ -87,7 +88,7 @@ public class TicTacToeAI extends AI {
     }
 
     private int minmax(Board board, int depth, boolean isMax) {
-        int score = evaluate(board);
+        int score = evaluate();
         if (score == 10) {
             return score;
         }
@@ -96,15 +97,14 @@ public class TicTacToeAI extends AI {
             return score;
         }
 
-        if (!isMovesLeft(board)) {
+        if (!isMovesLeft()) {
             return 0;
         }
 
         if (isMax) {
             int best = -1000;
-
-            for (int i = 0; i < aiModel.getFieldSize(); i++) {
-                for (int j = 0; j < aiModel.getFieldSize(); j++) {
+            for (int i = 0; i < board.getFieldSize(); i++) {
+                for (int j = 0; j < board.getFieldSize(); j++) {
                     try {
                         if (board.getFieldStatus(i, j) == FieldStatus.NONE) {
                             try {
@@ -136,8 +136,8 @@ public class TicTacToeAI extends AI {
             return best;
         } else {
             int best = 1000;
-            for (int i = 0; i < aiModel.getFieldSize(); i++) {
-                for (int j = 0; j < aiModel.getFieldSize(); j++) {
+            for (int i = 0; i < board.getFieldSize(); i++) {
+                for (int j = 0; j < board.getFieldSize(); j++) {
                     try {
                         if (board.getFieldStatus(i, j) == NONE) {
                             try {
@@ -168,29 +168,28 @@ public class TicTacToeAI extends AI {
         }
     }
 
-    private boolean isMovesLeft(Board board) {
-        int fieldSize = board.getFieldSize();
-        int counter = 0;
+    private boolean isMovesLeft() {
+        int fieldSize = boardCopy.getFieldSize();
         for (int i = 0; i < fieldSize; i++) {
             for (int j = 0; j < fieldSize; j++) {
                 try {
-                    return (aiModel.getFieldStatus(counter) == NONE);
+                    if(boardCopy.getFieldStatus(i,j) == NONE) {
+                        return true;
+                    }
                 } catch (Exception e) {
                 }
             }
         }
-        counter++;
         return false;
     }
 
-    private int evaluate(Board board) {
+    private int evaluate() {
 //        Check horizontal
         ArrayList<FieldStatus> fieldStatuses = new ArrayList<>();
-        for (int i = 0; i < board.getFieldSize(); i++) {
-            for (int j = 0; j < board.getFieldSize(); j++) {
-                System.out.println(board.getFieldSize());
+        for (int i = 0; i < boardCopy.getFieldSize(); i++) {
+            for (int j = 0; j < boardCopy.getFieldSize(); j++) {
                 try {
-                    fieldStatuses.add(board.getFieldStatus(i, j));
+                    fieldStatuses.add(boardCopy.getFieldStatus(i, j));
                 } catch (Exception e) {
                     System.out.println("Field not found");
                 }
@@ -206,11 +205,10 @@ public class TicTacToeAI extends AI {
 
 
         fieldStatuses = new ArrayList<>();
-        for (int i = 0; i < board.getFieldSize(); i++) {
-            for (int j = 0; j < board.getFieldSize(); j++) {
-                System.out.println(board.getFieldSize());
+        for (int i = 0; i < boardCopy.getFieldSize(); i++) {
+            for (int j = 0; j < boardCopy.getFieldSize(); j++) {
                 try {
-                    fieldStatuses.add(board.getFieldStatus(j, i));
+                    fieldStatuses.add(boardCopy.getFieldStatus(j, i));
                 } catch (Exception e) {
                     System.out.println("Field not found");
                 }
@@ -226,9 +224,9 @@ public class TicTacToeAI extends AI {
 
         // Check other
         try {
-            if (board.getFieldStatus(0, 0) != NONE && board.getFieldStatus(0, 0) == board.getFieldStatus(1, 1)
-                    && board.getFieldStatus(0, 0) == board.getFieldStatus(2, 2)) {
-                if (board.getFieldStatus(0, 0) == CIRCLE)
+            if (boardCopy.getFieldStatus(0, 0) != NONE && boardCopy.getFieldStatus(0, 0) == boardCopy.getFieldStatus(1, 1)
+                    && boardCopy.getFieldStatus(0, 0) == boardCopy.getFieldStatus(2, 2)) {
+                if (boardCopy.getFieldStatus(0, 0) == CIRCLE)
                     return 10;
                 else
                     return -10;
@@ -238,9 +236,9 @@ public class TicTacToeAI extends AI {
         }
 
         try {
-            if (board.getFieldStatus(2, 0) != NONE && board.getFieldStatus(2, 0) == board.getFieldStatus(1, 1)
-                    && board.getFieldStatus(2, 0) == board.getFieldStatus(0, 2)) {
-                if (board.getFieldStatus(2, 0) == CIRCLE)
+            if (boardCopy.getFieldStatus(2, 0) != NONE && boardCopy.getFieldStatus(2, 0) == boardCopy.getFieldStatus(1, 1)
+                    && boardCopy.getFieldStatus(2, 0) == boardCopy.getFieldStatus(0, 2)) {
+                if (boardCopy.getFieldStatus(2, 0) == CIRCLE)
                     return 10;
                 else
                     return -10;
