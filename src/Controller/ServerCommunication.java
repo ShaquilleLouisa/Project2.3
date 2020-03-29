@@ -94,7 +94,7 @@ public class ServerCommunication {
     public String read() {
         if (socket != null && reader != null && writer != null) {
             try {
-                return reader.readLine().toLowerCase();
+                return reader.readLine();
             } catch (Exception e) {
                 System.out.println("Could not read from server");
                 System.out.println("Reconnecting");

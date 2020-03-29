@@ -24,7 +24,7 @@ public class MasterController extends Controller {
         serverCommunication.connect();
         view.connected(true);
         //First read should be empty because garbage 2 lines
-        serverCommunication.read().toLowerCase();
+        serverCommunication.read();
 
 
         Thread handleThread = new Thread(() -> {
