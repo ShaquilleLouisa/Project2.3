@@ -70,4 +70,6 @@ public class TicTacToeModel extends GameModel {
     public void increaseTurns() {
         turns++;
     }
+
+    public Board getBoard() {return board;}
 }

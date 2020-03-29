@@ -1,6 +1,7 @@
 package Model;
 
 import Exceptions.MoveException;
+import Model.TicTacToeItems.Board;
 import Model.TicTacToeItems.FieldStatus;
 
 import java.lang.reflect.Field;
@@ -30,5 +31,9 @@ public class AIModel extends Model {
         } catch (MoveException e) {
             throw e;
         }
+    }
+
+    public Board getBoard() {
+        return gameModel.getBoard();
     }
 }
