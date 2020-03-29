@@ -57,19 +57,11 @@ public class ServerCommunication {
         write("logout");
     }
 
-
     public void getGameList() {
         write("get gamelist");
     }
 
-    public ObservableList<String> getPlayerList() {
-        write("get playerlist");
-
-        //System.out.println(read()); // <---- ontvang resultaat nog
-
-        // Returns list with all player names
-        return FXCollections.observableArrayList ("Jos Badpak", "Bart Baksteen", "Willem Pen", "Jozef Appel", "Stefan Wortelsap", "Jochem Boterham", "Herman Bananensap");
-    }
+    public void getPlayerList() { write("get playerlist"); }
 
     public void challengeAccept(String challengeNmr) {
         write("challenge accept " + challengeNmr);
@@ -121,7 +113,8 @@ public class ServerCommunication {
                 writer.newLine();
                 writer.flush();
             } catch (IOException e) {
-                System.out.println("Could not read from server");
+                System.out.println("Could not read from server:ServerCommunication:write()");
+                System.out.println(e);
             }
         }
     }

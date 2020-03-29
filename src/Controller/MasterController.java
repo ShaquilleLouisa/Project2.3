@@ -5,6 +5,7 @@ import Model.MasterModel;
 import Model.Model;
 import View.MasterView;
 import View.View;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
@@ -23,7 +24,7 @@ public class MasterController extends Controller {
         serverCommunication.connect();
         view.connected(true);
         //First read should be empty because garbage 2 lines
-        serverCommunication.read();
+        serverCommunication.read().toLowerCase();
 
 
         Thread handleThread = new Thread(() -> {
@@ -38,10 +39,10 @@ public class MasterController extends Controller {
 
 
     private void handleInput() {
-        String input = serverCommunication.read();
-        if(input != null) {
-            input = input.toLowerCase();
-            String[] words = input.split(" ");
+        String originalInput = serverCommunication.read();
+        if(originalInput != null) {
+            String inputLowerCase = originalInput.toLowerCase();
+            String[] words = inputLowerCase.split(" ");
             switch (words[0]) {
                 case "ok":
                     break;
@@ -76,6 +77,13 @@ public class MasterController extends Controller {
                         case "draw":
                             //DRAW
                             break;
+                        case "playerlist":
+                            // Send whole playerlist and filter harmful data
+                            String[] playerNames = originalInput.substring(16, originalInput.length() - 2).split("\", ");
+                            for (int i=0; i<playerNames.length; i++) { playerNames[i] = playerNames[i].substring(1); }
+                            view.updateLeaderboard(FXCollections.observableArrayList(playerNames));
+                            break;
+
                     }
                 default:
                     break;
@@ -97,8 +105,8 @@ public class MasterController extends Controller {
         serverCommunication.subscribe(game);
     }
 
-    public ObservableList<String> getPlayerList() {
-        return serverCommunication.getPlayerList();
+    public void getPlayerList() {
+        serverCommunication.getPlayerList();
     }
 
     public String getLoginName() {

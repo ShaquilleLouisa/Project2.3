@@ -2,6 +2,7 @@ package View;
 
 import Controller.MasterController;
 import Model.MasterModel;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -136,9 +137,7 @@ public class MasterView extends View {
                         usernameEdit.setDisable(true);
                         bgUsernameUse.setImage(bgUsernameOk);
                         controller.setLoginName(usernameEdit.getCharacters().toString());
-                        players.clear();
-                        players.addAll(controller.getPlayerList());
-                        playersOnline.setText(players.size() + " spelers online");
+                        controller.getPlayerList();
                     } else if (loginStatus == "short") {
                         JOptionPane.showConfirmDialog(null, "Deze naam is te kort.", "Waarschuwing", JOptionPane.CLOSED_OPTION);
                     }
@@ -164,6 +163,13 @@ public class MasterView extends View {
         if (isConnected == true){
 
         }
+    }
+
+    // Update leaderboard
+    public void updateLeaderboard(ObservableList<String> newPlayerlist){
+        players.clear();
+        players.addAll(newPlayerlist);
+        playersOnline.setText(players.size() + " spelers online");
     }
 
     private void relocatePanes() {
