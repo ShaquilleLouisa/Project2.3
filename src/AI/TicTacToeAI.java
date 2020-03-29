@@ -9,8 +9,7 @@ import Model.TicTacToeModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static Model.TicTacToeItems.FieldStatus.CIRCLE;
-import static Model.TicTacToeItems.FieldStatus.NONE;
+import static Model.TicTacToeItems.FieldStatus.*;
 
 public class TicTacToeAI extends AI {
     public TicTacToeAI(TicTacToeModel ticTacToeModel) {
@@ -79,6 +78,7 @@ public class TicTacToeAI extends AI {
                     e.getMessage();
                     System.out.println("OEF");
                 }
+                counter++;
             }
         }
 
@@ -114,7 +114,7 @@ public class TicTacToeAI extends AI {
                                 e.getMessage();
                                 System.out.println("OEF");
                             }
-                            best = Math.max(best, minmax(board, depth + 1, !isMax));
+                            best = Math.max(best, minmax(board, depth + 1, false));
 
                             try {
                                 board.setFieldStatus(i, j, FieldStatus.NONE);
@@ -141,13 +141,13 @@ public class TicTacToeAI extends AI {
                     try {
                         if (board.getFieldStatus(i, j) == NONE) {
                             try {
-                                board.setFieldStatus(i, j, CIRCLE);
+                                board.setFieldStatus(i, j, CROSS);
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 e.getMessage();
                                 System.out.println("OEF");
                             }
-                            best = Math.min(best, minmax(board, depth + 1, !isMax));
+                            best = Math.min(best, minmax(board, depth + 1, true));
 
                             try {
                                 board.setFieldStatus(i, j, NONE);
@@ -184,63 +184,72 @@ public class TicTacToeAI extends AI {
     }
 
     private int evaluate(Board board) {
-        // Check horizontal
-        // for (int i = 0; i < 3; i++) {
-        //     ArrayList<FieldStatus> fieldStatuses = new ArrayList<>();
-        //     for (int j = 0; j < 3; j++) {
-        //         try {
-        //             fieldStatuses.add(board.getFieldStatus(i, j));
-        //         } catch (Exception e) {
-        //         }
-        //         if (fieldStatuses.get(0) != NONE && fieldStatuses.get(0) == fieldStatuses.get(1)
-        //                 && fieldStatuses.get(0) == fieldStatuses.get(2)) {
-        //             if (fieldStatuses.get(0) == CIRCLE)
-        //                 if (fieldStatuses.get(0) == CIRCLE)
-        //                     return 10;
-        //                 else
-        //                     return -10;
-        //         }
-        //     }
-            
+//        Check horizontal
+        ArrayList<FieldStatus> fieldStatuses = new ArrayList<>();
+        for (int i = 0; i < board.getFieldSize(); i++) {
+            for (int j = 0; j < board.getFieldSize(); j++) {
+                System.out.println(board.getFieldSize());
+                try {
+                    fieldStatuses.add(board.getFieldStatus(i, j));
+                } catch (Exception e) {
+                    System.out.println("Field not found");
+                }
+            }
+        }
+        if (fieldStatuses.get(0) != NONE && fieldStatuses.get(0) == fieldStatuses.get(1) && fieldStatuses.get(0) == fieldStatuses.get(2)) {
+            if (fieldStatuses.get(0) == CIRCLE)
+                if (fieldStatuses.get(0) == CIRCLE)
+                    return 10;
+                else
+                    return -10;
+        }
 
-        //     // Check vertical
-        //     for (int j = 0; j < 3; j++) {
-        //         ArrayList<FieldStatus> fieldStatuses = new ArrayList<>();
-        //         for (int i = 0; i < 3; i++) {
-        //             try {
-        //                 fieldStatuses.add(board.getFieldStatus(i, j));
-        //         catch(Exception e){
-        //                 }
-        //             }
-        //             if (fieldStatuses.get(0) != NONE && fieldStatuses.get(0) == fieldStatuses.get(1)
-        //                     && fieldStatuses.get(0) == fieldStatuses.get(2)) {
-        //                 if (fieldStatuses.get(0) == CIRCLE)
-        //                     return 10;
-        //                 else
-        //                     return -10;
-        //             }
-        //         }
 
-        //         // Check other
-        //         if (board.getFieldStatus(0, 0) != NONE && board.getFieldStatus(0, 0) == board.getFieldStatus(1, 1)
-        //                 && board.getFieldStatus(0, 0) == board.getFieldStatus(2, 2)) {
-        //             if (board.getFieldStatus(0, 0) == CIRCLE)
-        //                 return 10;
-        //             else
-        //                 return -10;
-        //         }
-        //         if (board.getFieldStatus(2, 0) != NONE && board.getFieldStatus(2, 0) == board.getFieldStatus(1, 1)
-        //                 && board.getFieldStatus(2, 0) == board.getFieldStatus(0, 2)) {
-        //             if (board.getFieldStatus(2, 0) == CIRCLE)
-        //                 return 10;
-        //             else
-        //                 return -10;
-        //         }
+        fieldStatuses = new ArrayList<>();
+        for (int i = 0; i < board.getFieldSize(); i++) {
+            for (int j = 0; j < board.getFieldSize(); j++) {
+                System.out.println(board.getFieldSize());
+                try {
+                    fieldStatuses.add(board.getFieldStatus(j, i));
+                } catch (Exception e) {
+                    System.out.println("Field not found");
+                }
+            }
+        }
+        if (fieldStatuses.get(0) != NONE && fieldStatuses.get(0) == fieldStatuses.get(1) && fieldStatuses.get(0) == fieldStatuses.get(2)) {
+            if (fieldStatuses.get(0) == CIRCLE)
+                if (fieldStatuses.get(0) == CIRCLE)
+                    return 10;
+                else
+                    return -10;
+        }
 
-        //         return 0;
+        // Check other
+        try {
+            if (board.getFieldStatus(0, 0) != NONE && board.getFieldStatus(0, 0) == board.getFieldStatus(1, 1)
+                    && board.getFieldStatus(0, 0) == board.getFieldStatus(2, 2)) {
+                if (board.getFieldStatus(0, 0) == CIRCLE)
+                    return 10;
+                else
+                    return -10;
+            }
+        } catch (Exception e) {
+            System.out.println("Field not found");
+        }
 
-        //     }
-        // }
+        try {
+            if (board.getFieldStatus(2, 0) != NONE && board.getFieldStatus(2, 0) == board.getFieldStatus(1, 1)
+                    && board.getFieldStatus(2, 0) == board.getFieldStatus(0, 2)) {
+                if (board.getFieldStatus(2, 0) == CIRCLE)
+                    return 10;
+                else
+                    return -10;
+            }
+        } catch (Exception e) {
+            System.out.println("Field not found");
+        }
         return 0;
+
     }
 }
+
