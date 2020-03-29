@@ -2,8 +2,10 @@ package Games;
 
 import AI.AI;
 import Controller.TicTacToeController;
+import Exceptions.MoveException;
 import Exceptions.WrongAIException;
 import Model.TicTacToeModel;
+import Model.TicTacToeItems.FieldStatus;
 import View.TicTacToeView;
 import AI.TicTacToeAI;
 import javafx.stage.Stage;
@@ -42,5 +44,21 @@ public class TicTacToe extends Game {
 
     public int getNextMove() {
         return ai.calculateNextMove();
+    }
+
+    public FieldStatus getFieldStatus(int move) throws MoveException {
+        try {
+            return model.getFieldStatus(move);
+        } catch (MoveException e) {
+            throw (e);
+        }
+    }
+
+    public void setFieldStatus(int move, FieldStatus fieldStatus) throws MoveException {
+        try {
+            model.setFieldStatus(move, fieldStatus);
+        } catch (MoveException e) {
+            throw (e);
+        }
     }
 }

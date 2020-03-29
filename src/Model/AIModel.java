@@ -24,7 +24,11 @@ public class AIModel extends Model {
         return gameModel.getFieldSize();
     }
 
-    public FieldStatus fieldStatus(int x, int y) {
-        return gameModel.getFieldStatus(x, y);
+    public FieldStatus getFieldStatus(int move) throws MoveException {
+        try {
+            return gameModel.getFieldStatus(move);
+        } catch (MoveException e) {
+            throw e;
+        }
     }
 }

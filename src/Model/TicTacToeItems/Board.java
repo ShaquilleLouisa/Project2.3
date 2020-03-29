@@ -40,13 +40,13 @@ public class Board {
         throw new MoveException("Field does not exist");
     }
 
-    public FieldStatus getFieldStatus(int x, int y) {
+    public FieldStatus getFieldStatus(int x, int y) throws MoveException {
         for (Field field : fields) {
             if (field.getX() == x && field.getY() == y) {
                 return field.getFieldStatus();
             }
         }
-        return null;
+        throw new MoveException("Field does not exist");
     }
 
     public ArrayList<Integer> getMove(int x) {
