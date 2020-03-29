@@ -90,7 +90,7 @@ public class TicTacToeAI extends AI {
         int score = evaluate(board);
         if (score == 10) {
             return score;
-        }   
+        }
 
         if (score == -10) {
             return score;
@@ -107,64 +107,65 @@ public class TicTacToeAI extends AI {
                 for (int j = 0; j < aiModel.getFieldSize(); j++) {
                     try {
                         if (board.getFieldStatus(i, j) == FieldStatus.NONE) {
-                                try {
-                                    board.setFieldStatus(i, j, FieldStatus.CIRCLE);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    e.getMessage();
-                                    System.out.println("OEF");
-                                }
-                                best = Math.max(best, minmax(board, depth + 1, !isMax));
-        
-                                try {
-                                    board.setFieldStatus(i, j, FieldStatus.NONE);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    e.getMessage();
-                                    System.out.println("OEF");
-                                }
+                            try {
+                                board.setFieldStatus(i, j, FieldStatus.CIRCLE);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                e.getMessage();
+                                System.out.println("OEF");
+                            }
+                            best = Math.max(best, minmax(board, depth + 1, !isMax));
+
+                            try {
+                                board.setFieldStatus(i, j, FieldStatus.NONE);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                e.getMessage();
+                                System.out.println("OEF");
+                            }
                         }
-                            
-                    }catch (Exception e) {
+
+                    } catch (Exception e) {
                         e.printStackTrace();
                         e.getMessage();
                         System.out.println("OEF");
                     }
-                    
+
                 }
-            }   
+            }
             return best;
         } else {
             int best = 1000;
             for (int i = 0; i < aiModel.getFieldSize(); i++) {
                 for (int j = 0; j < aiModel.getFieldSize(); j++) {
                     try {
-                    if (board.getFieldStatus(i, j) == NONE) {
-                        try {
-                            board.setFieldStatus(i, j, CIRCLE);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            e.getMessage();
-                            System.out.println("OEF");
-                        }
-                        best = Math.min(best, minmax(board, depth + 1, !isMax));
+                        if (board.getFieldStatus(i, j) == NONE) {
+                            try {
+                                board.setFieldStatus(i, j, CIRCLE);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                e.getMessage();
+                                System.out.println("OEF");
+                            }
+                            best = Math.min(best, minmax(board, depth + 1, !isMax));
 
-                        try {
-                            board.setFieldStatus(i, j, NONE);
-                        } catch (Exception e) {
-                            System.out.println("OEF");
-                            e.printStackTrace();
-                            e.getMessage();
-                            System.out.println("OEF");
+                            try {
+                                board.setFieldStatus(i, j, NONE);
+                            } catch (Exception e) {
+                                System.out.println("OEF");
+                                e.printStackTrace();
+                                e.getMessage();
+                                System.out.println("OEF");
+                            }
                         }
-                    }
-                    catch (Exception e) {
+
+                    } catch (Exception e) {
+                        System.out.println("Message");
                     }
                 }
             }
-        }
-        return best;
-        
+            return best;
+
         }
     }
 
@@ -174,11 +175,10 @@ public class TicTacToeAI extends AI {
         for (int i = 0; i < fieldSize; i++) {
             for (int j = 0; j < fieldSize; j++) {
                 try {
-                     return (aiModel.getFieldStatus(count) == NONE); 
-                // if (aiModel.fieldStatus(i, j) == NONE) {
-                //     return true;
-                }
-                catch (Exception e) {
+                    return (aiModel.getFieldStatus(count) == NONE);
+                    // if (aiModel.fieldStatus(i, j) == NONE) {
+                    //     return true;
+                } catch (Exception e) {
                 }
             }
         }
@@ -193,54 +193,53 @@ public class TicTacToeAI extends AI {
             for (int j = 0; j < 3; j++) {
                 try {
                     fieldStatuses.add(board.getFieldStatus(i, j));
+                } catch (Exception e) {
                 }
-                catch (Exception e) {
-            }
-            if (fieldStatuses.get(0) != NONE && fieldStatuses.get(0) == fieldStatuses.get(1)
-                    && fieldStatuses.get(0) == fieldStatuses.get(2)) {
-                if (fieldStatuses.get(0) == CIRCLE)
+                if (fieldStatuses.get(0) != NONE && fieldStatuses.get(0) == fieldStatuses.get(1)
+                        && fieldStatuses.get(0) == fieldStatuses.get(2)) {
                     if (fieldStatuses.get(0) == CIRCLE)
+                        if (fieldStatuses.get(0) == CIRCLE)
+                            return 10;
+                        else
+                            return -10;
+                }
+            }
+
+            // Check vertical
+            for (int j = 0; j < 3; j++) {
+                ArrayList<FieldStatus> fieldStatuses = new ArrayList<>();
+                for (int i = 0; i < 3; i++) {
+                    try {
+                        fieldStatuses.add(board.getFieldStatus(i, j));
+                catch(Exception e){
+                        }
+                    }
+                    if (fieldStatuses.get(0) != NONE && fieldStatuses.get(0) == fieldStatuses.get(1)
+                            && fieldStatuses.get(0) == fieldStatuses.get(2)) {
+                        if (fieldStatuses.get(0) == CIRCLE)
+                            return 10;
+                        else
+                            return -10;
+                    }
+                }
+
+                // Check other
+                if (board.getFieldStatus(0, 0) != NONE && board.getFieldStatus(0, 0) == board.getFieldStatus(1, 1)
+                        && board.getFieldStatus(0, 0) == board.getFieldStatus(2, 2)) {
+                    if (board.getFieldStatus(0, 0) == CIRCLE)
                         return 10;
                     else
                         return -10;
-            }
-        }
-
-        // Check vertical
-        for (int j = 0; j < 3; j++) {
-            ArrayList<FieldStatus> fieldStatuses = new ArrayList<>();
-            for (int i = 0; i < 3; i++) {
-                try {
-                fieldStatuses.add(board.getFieldStatus(i, j));
-                catch (Exception e) {
                 }
+                if (board.getFieldStatus(2, 0) != NONE && board.getFieldStatus(2, 0) == board.getFieldStatus(1, 1)
+                        && board.getFieldStatus(2, 0) == board.getFieldStatus(0, 2)) {
+                    if (board.getFieldStatus(2, 0) == CIRCLE)
+                        return 10;
+                    else
+                        return -10;
+                }
+
+                return 0;
+
             }
-            if (fieldStatuses.get(0) != NONE && fieldStatuses.get(0) == fieldStatuses.get(1)
-                    && fieldStatuses.get(0) == fieldStatuses.get(2)) {
-                if (fieldStatuses.get(0) == CIRCLE)
-                    return 10;
-                else
-                    return -10;
-            }
         }
-
-        // Check other
-        if (board.getFieldStatus(0, 0) != NONE && board.getFieldStatus(0, 0) == board.getFieldStatus(1, 1)
-                && board.getFieldStatus(0, 0) == board.getFieldStatus(2, 2)) {
-            if (board.getFieldStatus(0, 0) == CIRCLE)
-                return 10;
-            else
-                return -10;
-        }
-        if (board.getFieldStatus(2, 0) != NONE && board.getFieldStatus(2, 0) == board.getFieldStatus(1, 1)
-                && board.getFieldStatus(2, 0) == board.getFieldStatus(0, 2)) {
-            if (board.getFieldStatus(2, 0) == CIRCLE)
-                return 10;
-            else
-                return -10;
-        }
-
-        return 0;
-
-    }
-}
