@@ -1,6 +1,7 @@
 package View;
 
 import Controller.MasterController;
+import Games.GameName;
 import Model.MasterModel;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

@@ -6,6 +6,7 @@ import Exceptions.WrongAIException;
 import Model.TicTacToeModel;
 import View.TicTacToeView;
 import AI.TicTacToeAI;
+import javafx.stage.Stage;
 
 public class TicTacToe extends Game {
     private TicTacToeView view;
@@ -18,6 +19,7 @@ public class TicTacToe extends Game {
         model = new TicTacToeModel(view);
         controller.addModel(model);
         controller.addView(view);
+
     }
 
     @Override
@@ -32,5 +34,13 @@ public class TicTacToe extends Game {
         } else {
             throw new WrongAIException("Tic-tac-toe AI required");
         }
+    }
+
+    public TicTacToeModel getModel() {
+        return model;
+    }
+
+    public int getNextMove() {
+        return ai.calculateNextMove();
     }
 }

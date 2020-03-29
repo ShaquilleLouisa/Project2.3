@@ -6,16 +6,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Board {
-    public ArrayList<Field> fields;
+    private ArrayList<Field> fields;
     private HashMap<Integer, ArrayList<Integer>> moves;
-
+    private int fieldSize;
     public Board(int xSize, int ySize) {
+        if(xSize == ySize) {
+            fieldSize = xSize;
+        }
         fields = new ArrayList<>(xSize*ySize);
         moves = new HashMap<>();
 
         int counter = 0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
+        for (int i = 0; i < xSize; i++) {
+            for (int j = 0; j < ySize; j++) {
                 ArrayList<Integer> xAndY = new ArrayList<>(2);
                 xAndY.add(i);
                 xAndY.add(j);
@@ -30,12 +33,8 @@ public class Board {
     public void setFieldStatus(int x, int y, FieldStatus status) throws MoveException {
         for (Field field : fields) {
             if (field.getX() == x && field.getY() == y) {
-                if (field.getFieldStatus() == FieldStatus.NONE) {
                     field.setState(status);
                     return;
-                } else {
-                    throw new MoveException("Field already used");
-                }
             }
         }
         throw new MoveException("Field does not exist");
@@ -52,5 +51,12 @@ public class Board {
 
     public ArrayList<Integer> getMove(int x) {
         return moves.get(x);
+    }
+
+    public int getFieldSize() {
+        if(fieldSize > 0) {
+            return fieldSize;
+        }
+        return 0;
     }
 }

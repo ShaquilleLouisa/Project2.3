@@ -80,7 +80,8 @@ public class ServerCommunication {
     }
 
     public void subscribe(GameName game) {
-        write("subscribe" + game.label);
+        System.out.println("subscribe to " + game.label);
+        write("subscribe " + game.label);
     }
 
     //HelpType can be empty
@@ -93,7 +94,7 @@ public class ServerCommunication {
     }
 
     //Their should be some checks here.
-    public void move(String move) {
+    public void move(int move) {
         write("move " + move);
     }
 

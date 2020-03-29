@@ -15,15 +15,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TicTacToeView extends GameView {
-    HashMap<ArrayList<Integer>, Button> buttonLocation;
+    HashMap<Integer, Button> buttonLocation;
     TicTacToeController controller;
-
+    Stage stage;
     public TicTacToeView() {
 
     }
 
     public TicTacToeView(Controller controller) {
         controller = (TicTacToeController) controller;
+        stage = new Stage();
+        try {
+            start(stage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -31,18 +37,18 @@ public class TicTacToeView extends GameView {
         stage.setTitle("Hello World!");
         GridPane pane = new GridPane();
         buttonLocation = new HashMap<>();
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                Button button = new Button("");
+
+        int counter = 0;
+        for (int j = 0; j < 3; j++) {
+            for (int i = 0; i < 3; i++) {
+                Button button = new Button(""+counter);
                 button.setMinWidth(100);
                 button.setMinHeight(100);
                 button.setWrapText(true);
                 button.setStyle(String.format("-fx-font-size: %dpx;", (int) (0.45 * 100)));
-                ArrayList<Integer> location = new ArrayList<>();
-                location.add(i);
-                location.add(j);
-                buttonLocation.put(location, button);
+                buttonLocation.put(counter, button);
                 pane.add(button, i, j);
+                counter++;
             }
         }
 
@@ -52,20 +58,16 @@ public class TicTacToeView extends GameView {
 
     public void update(int move, FieldStatus status) {
         Platform.runLater(() -> {
-                    for (int i = 0; i < 3; i++) {
-                        for (int j = 0; j < 3; j++) {
-                            Button button = buttonLocation.get(move);
-                            if (status == FieldStatus.CIRCLE) {
-                                button.setText("O");
-                            } else if (status == FieldStatus.CROSS) {
-                                button.setText("X");
-                            } else {
-                                button.setText("");
-                            }
-                        }
-                    }
-                }
-        );
+            System.out.println("" + move + status.toString());
+            Button button = buttonLocation.get(move);
+            if (status == FieldStatus.CIRCLE) {
+                button.setText("O");
+            } else if (status == FieldStatus.CROSS) {
+                button.setText("X");
+            } else {
+                button.setText("");
+            }
+        });
 
     }
 

@@ -14,20 +14,14 @@ public class TicTacToeModel extends GameModel {
     private int turns;
     private int player = 1;
     private TicTacToeView view;
+    private int FieldSize = 3;
     public TicTacToeModel(TicTacToeView view) {
         this.view = view;
         turns = 0;
-        board = new Board(3,3);
+        board = new Board(FieldSize,FieldSize);
     }
 
-    public void setFieldStatus(int move) throws MoveException {
-        FieldStatus fieldStatus;
-        if(player == 1) {
-            fieldStatus = FieldStatus.CIRCLE;
-        } else {
-            fieldStatus = FieldStatus.CROSS;
-        }
-
+    public void setFieldStatus(int move, FieldStatus fieldStatus) throws MoveException {
         ArrayList<Integer> xAndY = board.getMove(move);
         int x = xAndY.get(0);
         int y = xAndY.get(1);
@@ -42,6 +36,11 @@ public class TicTacToeModel extends GameModel {
 
     public FieldStatus getFieldStatus(int x, int y) {
         return board.getFieldStatus(x,y);
+    }
+
+    @Override
+    public int getFieldSize() {
+        return FieldSize;
     }
 
     public int getPlayer() {
