@@ -28,7 +28,7 @@ public class TicTacToeView extends GameView {
 
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setTitle("Tic Tac Toe");
+        stage.setTitle("Hello World!");
         GridPane pane = new GridPane();
         buttonLocation = new HashMap<>();
         for (int i = 0; i < 3; i++) {
