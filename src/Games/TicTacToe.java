@@ -11,11 +11,13 @@ public class TicTacToe extends Game {
     private TicTacToeView view;
     private TicTacToeModel model;
     private TicTacToeController controller;
+    private TicTacToeAI ai;
 
     public TicTacToe() {
         controller = new TicTacToeController();
         view = new TicTacToeView(controller);
         model = new TicTacToeModel(view);
+        ai = new TicTacToeAI(model);
         controller.addModel(model);
         controller.addView(view);
     }
@@ -25,12 +27,4 @@ public class TicTacToe extends Game {
         return GameName.TICTACTOE;
     }
 
-    @Override
-    public void setAI(AI ai) throws WrongAIException {
-        if (ai instanceof TicTacToeAI) {
-            this.ai = ai;
-        } else {
-            throw new WrongAIException("Tic-tac-toe AI required");
-        }
-    }
 }
