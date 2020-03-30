@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TicTacToeModel extends GameModel {
-    private Board board;
+    private Board<TicTacToeFieldStatus> board;
     private int turns;
     private int player = 1;
     private TicTacToeView view;
     public TicTacToeModel(TicTacToeView view) {
         this.view = view;
         turns = 0;
-        board = new Board(3,3);
+        board = new Board<TicTacToeFieldStatus>(3,3);
     }
 
     public void setFieldStatus(int move) throws MoveException {

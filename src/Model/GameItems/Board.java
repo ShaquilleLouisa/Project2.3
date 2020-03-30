@@ -5,8 +5,8 @@ import Exceptions.MoveException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Board {
-    public ArrayList<Field> fields;
+public class Board<E> {
+    public ArrayList<Field<E>> fields;
     private HashMap<Integer, ArrayList<Integer>> moves;
 
     public Board(int xSize, int ySize) {
@@ -21,14 +21,14 @@ public class Board {
                 xAndY.add(j);
                 moves.put(counter,xAndY);
                 counter++;
-                Field newField = new Field(i, j);
+                Field<E> newField = new Field<E>(i, j);
                 fields.add(newField);
             }
         }
     }
 
-    public <E> void setFieldStatus(int x, int y, E status) throws MoveException {
-        for (Field field : fields) {
+    public void setFieldStatus(int x, int y, E status) throws MoveException {
+        for (Field<E> field : fields) {
             if (field.getX() == x && field.getY() == y) {
                 if (field.getFieldStatus() == null) {
                     field.setState(status);
@@ -41,8 +41,8 @@ public class Board {
         throw new MoveException("Field does not exist");
     }
 
-    public <E> E getFieldStatus(int x, int y) {
-        for (Field field : fields) {
+    public E getFieldStatus(int x, int y) {
+        for (Field<E> field : fields) {
             if (field.getX() == x && field.getY() == y) {
                 return field.getFieldStatus();
             }
