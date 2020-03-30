@@ -1,4 +1,4 @@
-package Model.ReversiItems;
+package Model.GameItems;
 
 import Exceptions.MoveException;
 
@@ -27,10 +27,10 @@ public class Board {
         }
     }
 
-    public void setFieldStatus(int x, int y, FieldStatus status) throws MoveException {
+    public <E> void setFieldStatus(int x, int y, E status) throws MoveException {
         for (Field field : fields) {
             if (field.getX() == x && field.getY() == y) {
-                if (field.getFieldStatus() == FieldStatus.NONE) {
+                if (field.getFieldStatus() == null) {
                     field.setState(status);
                     return;
                 } else {
@@ -41,7 +41,7 @@ public class Board {
         throw new MoveException("Field does not exist");
     }
 
-    public FieldStatus getFieldStatus(int x, int y) {
+    public <E> E getFieldStatus(int x, int y) {
         for (Field field : fields) {
             if (field.getX() == x && field.getY() == y) {
                 return field.getFieldStatus();

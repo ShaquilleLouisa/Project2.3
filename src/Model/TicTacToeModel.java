@@ -1,8 +1,8 @@
 package Model;
 
 import Exceptions.MoveException;
-import Model.TicTacToeItems.Board;
-import Model.TicTacToeItems.FieldStatus;
+import Model.GameItems.TicTacToeFieldStatus;
+import Model.GameItems.Board;
 import View.TicTacToeView;
 
 import java.util.ArrayList;
@@ -20,11 +20,11 @@ public class TicTacToeModel extends GameModel {
     }
 
     public void setFieldStatus(int move) throws MoveException {
-        FieldStatus fieldStatus;
+        TicTacToeFieldStatus fieldStatus;
         if(player == 1) {
-            fieldStatus = FieldStatus.CIRCLE;
+            fieldStatus = TicTacToeFieldStatus.CIRCLE;
         } else {
-            fieldStatus = FieldStatus.CROSS;
+            fieldStatus = TicTacToeFieldStatus.CROSS;
         }
 
         ArrayList<Integer> xAndY = board.getMove(move);
@@ -39,7 +39,7 @@ public class TicTacToeModel extends GameModel {
         view.update(move, fieldStatus);
     }
 
-    public FieldStatus getFieldStatus(int x, int y) {
+    public TicTacToeFieldStatus getFieldStatus(int x, int y) {
         return board.getFieldStatus(x,y);
     }
 

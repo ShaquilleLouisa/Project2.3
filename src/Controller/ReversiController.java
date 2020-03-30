@@ -2,7 +2,7 @@ package Controller;
 
 import Exceptions.MoveException;
 import Model.Model;
-import Model.TicTacToeItems.FieldStatus;
+import Model.GameItems.*;
 import Model.ReversiModel;
 import View.ReversiView;
 import View.View;
@@ -29,7 +29,7 @@ public class ReversiController extends GameController {
 //    |  0,0  |  0,1  |  0,2  |  0,0  |  0,1  |  0,2  |  0,1  |  0,2  |
 //    |       |       |       |       |       |       |       |       |
 //    -----------------------------------------------------------------
-// etc.
+// etc...
 
 
     public void doMove(int move) throws MoveException {

@@ -1,17 +1,17 @@
-package Model.ReversiItems;
+package Model.GameItems;
 
 class Field {
     private int x;
     private int y;
-    private FieldStatus fieldStatus ;
+    private Object fieldStatus;
 
      protected Field(int x, int y) {
         this.x = x;
         this.y = y;
-        fieldStatus = FieldStatus.NONE;
+        //fieldStatus = FieldStatus.NONE;
     }
 
-    public void setState(FieldStatus state) {
+    public <E> void setState(E state) {
         this.fieldStatus = state;
     }
 
@@ -23,7 +23,7 @@ class Field {
         return y;
     }
 
-    public FieldStatus getFieldStatus() {
-        return fieldStatus;
+    public <E> E getFieldStatus() {
+        return (E)fieldStatus;
     }
 }

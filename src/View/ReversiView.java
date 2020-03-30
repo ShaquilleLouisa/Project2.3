@@ -1,6 +1,5 @@
 package View;
 
-import Model.ReversiItems.*;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
@@ -54,7 +53,7 @@ public class ReversiView extends GameView{
     }
 
     @Override
-    public void update(int move, FieldStatus status) {
+    public <E> void update(int move, E status) {
 
     }
 }

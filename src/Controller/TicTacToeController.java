@@ -2,7 +2,7 @@ package Controller;
 
 import Exceptions.MoveException;
 import Model.Model;
-import Model.TicTacToeItems.FieldStatus;
+import Model.GameItems.*;
 import Model.TicTacToeModel;
 import View.TicTacToeView;
 import View.View;

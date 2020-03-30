@@ -1,7 +1,7 @@
 package Model;
 
 import Exceptions.MoveException;
-import Model.TicTacToeItems.FieldStatus;
+import Model.GameItems.ReversiFieldStatus;
 
 public class AIModel extends Model {
     private GameModel gameModel; // Proxy pattern.
@@ -18,7 +18,7 @@ public class AIModel extends Model {
         }
     }
 
-    public FieldStatus getFieldStatus(int x, int y) {
+    public ReversiFieldStatus getFieldStatus(int x, int y) {
         return gameModel.getFieldStatus(x, y);
     }
 }

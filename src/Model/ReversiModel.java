@@ -1,11 +1,10 @@
 package Model;
 
 import Exceptions.MoveException;
-import Model.ReversiItems.*;
+import Model.GameItems.*;
 import View.ReversiView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ReversiModel extends GameModel {
     private Board board;
@@ -19,11 +18,11 @@ public class ReversiModel extends GameModel {
     }
 
     public void setFieldStatus(int move) throws MoveException {
-        FieldStatus fieldStatus;
+        ReversiFieldStatus fieldStatus;
         if(player == 1) {
-            fieldStatus = FieldStatus.BLACK;
+            fieldStatus = ReversiFieldStatus.BLACK;
         } else {
-            fieldStatus = FieldStatus.WHITE;
+            fieldStatus = ReversiFieldStatus.WHITE;
         }
 
         ArrayList<Integer> xAndY = board.getMove(move);
@@ -38,7 +37,7 @@ public class ReversiModel extends GameModel {
         view.update(move, fieldStatus);
     }
 
-    public FieldStatus getFieldStatus(int x, int y) {
+    public ReversiFieldStatus getFieldStatus(int x, int y) {
         return board.getFieldStatus(x,y);
     }
 

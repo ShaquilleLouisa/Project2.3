@@ -2,8 +2,8 @@ package View;
 
 import Controller.Controller;
 import Controller.TicTacToeController;
-import Model.TicTacToeItems.FieldStatus;
 import Model.TicTacToeModel;
+import Model.GameItems.TicTacToeFieldStatus;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -50,14 +50,14 @@ public class TicTacToeView extends GameView {
         stage.show();
     }
 
-    public void update(int move, FieldStatus status) {
+    public <E> void update(int move, E status) {
         Platform.runLater(() -> {
                     for (int i = 0; i < 3; i++) {
                         for (int j = 0; j < 3; j++) {
                             Button button = buttonLocation.get(move);
-                            if (status == FieldStatus.CIRCLE) {
+                            if (status == TicTacToeFieldStatus.CIRCLE) {
                                 button.setText("O");
-                            } else if (status == FieldStatus.CROSS) {
+                            } else if (status == TicTacToeFieldStatus.CROSS) {
                                 button.setText("X");
                             } else {
                                 button.setText("");
