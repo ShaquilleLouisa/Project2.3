@@ -10,8 +10,19 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import Controller.Controller;
+import Controller.ReversiController;
+
 public class ReversiView extends GameView{
     HashMap<ArrayList<Integer>, Button> buttonLocation;
+
+    public ReversiView() {
+
+    }
+
+    public ReversiView(Controller controller) {
+        controller = (ReversiController) controller;
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
