@@ -14,7 +14,7 @@ public class ReversiModel extends GameModel {
     public ReversiModel(ReversiView view) {
         this.view = view;
         turns = 0;
-        board = new Board<ReversiFieldStatus>(3,3);
+        board = new Board<ReversiFieldStatus>(8,8);
     }
 
     public void setFieldStatus(int move) throws MoveException {
