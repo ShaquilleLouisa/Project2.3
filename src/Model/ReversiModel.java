@@ -1,8 +1,7 @@
 package Model;
 
 import Exceptions.MoveException;
-import Model.TicTacToeItems.Board;
-import Model.TicTacToeItems.FieldStatus;
+import Model.ReversiItems.*;
 import View.ReversiView;
 
 import java.util.ArrayList;
@@ -22,9 +21,9 @@ public class ReversiModel extends GameModel {
     public void setFieldStatus(int move) throws MoveException {
         FieldStatus fieldStatus;
         if(player == 1) {
-            fieldStatus = FieldStatus.CIRCLE;
+            fieldStatus = FieldStatus.BLACK;
         } else {
-            fieldStatus = FieldStatus.CROSS;
+            fieldStatus = FieldStatus.WHITE;
         }
 
         ArrayList<Integer> xAndY = board.getMove(move);

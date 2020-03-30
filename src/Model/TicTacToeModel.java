@@ -1,7 +1,6 @@
 package Model;
 
 import Exceptions.MoveException;
-import Games.TicTacToe;
 import Model.TicTacToeItems.Board;
 import Model.TicTacToeItems.FieldStatus;
 import View.TicTacToeView;

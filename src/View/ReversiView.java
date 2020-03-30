@@ -1,7 +1,6 @@
 package View;
 
-import Model.TicTacToeItems.FieldStatus;
-import javafx.application.Platform;
+import Model.ReversiItems.*;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
