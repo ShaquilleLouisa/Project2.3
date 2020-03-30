@@ -51,7 +51,7 @@ public class ServerCommunication {
             try {
                 write("login " + name);
             } catch (IOException e) {
-                System.out.println("No connecting with server");
+                System.out.println("No connecting with server:login");
             }
             System.out.println("Logged in");
             return "ok"; // Valid name
@@ -72,7 +72,7 @@ public class ServerCommunication {
         try {
             write("logout");
         } catch (IOException e) {
-            System.out.println("No connecting with server");
+            System.out.println("No connecting with server:logout");
         }
 
 
@@ -82,15 +82,18 @@ public class ServerCommunication {
         try {
             write("get gamelist");
         } catch (IOException e) {
-            System.out.println("No connecting with server");
+            System.out.println("No connecting with server:getGameList");
         }
     }
 
     public void getPlayerList() {
-        try {
-            write("get playerlist");
-        } catch (IOException e) {
-            System.out.println("No connecting with server");
+        if (connected == true) {
+            System.out.println("Running");
+            try {
+                write("get playerlist");
+            } catch (IOException e) {
+                System.out.println("No connecting with server:ServerCommunication:getPlayerList()");
+            }
         }
     }
 
@@ -98,7 +101,7 @@ public class ServerCommunication {
         try {
             write("challenge accept " + challengeNmr);
         } catch (IOException e) {
-            System.out.println("No connecting with server");
+            System.out.println("No connecting with server:challengeAccept");
         }
     }
 
@@ -106,7 +109,7 @@ public class ServerCommunication {
         try {
             write("forfeit");
         } catch (IOException e) {
-            System.out.println("No connecting with server");
+            System.out.println("No connecting with server:forfeit");
         }
     }
 
@@ -114,7 +117,7 @@ public class ServerCommunication {
         try {
             write("subscribe" + game.label);
         } catch (IOException e) {
-            System.out.println("No connecting with server");
+            System.out.println("No connecting with server:subscribe");
         }
     }
 
@@ -127,7 +130,7 @@ public class ServerCommunication {
                 write("help " + helpType);
             }
         } catch (IOException e) {
-            System.out.println("No connecting with server");
+            System.out.println("No connecting with server:help");
         }
     }
 
@@ -136,7 +139,7 @@ public class ServerCommunication {
         try {
             write("move " + move);
         } catch (IOException e) {
-            System.out.println("No connecting with server");
+            System.out.println("No connecting with server:move");
         }
     }
 

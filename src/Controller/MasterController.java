@@ -35,7 +35,7 @@ public class MasterController extends Controller {
             serverCommunication.read();
         } catch (
                 IOException e) {
-            System.out.println("No connecting with server");
+            System.out.println("No connecting with server:start");
         }
         System.out.println("Connected");
         Timer timer = new Timer();
@@ -43,6 +43,7 @@ public class MasterController extends Controller {
             @Override
             public void run() {
                 handleInput();
+                //serverCommunication.getPlayerList();
             }
         },0,100);
     }
@@ -53,7 +54,7 @@ public class MasterController extends Controller {
         try {
             originalInput = serverCommunication.read();
         } catch (IOException e) {
-            System.out.println("No connecting with server");
+            System.out.println("No connecting with server:handleInput");
         }
         if (originalInput != null) {
             String inputLowerCase = originalInput.toLowerCase();
