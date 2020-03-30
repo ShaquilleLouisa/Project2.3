@@ -11,6 +11,26 @@ public class Board<E> {
 
     public Board(int xSize, int ySize) {
         fields = new ArrayList<>(xSize*ySize);
+        //set fieldsstatus in fields.
+        moves = new HashMap<>();
+
+        int counter = 0;
+        for (int i = 0; i < xSize; i++) {
+            for (int j = 0; j < ySize; j++) {
+                ArrayList<Integer> xAndY = new ArrayList<>(2);
+                xAndY.add(i);
+                xAndY.add(j);
+                moves.put(counter,xAndY);
+                counter++;
+                Field<E> newField = new Field<E>(i, j);
+                fields.add(newField);
+            }
+        }
+    }
+
+    public Board(int xSize, int ySize, E[] fieldStatus) {
+        fields = new ArrayList<>(xSize*ySize);
+        //set fieldsstatus in fields.
         moves = new HashMap<>();
 
         int counter = 0;

@@ -41,6 +41,12 @@ public class ReversiModel extends GameModel {
         return board.getFieldStatus(x,y);
     }
 
+    public Board<ReversiFieldStatus> getBoard()
+    {
+        Board<ReversiFieldStatus> boardCopy = board;
+        return boardCopy;
+    }
+
     public int getPlayer() {
         return player;
     }
