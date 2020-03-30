@@ -13,7 +13,7 @@ public class ServerCommunication {
     Socket socket;
     BufferedReader reader;
     BufferedWriter writer;
-
+    boolean connected = false;
 
     public ServerCommunication() {
 
@@ -23,7 +23,7 @@ public class ServerCommunication {
         socket = null;
         reader = null;
         writer = null;
-        boolean connected = false;
+
         while (!connected) {
             try {
                 socket = new Socket("localhost", 7789);
@@ -44,8 +44,15 @@ public class ServerCommunication {
 
     public String login(String name) {
         // Check if name is longer than 0 characters
+        if (!connected) {
+            connect();
+        }
         if (name.length() > 0) {
-            write("login " + name);
+            try {
+                write("login " + name);
+            } catch (IOException e) {
+                System.out.println("No connecting with server");
+            }
             System.out.println("Logged in");
             return "ok"; // Valid name
         }
@@ -54,45 +61,89 @@ public class ServerCommunication {
     }
 
     public void logout() {
-        write("logout");
+        try {
+            socket.close();
+            System.out.println("Closed socket");
+        } catch (IOException e) {
+            System.out.println("Socket disconnect error");
+        }
+        connected = false;
+        System.out.println("Logged out");
+        try {
+            write("logout");
+        } catch (IOException e) {
+            System.out.println("No connecting with server");
+        }
+
+
     }
 
     public void getGameList() {
-        write("get gamelist");
+        try {
+            write("get gamelist");
+        } catch (IOException e) {
+            System.out.println("No connecting with server");
+        }
     }
 
-    public void getPlayerList() { write("get playerlist"); }
+    public void getPlayerList() {
+        try {
+            write("get playerlist");
+        } catch (IOException e) {
+            System.out.println("No connecting with server");
+        }
+    }
 
     public void challengeAccept(String challengeNmr) {
-        write("challenge accept " + challengeNmr);
+        try {
+            write("challenge accept " + challengeNmr);
+        } catch (IOException e) {
+            System.out.println("No connecting with server");
+        }
     }
 
     public void forfeit() {
-        write("forfeit");
+        try {
+            write("forfeit");
+        } catch (IOException e) {
+            System.out.println("No connecting with server");
+        }
     }
 
     public void subscribe(GameName game) {
-        write("subscribe" + game.label);
+        try {
+            write("subscribe" + game.label);
+        } catch (IOException e) {
+            System.out.println("No connecting with server");
+        }
     }
 
     //HelpType can be empty
     public void help(String helpType) {
-        if (helpType.equals("")) {
-            write("help");
-        } else {
-            write("help " + helpType);
+        try {
+            if (helpType.equals("")) {
+                write("help");
+            } else {
+                write("help " + helpType);
+            }
+        } catch (IOException e) {
+            System.out.println("No connecting with server");
         }
     }
 
     //Their should be some checks here.
     public void move(String move) {
-        write("move " + move);
+        try {
+            write("move " + move);
+        } catch (IOException e) {
+            System.out.println("No connecting with server");
+        }
     }
 
     //This function is always executed when creating the servercom
     //Read() will read the text the server sends and will act accordingly by executing functions required.
-    public String read() {
-        if (socket != null && reader != null && writer != null) {
+    public String read() throws IOException {
+        if (connected) {
             try {
                 return reader.readLine();
             } catch (Exception e) {
@@ -100,14 +151,16 @@ public class ServerCommunication {
                 System.out.println("Reconnecting");
                 connect();
             }
+            return null;
+        } else {
+            throw new IOException("Not Connected");
         }
-        return null;
     }
 
     //Write is to give an awnser back to the server.
     //Write should never be public because only methods (commands) should be able to use it.
-    private void write(String command) {
-        if (socket != null && reader != null && writer != null) {
+    private void write(String command) throws IOException {
+        if (connected) {
             try {
                 writer.write(command);
                 writer.newLine();
@@ -116,6 +169,8 @@ public class ServerCommunication {
                 System.out.println("Could not read from server:ServerCommunication:write()");
                 System.out.println(e);
             }
+        } else {
+            throw new IOException("Not Connected");
         }
     }
 }

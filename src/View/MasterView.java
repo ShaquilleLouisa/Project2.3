@@ -167,9 +167,11 @@ public class MasterView extends View {
 
     // Update leaderboard
     public void updateLeaderboard(ObservableList<String> newPlayerlist){
-        players.clear();
-        players.addAll(newPlayerlist);
-        playersOnline.setText(players.size() + " spelers online");
+        Platform.runLater(() -> {
+            players.clear();
+            players.addAll(newPlayerlist);
+            playersOnline.setText(players.size() + " spelers online");
+        });
     }
 
     private void relocatePanes() {

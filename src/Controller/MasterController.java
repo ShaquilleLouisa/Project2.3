@@ -10,11 +10,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MasterController extends Controller {
     MasterModel model;
     MasterView view;
     private ServerCommunication serverCommunication;
-    public MasterController() {serverCommunication = new ServerCommunication();}
+
+    public MasterController() {
+        serverCommunication = new ServerCommunication();
+    }
 
 
     public void start(Stage stage) {
@@ -24,23 +31,31 @@ public class MasterController extends Controller {
         serverCommunication.connect();
         view.connected(true);
         //First read should be empty because garbage 2 lines
-        serverCommunication.read();
-
-
-        Thread handleThread = new Thread(() -> {
-            while (true) {
+        try {
+            serverCommunication.read();
+        } catch (
+                IOException e) {
+            System.out.println("No connecting with server");
+        }
+        System.out.println("Connected");
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
                 handleInput();
             }
-        });
-        handleThread.start();
-
-
+        },0,100);
     }
 
 
     private void handleInput() {
-        String originalInput = serverCommunication.read();
-        if(originalInput != null) {
+        String originalInput = null;
+        try {
+            originalInput = serverCommunication.read();
+        } catch (IOException e) {
+            System.out.println("No connecting with server");
+        }
+        if (originalInput != null) {
             String inputLowerCase = originalInput.toLowerCase();
             String[] words = inputLowerCase.split(" ");
             switch (words[0]) {
@@ -80,7 +95,9 @@ public class MasterController extends Controller {
                         case "playerlist":
                             // Send whole playerlist and filter harmful data
                             String[] playerNames = originalInput.substring(16, originalInput.length() - 2).split("\", ");
-                            for (int i=0; i<playerNames.length; i++) { playerNames[i] = playerNames[i].substring(1); }
+                            for (int i = 0; i < playerNames.length; i++) {
+                                playerNames[i] = playerNames[i].substring(1);
+                            }
                             view.updateLeaderboard(FXCollections.observableArrayList(playerNames));
                             break;
 
@@ -113,7 +130,9 @@ public class MasterController extends Controller {
         return model.getLoginName();
     }
 
-    public void setLoginName(String loginName) {model.setLoginName(loginName); }
+    public void setLoginName(String loginName) {
+        model.setLoginName(loginName);
+    }
 
     @Override
     public void addView(View view) {
