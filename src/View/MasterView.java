@@ -104,7 +104,7 @@ public class MasterView extends View {
         lstPlayersOptions.setItems(datPlayersOptions);
         lstPlayersOptions.setStyle("-fx-font-size:24.0;");
         lstPlayersOptions.setVisible(false);
-        lstPlayersOptions.setLayoutY(80+50);
+        lstPlayersOptions.setLayoutY(80+48);
 
         // Leaderboard - Challenge Head
         pnLauncher.getChildren().add(headPlayersOptions);
@@ -157,11 +157,19 @@ public class MasterView extends View {
                     lstPlayersOptions.setVisible(false);
                     return;
                 }
-                controller.setRivalName( usernameEdit.getCharacters().toString() );
-                System.out.println("Selected player: " + playerList.getSelectionModel().getSelectedItem());
+                controller.setRivalName( playerList.getSelectionModel().getSelectedItem() );
                 headPlayersOptions.setText(playerList.getSelectionModel().getSelectedItem() + " uitdagen voor een potje");
                 controller.getGameList();
                 lstPlayersOptions.setVisible(true);
+            }
+        });
+
+        // Game name clicked
+        lstPlayersOptions.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                headPlayersOptions.setText(playerList.getSelectionModel().getSelectedItem() + " is uitgedaagd voor een potje " + lstPlayersOptions.getSelectionModel().getSelectedItem());
+                controller.challengeRival(controller.getRivalName(), lstPlayersOptions.getSelectionModel().getSelectedItem());
             }
         });
 

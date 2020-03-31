@@ -121,6 +121,14 @@ public class ServerCommunication {
         }
     }
 
+    public void challengeRival(String rivalName, String gameName) {
+        try {
+            write("challenge \"" + rivalName + "\" \"" + gameName + "\"");
+        } catch (IOException e) {
+            System.out.println("No connecting with server:challengeRival");
+        }
+    }
+
     //HelpType can be empty
     public void help(String helpType) {
         try {

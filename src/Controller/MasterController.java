@@ -57,6 +57,7 @@ public class MasterController extends Controller {
             System.out.println("No connecting with server:handleInput");
         }
         if (originalInput != null) {
+            System.out.println(originalInput);
             String inputLowerCase = originalInput.toLowerCase();
             String[] words = inputLowerCase.split(" ");
             switch (words[0]) {
@@ -130,6 +131,8 @@ public class MasterController extends Controller {
         model.setGame(game);
         serverCommunication.subscribe(game);
     }
+
+    public void challengeRival(String rivalName, String gameName) { serverCommunication.challengeRival( rivalName, gameName ); }
 
     public void getGameList() { serverCommunication.getGameList(); }
 
