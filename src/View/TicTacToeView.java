@@ -2,15 +2,14 @@ package View;
 
 import Controller.Controller;
 import Controller.TicTacToeController;
-import Model.TicTacToeItems.FieldStatus;
-import Model.TicTacToeModel;
+import Model.GameItems.FieldStatus;
+import Model.GameItems.TicTacToeFieldStatus;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -50,26 +49,17 @@ public class TicTacToeView extends GameView {
         stage.show();
     }
 
-    public void update(int move, FieldStatus status) {
+    public void update(int move, FieldStatus fieldStatus) {
         Platform.runLater(() -> {
+            TicTacToeFieldStatus ticTacToeFieldStatus = (TicTacToeFieldStatus)fieldStatus;
                     for (int i = 0; i < 3; i++) {
                         for (int j = 0; j < 3; j++) {
                             Button button = buttonLocation.get(move);
-                            if (status == FieldStatus.CIRCLE) {
-                                button.setText("O");
-                            } else if (status == FieldStatus.CROSS) {
-                                button.setText("X");
-                            } else {
-                                button.setText("");
-                            }
+                            button.setText(ticTacToeFieldStatus.getValue());
                         }
                     }
                 }
         );
 
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

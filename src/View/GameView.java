@@ -1,7 +1,7 @@
 package View;
 
-import Model.TicTacToeItems.FieldStatus;
+import Model.GameItems.FieldStatus;
 
 public abstract class GameView extends View {
-    abstract public void update(int move, FieldStatus status);
+    abstract public void update(int move, FieldStatus fieldStatus);
 }

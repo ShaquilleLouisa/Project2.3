@@ -1,7 +1,7 @@
 package Model;
 
 import Exceptions.MoveException;
-import Model.TicTacToeItems.FieldStatus;
+import Model.GameItems.FieldStatus;
 
 public abstract class GameModel extends Model {
     abstract public void setFieldStatus(int move) throws MoveException; 

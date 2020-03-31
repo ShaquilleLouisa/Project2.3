@@ -1,29 +1,30 @@
 package Model;
 
 import Exceptions.MoveException;
-import Model.GameItems.TicTacToeFieldStatus;
-import Model.GameItems.Board;
-import View.TicTacToeView;
+import Model.GameItems.*;
+import View.ReversiView;
 
 import java.util.ArrayList;
 
-public class TicTacToeModel extends GameModel {
+public class ReversiModel extends GameModel {
     private Board board;
     private int turns;
     private int player = 1;
-    private TicTacToeView view;
-    public TicTacToeModel(TicTacToeView view) {
+    private ReversiView view;
+    public ReversiModel(ReversiView view) {
         this.view = view;
         turns = 0;
-        board = new Board(3,3, new TicTacToeFieldStatus());
+        ReversiFieldStatus defaultFieldStatus = new ReversiFieldStatus();
+        defaultFieldStatus.setUnPlayable();
+        board = new Board(8,8, defaultFieldStatus);
     }
 
     public void setFieldStatus(int move) throws MoveException {
-        TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
+        ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
         if(player == 1) {
-            fieldStatus.setCircle();
+            fieldStatus.setBlack();
         } else {
-            fieldStatus.setCross();
+            fieldStatus.setWhite();
         }
 
         ArrayList<Integer> xAndY = board.getMove(move);
@@ -38,8 +39,14 @@ public class TicTacToeModel extends GameModel {
         view.update(move, fieldStatus);
     }
 
-    public TicTacToeFieldStatus getFieldStatus(int x, int y) {
-        return (TicTacToeFieldStatus)board.getFieldStatus(x,y);
+    public ReversiFieldStatus getFieldStatus(int x, int y) {
+        return (ReversiFieldStatus)board.getFieldStatus(x,y);
+    }
+
+    public Board getBoard()
+    {
+        Board boardCopy = board;
+        return boardCopy;
     }
 
     public int getPlayer() {
