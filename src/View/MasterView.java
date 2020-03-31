@@ -11,9 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -65,6 +63,9 @@ public class MasterView extends View {
     ObservableList<String> datPlayersOptions = FXCollections.observableArrayList ("Oei");
     Text headPlayersOptions = new Text("ERROR");
 
+    // Quick play
+    Button btnQuickPlay = new Button("Nu spelen!");
+
     @Override
     public void start(Stage stage) {
         // Define button actions
@@ -115,6 +116,10 @@ public class MasterView extends View {
         headPlayersOptions.setLayoutY(80+32);
         headPlayersOptions.setVisible(false);
 
+        // Quick player
+        pnLauncher.getChildren().add(btnQuickPlay);
+        btnQuickPlay.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        btnQuickPlay.setVisible(false);
 
         // Application - Window settings
         players.clear();
@@ -152,16 +157,21 @@ public class MasterView extends View {
         playerList.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                headPlayersOptions.setVisible(true);
-                if (playerList.getSelectionModel().getSelectedItem().equals( usernameEdit.getCharacters().toString()) ){
-                    headPlayersOptions.setText("Je kan jezelf niet uitdagen");
-                    lstPlayersOptions.setVisible(false);
-                    return;
+                try {
+                    if (playerList.getSelectionModel().getSelectedItem().equals(usernameEdit.getCharacters().toString())) {
+                        headPlayersOptions.setVisible(true);
+                        headPlayersOptions.setText("Je kan jezelf niet uitdagen");
+                        lstPlayersOptions.setVisible(false);
+                        return;
+                    }
+                    headPlayersOptions.setVisible(true);
+                    controller.setRivalName(playerList.getSelectionModel().getSelectedItem());
+                    headPlayersOptions.setText(playerList.getSelectionModel().getSelectedItem() + " uitdagen voor een potje");
+                    controller.getGameList();
+                    lstPlayersOptions.setVisible(true);
+                } catch(Exception e) {
+                    System.out.println("playerList:empty");
                 }
-                controller.setRivalName( playerList.getSelectionModel().getSelectedItem() );
-                headPlayersOptions.setText(playerList.getSelectionModel().getSelectedItem() + " uitdagen voor een potje");
-                controller.getGameList();
-                lstPlayersOptions.setVisible(true);
             }
         });
 
@@ -186,8 +196,9 @@ public class MasterView extends View {
                         bgUsernameUse.setImage(bgUsernameOk);
                         controller.setLoginName(usernameEdit.getCharacters().toString());
                         controller.getPlayerList();
+                        btnQuickPlay.setVisible(true);
                     } else if (loginStatus == "short") {
-                        JOptionPane.showConfirmDialog(null, "Deze naam is te kort.", "Waarschuwing", JOptionPane.CLOSED_OPTION);
+                        JOptionPane.showConfirmDialog(null, "Deze naam is niet lang genoeg", "Waarschuwing", JOptionPane.CLOSED_OPTION);
                     }
                 } else {
                     int dialogResult = JOptionPane.showConfirmDialog (null, "Om uw naam te wijzigen moet u eerst de lobby verlaten. Wilt u de lobby nu verlaten?","Waarschuwing",JOptionPane.YES_NO_OPTION);
@@ -206,6 +217,28 @@ public class MasterView extends View {
                 }
             }
         });
+
+        // Quickplay
+        btnQuickPlay.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                headPlayersOptions.setVisible(false);
+                lstPlayersOptions.setVisible(false);
+
+                int dialogResult = JOptionPane.showConfirmDialog (null, "Druk op Yes voor reversi. Druk op No voor tic-tac-toe","Tijdelijke popup",JOptionPane.YES_NO_OPTION);
+                if(dialogResult == JOptionPane.YES_OPTION){
+                    headPlayersOptions.setVisible(true);
+                    headPlayersOptions.setText("Subscribed to Reversi");
+                    controller.subscribe(GameName.REVERSI);
+                }
+                if(dialogResult == JOptionPane.NO_OPTION){
+                    headPlayersOptions.setVisible(true);
+                    headPlayersOptions.setText("Subscribed to Tic-tac-toe");
+                    controller.subscribe(GameName.TICTACTOE);
+                }
+            }
+        });
+
     }
 
 
@@ -238,6 +271,7 @@ public class MasterView extends View {
     private void relocatePanes() {
         setUsernamePosition();
         setLeaderboardPosition();
+        setQuickPlayPosition();
     }
 
     private void setUsernamePosition(){
@@ -263,7 +297,14 @@ public class MasterView extends View {
 
         // Leaderboard - Challenge
         lstPlayersOptions.setLayoutX(480+64);
-        lstPlayersOptions.setPrefWidth(480);
+        lstPlayersOptions.setPrefWidth(320);
+    }
+
+    private void setQuickPlayPosition(){
+        // Quick player
+        btnQuickPlay.setLayoutX(windowWidth-256);
+        btnQuickPlay.setLayoutY(windowHeight-128);
+
     }
 
 

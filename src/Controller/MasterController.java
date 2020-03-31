@@ -148,7 +148,7 @@ public class MasterController extends Controller {
     }
 
     public void logout() {
-        System.out.println("oef");
+        System.out.println("logout");
         serverCommunication.logout();
     }
 

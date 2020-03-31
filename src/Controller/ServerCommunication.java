@@ -127,7 +127,7 @@ public class ServerCommunication {
 
     public void subscribe(GameName game) {
         try {
-            write("subscribe" + game.label);
+            write("subscribe " + game.label);
         } catch (IOException e) {
             System.out.println("No connecting with server:subscribe");
         }
