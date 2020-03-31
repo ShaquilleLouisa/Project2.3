@@ -10,8 +10,8 @@ public class Board {
     private HashMap<Integer, ArrayList<Integer>> moves;
 
     public <T extends FieldStatus> Board(int xSize, int ySize, T defaultFieldStatus) {
-        fields = new ArrayList<>(xSize*ySize);
-        //set fieldsstatus in fields.
+        fields = new ArrayList<>(xSize * ySize);
+        // set fieldsstatus in fields.
         moves = new HashMap<>();
 
         int counter = 0;
@@ -20,7 +20,7 @@ public class Board {
                 ArrayList<Integer> xAndY = new ArrayList<>(2);
                 xAndY.add(i);
                 xAndY.add(j);
-                moves.put(counter,xAndY);
+                moves.put(counter, xAndY);
                 fields.add(new Field(i, j, defaultFieldStatus));
                 counter++;
             }
@@ -30,24 +30,20 @@ public class Board {
     public void setFieldStatus(int x, int y, FieldStatus fieldStatus) throws MoveException {
         for (Field field : fields) {
             if (field.getX() == x && field.getY() == y) {
-                if (field.getFieldStatus().isEmpty()) {
-                    field.getFieldStatus().setId(fieldStatus.getID());
-                    return;
-                } else {
-                    throw new MoveException("Field already used");
-                }
+                field.getFieldStatus().setId(fieldStatus.getID());
             }
         }
         throw new MoveException("Field does not exist");
     }
 
-    public FieldStatus getFieldStatus(int x, int y) {
+    public FieldStatus getFieldStatus(int x, int y)  {
         for (Field field : fields) {
             if (field.getX() == x && field.getY() == y) {
                 return field.getFieldStatus();
             }
         }
         return null;
+        //throw new MoveException("Field does not exist");
     }
 
     public ArrayList<Integer> getMove(int x) {

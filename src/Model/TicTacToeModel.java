@@ -12,15 +12,16 @@ public class TicTacToeModel extends GameModel {
     private int turns;
     private int player = 1;
     private TicTacToeView view;
+
     public TicTacToeModel(TicTacToeView view) {
         this.view = view;
         turns = 0;
-        board = new Board(3,3, new TicTacToeFieldStatus());
+        board = new Board(3, 3, new TicTacToeFieldStatus());
     }
 
     public void setFieldStatus(int move) throws MoveException {
         TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
-        if(player == 1) {
+        if (player == 1) {
             fieldStatus.setCircle();
         } else {
             fieldStatus.setCross();
@@ -31,15 +32,23 @@ public class TicTacToeModel extends GameModel {
         int y = xAndY.get(1);
 
         try {
-            board.setFieldStatus(x, y, fieldStatus);
+            if (CheckIfFieldIsEmpty(x, y)) {
+                board.setFieldStatus(x, y, fieldStatus);
+            }
         } catch (MoveException e) {
             throw e;
         }
         view.update(move, fieldStatus);
     }
 
+    public boolean CheckIfFieldIsEmpty(int x, int y) throws MoveException {
+        if(getFieldStatus(x,y).isEmpty())
+            return true;
+        throw new MoveException("Field already used");
+    }
+
     public TicTacToeFieldStatus getFieldStatus(int x, int y) {
-        return (TicTacToeFieldStatus)board.getFieldStatus(x,y);
+        return (TicTacToeFieldStatus) board.getFieldStatus(x, y);
     }
 
     public int getPlayer() {
@@ -47,7 +56,7 @@ public class TicTacToeModel extends GameModel {
     }
 
     public void switchPlayer() {
-        if(player == 1) {
+        if (player == 1) {
             player = 2;
         } else {
             player = 1;

@@ -2,9 +2,9 @@ package Model.GameItems;
 
 public class ReversiFieldStatus extends FieldStatus {
 
-    public void Playable(){
+    public void setPlayable(){
         setId(1);
-        setValue(" ");
+        setValue("*");
     }
 
     public void setBlack(){
@@ -27,5 +27,9 @@ public class ReversiFieldStatus extends FieldStatus {
 
     public boolean isWhite(){
         return getID() == 3;
+    }
+
+    public boolean isCurrentPlayer(int currentPlayer){
+        return getID() == ((currentPlayer == 0) ? 2 : 3);
     }
 }
