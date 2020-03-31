@@ -1,7 +1,7 @@
 package Model;
 
 import Exceptions.MoveException;
-import Model.GameItems.ReversiFieldStatus;
+import Model.GameItems.FieldStatus;
 
 public class AIModel extends Model {
     private GameModel gameModel; // Proxy pattern.
@@ -18,7 +18,7 @@ public class AIModel extends Model {
         }
     }
 
-    public ReversiFieldStatus getFieldStatus(int x, int y) {
-        return (ReversiFieldStatus)gameModel.getFieldStatus(x, y);
+    public FieldStatus getFieldStatus(int x, int y) {
+        return gameModel.getFieldStatus(x, y);
     }
 }
