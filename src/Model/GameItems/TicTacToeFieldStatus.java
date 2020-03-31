@@ -13,14 +13,10 @@ public class TicTacToeFieldStatus extends FieldStatus {
     }
 
     public boolean isCross(){
-        return id == 1;
+        return getID() == 1;
     }
 
     public boolean isCircle(){
-        return id == 2;
-    }
-
-    public String getValue(){
-        return value;
+        return getID() == 2;
     }
 }

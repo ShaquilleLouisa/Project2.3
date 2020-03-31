@@ -1,8 +1,13 @@
 package Model.GameItems;
 
 public abstract class FieldStatus {
-    protected int id;
-    protected String value;
+    private int id;
+    private String value;
+
+    public void setEmpty() {
+         setId(0);
+         setValue(" ");
+    }
 
     public boolean isEmpty() {
         return id == 0;

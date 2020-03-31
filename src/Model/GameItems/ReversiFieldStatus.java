@@ -22,18 +22,14 @@ public class ReversiFieldStatus extends FieldStatus {
     }
 
     public boolean isUnPlayable(){
-        return id == 1;
+        return getID() == 1;
     }
 
     public boolean isBlack(){
-        return id == 2;
+        return getID() == 2;
     }
 
     public boolean isWhite(){
-        return id == 3;
-    }
-
-    public String getValue(){
-        return value;
+        return getID() == 3;
     }
 }
