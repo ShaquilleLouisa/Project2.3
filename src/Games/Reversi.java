@@ -24,7 +24,7 @@ public class Reversi extends Game {
 
     @Override
     public GameName getId() {
-        return GameName.TICTACTOE;
+        return GameName.REVERSI;
     }
 
 }

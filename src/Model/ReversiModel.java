@@ -16,9 +16,28 @@ public class ReversiModel extends GameModel {
         this.view = view;
         turns = 0;
         board = new Board(8, 8, new ReversiFieldStatus());
+        setFirstMoves();
+    }
+
+    public void setFirstMoves() {
+        // Random Color
+        ReversiFieldStatus black = new ReversiFieldStatus();
+        black.setBlack();
+        ReversiFieldStatus white = new ReversiFieldStatus();
+        white.setWhite();
+
+        try {
+            board.setFieldStatus(3, 3, black);
+            board.setFieldStatus(3, 4, white);
+            board.setFieldStatus(4, 3, black);
+            board.setFieldStatus(4, 4, white);
+        } catch (MoveException e) {
+            return;
+        }
     }
 
     public void setFieldStatus(int move) throws MoveException {
+        boolean[][] playableMoves = SetValidMoves();
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
         if (player == 1) {
             fieldStatus.setBlack();
@@ -37,14 +56,23 @@ public class ReversiModel extends GameModel {
         } catch (MoveException e) {
             throw e;
         }
-        SetValidMoves();
+
+        fieldStatus.setEmpty();
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                if (playableMoves[x][y] && x != xPosition && y != yPosition)
+                    board.setFieldStatus(x, y, fieldStatus);
+            }
+        }
         view.update(move, fieldStatus);
     }
 
-    private void SetValidMoves(){
-        // Set surrounding positions to playable.
+    private boolean[][] SetValidMoves(){
+
+        boolean[][] playableMoves = new boolean[8][8];
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
         fieldStatus.isPlayable();
+        // Set surrounding positions to playable.
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 boolean isValid = false;
@@ -58,12 +86,14 @@ public class ReversiModel extends GameModel {
                 if (isValid) {
                     try {
                         board.setFieldStatus(x, y, fieldStatus);
+                        playableMoves[x][y] = true;
                     } catch (MoveException e) {
                         continue;
                     }
                 }
             }
         }
+        return playableMoves;
     }
 
     private boolean validMove(int dr, int dc, int r, int c) {
