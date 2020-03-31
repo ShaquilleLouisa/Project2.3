@@ -54,15 +54,16 @@ public class MasterController extends Controller {
     }
 
     private void handleInput() throws MoveException {
-        String input = null;
+        String originalInput = null;
         try {
-            input = serverCommunication.read();
+            originalInput = serverCommunication.read();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("No connecting with server:handleInput");
         }
-        if (input != null) {
-            input = input.toLowerCase();
-            String[] words = input.split(" ");
+        if (originalInput != null) {
+            System.out.println(originalInput);
+            String inputLowerCase = originalInput.toLowerCase();
+            String[] words = inputLowerCase.split(" ");
             int totalLetters = 0;
             if (words.length > 2) {
                 totalLetters = words[0].length() + words[1].length() + words[2].length() + 3;
@@ -83,7 +84,7 @@ public class MasterController extends Controller {
                             TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
                             switch (words[2]) {
                                 case "match":
-                                    System.out.println("Match message: " + input.substring(totalLetters));
+                                    System.out.println("Match message: " + inputLowerCase.substring(totalLetters));
                                     break;
                                 case "yourturn":
                                     System.out.println("Your turn");
@@ -103,13 +104,14 @@ public class MasterController extends Controller {
                                     System.out.println("Draw");
                                     break;
                                 case "move":
-                                    System.out.println("Move has been done: " + input.substring(totalLetters));
-                                    if (!input.substring(totalLetters).contains(model.getLoginName())) {
-                                        int opponentMove = Integer.parseInt(input.substring(totalLetters).substring(
-                                                input.substring(totalLetters).lastIndexOf("move: ") + "move: ".length()
-                                                        + 1,
-                                                input.substring(totalLetters).lastIndexOf("move: ") + "move: ".length()
-                                                        + 2));
+                                    System.out.println("Move has been done: " + inputLowerCase.substring(totalLetters));
+                                    if (!inputLowerCase.substring(totalLetters).contains(model.getLoginName())) {
+                                        int opponentMove = Integer
+                                                .parseInt(inputLowerCase.substring(totalLetters).substring(
+                                                        inputLowerCase.substring(totalLetters).lastIndexOf("move: ")
+                                                                + "move: ".length() + 1,
+                                                        inputLowerCase.substring(totalLetters).lastIndexOf("move: ")
+                                                                + "move: ".length() + 2));
                                         fieldStatus.setCross();
                                         model.getGame().getModel().setFieldStatus(opponentMove, fieldStatus);
                                     }
@@ -119,6 +121,23 @@ public class MasterController extends Controller {
                             break;
                         case "challenge":
                             // CHALLENGE INFO
+                            break;
+                        case "playerlist":
+                            // Send whole playerlist and filter harmful data
+                            String[] playerNames = originalInput.substring(16, originalInput.length() - 2)
+                                    .split("\", ");
+                            for (int i = 0; i < playerNames.length; i++) {
+                                playerNames[i] = playerNames[i].substring(1);
+                            }
+                            view.updatePlayerboard(FXCollections.observableArrayList(playerNames));
+                            break;
+                        case "gamelist":
+                            // Send whole playerlist and filter harmful data
+                            String[] gameNames = originalInput.substring(14, originalInput.length() - 2).split("\", ");
+                            for (int i = 0; i < gameNames.length; i++) {
+                                gameNames[i] = gameNames[i].substring(1);
+                            }
+                            view.updatePlayerboardChallenges(FXCollections.observableArrayList(gameNames));
                             break;
 
                     }
@@ -136,9 +155,7 @@ public class MasterController extends Controller {
     public String login(String name) {
         serverCommunication.login(name);
         model.setLoginName(name);
-        System.out.println("1");
-        subscribe(GameName.TICTACTOE);
-        System.out.println("2");
+        // subscribe(GameName.TICTACTOE);
         return serverCommunication.login(name);
     }
 

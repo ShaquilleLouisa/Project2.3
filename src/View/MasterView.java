@@ -180,6 +180,7 @@ public class MasterView extends View {
             public void handle(ActionEvent event) {
                 if (controller.getLoginName() == null) {
                     String loginStatus = controller.login((usernameEdit.getCharacters().toString()));
+                    System.out.println(loginStatus);
                     if (loginStatus == "ok") {
                         usernameEdit.setDisable(true);
                         bgUsernameUse.setImage(bgUsernameOk);
@@ -218,6 +219,7 @@ public class MasterView extends View {
     // Update leaderboard
     public void updatePlayerboard(ObservableList<String> newPlayerlist){
         Platform.runLater(() -> {
+            System.out.println("iets");
             players.clear();
             players.addAll(newPlayerlist);
             playersOnline.setText(players.size() + " spelers online");
