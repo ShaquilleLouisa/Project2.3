@@ -3,28 +3,29 @@ package Model;
 import Exceptions.MoveException;
 import Model.GameItems.TicTacToeFieldStatus;
 import Model.GameItems.Board;
+import Model.GameItems.FieldStatus;
 import View.TicTacToeView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TicTacToeModel extends GameModel {
-    private Board<TicTacToeFieldStatus> board;
+    private Board board;
     private int turns;
     private int player = 1;
     private TicTacToeView view;
     public TicTacToeModel(TicTacToeView view) {
         this.view = view;
         turns = 0;
-        board = new Board<TicTacToeFieldStatus>(3,3);
+        board = new Board(3,3, new TicTacToeFieldStatus());
     }
 
     public void setFieldStatus(int move) throws MoveException {
-        TicTacToeFieldStatus fieldStatus;
+        TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
         if(player == 1) {
-            fieldStatus = TicTacToeFieldStatus.CIRCLE;
+            fieldStatus.setCircle();
         } else {
-            fieldStatus = TicTacToeFieldStatus.CROSS;
+            fieldStatus.setCross();
         }
 
         ArrayList<Integer> xAndY = board.getMove(move);
@@ -40,7 +41,7 @@ public class TicTacToeModel extends GameModel {
     }
 
     public TicTacToeFieldStatus getFieldStatus(int x, int y) {
-        return board.getFieldStatus(x,y);
+        return (TicTacToeFieldStatus)board.getFieldStatus(x,y);
     }
 
     public int getPlayer() {

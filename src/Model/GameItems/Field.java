@@ -1,18 +1,13 @@
 package Model.GameItems;
 
-class Field<E> {
-    private int x;
-    private int y;
-    private E fieldStatus;
+class Field {
+    final int x, y;
+    final FieldStatus fieldStatus;
 
-     protected Field(int x, int y) {
+    protected Field(int x, int y, FieldStatus fieldStatus) {
         this.x = x;
         this.y = y;
-        //fieldStatus = FieldStatus.NONE;
-    }
-
-    public void setState(E state) {
-        this.fieldStatus = state;
+        this.fieldStatus = fieldStatus;
     }
 
     public int getX() {
@@ -23,7 +18,7 @@ class Field<E> {
         return y;
     }
 
-    public E getFieldStatus() {
+    public FieldStatus getFieldStatus() {
         return fieldStatus;
     }
 }

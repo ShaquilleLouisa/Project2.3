@@ -1,5 +1,7 @@
 package View;
 
+import Model.GameItems.FieldStatus;
+
 public abstract class GameView extends View {
-    abstract public <E> void update(int move, E status);
+    abstract public <T extends FieldStatus> void update(int move, T fieldStatus);
 }

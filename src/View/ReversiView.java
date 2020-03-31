@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 import Controller.Controller;
 import Controller.ReversiController;
+import Model.GameItems.FieldStatus;
 
 public class ReversiView extends GameView{
     HashMap<ArrayList<Integer>, Button> buttonLocation;
@@ -53,7 +54,7 @@ public class ReversiView extends GameView{
     }
 
     @Override
-    public <E> void update(int move, E status) {
+    public <T extends FieldStatus> void update(int move, T fieldStatus) {
 
     }
 }

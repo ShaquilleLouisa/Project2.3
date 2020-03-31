@@ -7,22 +7,24 @@ import View.ReversiView;
 import java.util.ArrayList;
 
 public class ReversiModel extends GameModel {
-    private Board<ReversiFieldStatus> board;
+    private Board board;
     private int turns;
     private int player = 1;
     private ReversiView view;
     public ReversiModel(ReversiView view) {
         this.view = view;
         turns = 0;
-        board = new Board<ReversiFieldStatus>(8,8);
+        ReversiFieldStatus defaultFieldStatus = new ReversiFieldStatus();
+        defaultFieldStatus.setUnPlayable();
+        board = new Board(8,8, defaultFieldStatus);
     }
 
     public void setFieldStatus(int move) throws MoveException {
-        ReversiFieldStatus fieldStatus;
+        ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
         if(player == 1) {
-            fieldStatus = ReversiFieldStatus.BLACK;
+            fieldStatus.setBlack();
         } else {
-            fieldStatus = ReversiFieldStatus.WHITE;
+            fieldStatus.setWhite();
         }
 
         ArrayList<Integer> xAndY = board.getMove(move);
@@ -38,12 +40,12 @@ public class ReversiModel extends GameModel {
     }
 
     public ReversiFieldStatus getFieldStatus(int x, int y) {
-        return board.getFieldStatus(x,y);
+        return (ReversiFieldStatus)board.getFieldStatus(x,y);
     }
 
-    public Board<ReversiFieldStatus> getBoard()
+    public Board getBoard()
     {
-        Board<ReversiFieldStatus> boardCopy = board;
+        Board boardCopy = board;
         return boardCopy;
     }
 
