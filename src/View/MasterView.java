@@ -252,7 +252,6 @@ public class MasterView extends View {
     // Update leaderboard
     public void updatePlayerboard(ObservableList<String> newPlayerlist){
         Platform.runLater(() -> {
-            System.out.println("iets");
             players.clear();
             players.addAll(newPlayerlist);
             playersOnline.setText(players.size() + " spelers online");
