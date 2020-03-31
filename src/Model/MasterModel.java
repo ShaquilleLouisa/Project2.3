@@ -1,12 +1,13 @@
 package Model;
 
+import Games.Game;
 import Games.GameName;
 import View.MasterView;
 
 public class MasterModel extends Model {
 
     private MasterView view;
-    private GameName game;
+    private Game game;
     private String loginName;
     private String rivalName;
     private boolean inGame;
@@ -19,11 +20,11 @@ public class MasterModel extends Model {
         inGame = false;
     }
 
-    public GameName getGame() {
+    public Game getGame() {
         return game;
     }
 
-    public void setGame(GameName game) {
+    public void setGame(Game game) {
         this.game = game;
     }
 

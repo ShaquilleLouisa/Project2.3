@@ -1,27 +1,27 @@
 package Controller;
 
+import AI.TicTacToeAI;
+import Exceptions.MoveException;
+import Exceptions.WrongAIException;
 import Games.GameName;
+import Games.TicTacToe;
 import Model.MasterModel;
 import Model.Model;
+import Model.TicTacToeItems.FieldStatus;
 import View.MasterView;
 import View.View;
-import javafx.application.Platform;
+import com.google.gson.Gson;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.HashMap;
 
 public class MasterController extends Controller {
     MasterModel model;
     MasterView view;
     private ServerCommunication serverCommunication;
-
-    public MasterController() {
-        serverCommunication = new ServerCommunication();
-    }
+    public MasterController() {serverCommunication = new ServerCommunication();}
 
 
     public void start(Stage stage) {
@@ -31,35 +31,34 @@ public class MasterController extends Controller {
         serverCommunication.connect();
         view.connected(true);
         //First read should be empty because garbage 2 lines
-        try {
-            serverCommunication.read();
-        } catch (
-                IOException e) {
-            System.out.println("No connecting with server:start");
-        }
-        System.out.println("Connected");
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                handleInput();
-                //serverCommunication.getPlayerList();
+        serverCommunication.read();
+
+
+        Thread handleThread = new Thread(() -> {
+            while (true) {
+
+                try {
+                    handleInput();
+                } catch (MoveException e) {
+                    e.printStackTrace();
+                }
             }
-        },0,100);
+        });
+        handleThread.start();
+
+
     }
 
 
-    private void handleInput() {
-        String originalInput = null;
-        try {
-            originalInput = serverCommunication.read();
-        } catch (IOException e) {
-            System.out.println("No connecting with server:handleInput");
-        }
-        if (originalInput != null) {
-            System.out.println(originalInput);
-            String inputLowerCase = originalInput.toLowerCase();
-            String[] words = inputLowerCase.split(" ");
+    private void handleInput() throws MoveException {
+        String input = serverCommunication.read();
+        if(input != null) {
+            input = input.toLowerCase();
+            String[] words = input.split(" ");
+            int totalLetters = 0;
+            if(words.length > 2) {
+                totalLetters = words[0].length() + words[1].length() + words[2].length() + 3;
+            }
             switch (words[0]) {
                 case "ok":
                     break;
@@ -72,43 +71,40 @@ public class MasterController extends Controller {
                             //this would not ever happen
                             break;
                         case "game":
+                            System.out.println("Game message");
+                            switch (words[2]) {
+                                case "match":
+                                    System.out.println("Match message: " + input.substring(totalLetters));
+                                    break;
+                                case "yourturn":
+                                    System.out.println("Your turn");
+                                    int ourMove = model.getGame().getNextMove();
+                                    model.getGame().getModel().setFieldStatus(ourMove, FieldStatus.CIRCLE);
+                                    serverCommunication.move(ourMove);
+                                    break;
+                                case "loss":
+                                    System.out.println("You lost");
+                                    break;
+                                case "win":
+                                    System.out.println("You won");
+                                    break;
+                                case "draw":
+                                    //DRAW
+                                    System.out.println("Draw");
+                                    break;
+                                case "move":
+                                    System.out.println("Move has been done: " + input.substring(totalLetters));
+                                    if(!input.substring(totalLetters).contains(model.getLoginName())) {
+                                        int opponentMove = Integer.parseInt(input.substring(totalLetters).substring(input.substring(totalLetters).lastIndexOf("move: ") + "move: ".length() + 1, input.substring(totalLetters).lastIndexOf("move: ") + "move: ".length() + 2));
+                                        model.getGame().getModel().setFieldStatus(opponentMove, FieldStatus.CROSS);
+                                    }
+
+
+                            }
                             //GAME INFO
-                            break;
-                        case "match":
-                            //MATCH INFO
-                            break;
-                        case "yourturn":
-                            break;
-                        case "move":
-                            //SERVER WONT SAY MOVE this would never happen
                             break;
                         case "challenge":
                             //CHALLENGE INFO
-                            break;
-                        case "win":
-                            //YOU WON
-                            break;
-                        case "loss":
-                            //YOU LOST
-                            break;
-                        case "draw":
-                            //DRAW
-                            break;
-                        case "playerlist":
-                            // Send whole playerlist and filter harmful data
-                            String[] playerNames = originalInput.substring(16, originalInput.length() - 2).split("\", ");
-                            for (int i = 0; i < playerNames.length; i++) {
-                                playerNames[i] = playerNames[i].substring(1);
-                            }
-                            view.updatePlayerboard(FXCollections.observableArrayList(playerNames));
-                            break;
-                        case "gamelist":
-                            // Send whole playerlist and filter harmful data
-                            String[] gameNames = originalInput.substring(14, originalInput.length() - 2).split("\", ");
-                            for (int i = 0; i < gameNames.length; i++) {
-                                gameNames[i] = gameNames[i].substring(1);
-                            }
-                            view.updatePlayerboardChallenges(FXCollections.observableArrayList(gameNames));
                             break;
 
                     }
@@ -124,33 +120,43 @@ public class MasterController extends Controller {
     }
 
     public String login(String name) {
+        serverCommunication.login(name);
+        model.setLoginName(name);
+        subscribe(GameName.TICTACTOE);
         return serverCommunication.login(name);
     }
 
     public void subscribe(GameName game) {
-        model.setGame(game);
+        TicTacToe ticTacToe = new TicTacToe();
+        try {
+            ticTacToe.setAI(new TicTacToeAI(ticTacToe.getModel()));
+        } catch (Exception e) {
+            System.out.println("FUCK");
+        }
+        model.setGame(ticTacToe);
         serverCommunication.subscribe(game);
     }
 
-    public void challengeRival(String rivalName, String gameName) { serverCommunication.challengeRival( rivalName, gameName ); }
-
-    public void getGameList() { serverCommunication.getGameList(); }
-
-    public void getPlayerList() {
-        serverCommunication.getPlayerList();
+    public ObservableList<String> getPlayerList() {
+        return serverCommunication.getPlayerList();
     }
 
     public String getLoginName() {
         return model.getLoginName();
     }
 
-    public void setLoginName(String loginName) { model.setLoginName(loginName); }
+    public void setLoginName(String loginName) {model.setLoginName(loginName); }
 
-    public String getRivalName() {
-        return model.getRivalName();
+    public void createGame(GameName gameName) {
+        if(gameName == GameName.TICTACTOE) {
+            TicTacToe ticTacToe = new TicTacToe();
+            try {
+                ticTacToe.setAI(new TicTacToeAI(ticTacToe.getModel()));
+            } catch (WrongAIException e) {
+                System.out.println("WRONG AI");
+            }
+        }
     }
-
-    public void setRivalName(String rivalName) { model.setRivalName(rivalName); }
 
     @Override
     public void addView(View view) {

@@ -6,6 +6,7 @@ import Model.GameItems.*;
 import Model.TicTacToeModel;
 import View.TicTacToeView;
 import View.View;
+import javafx.stage.Stage;
 
 import java.util.Scanner;
 
@@ -33,9 +34,9 @@ public class TicTacToeController extends GameController {
 //    |  2,0  |  2,1  |  2,2  |
 //    |       |       |       |
 //    -------------------------
-    public void doMove(int move) throws MoveException {
+    public void doMove(int move, FieldStatus status) throws MoveException {
         try {
-            model.setFieldStatus(move);
+            model.setFieldStatus(move, status);
         } catch (MoveException e) {
             throw e;
         }
