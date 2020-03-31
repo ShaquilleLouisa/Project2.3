@@ -15,6 +15,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -55,9 +56,13 @@ public class MasterView extends View {
     // Leaderboard - Textfields
     Text playersOnline = new Text("Voer rechtsboven een naam in");
 
-    // Leaderboard - list
+    // Leaderboard - playerlist
     ListView<String> playerList = new ListView<String>();
-    ObservableList<String> players = FXCollections.observableArrayList (""); // Deze moet nog verplaatst worden
+    ObservableList<String> players = FXCollections.observableArrayList ("");
+    // Leaderboard - player options list
+    ListView<String> lstPlayersOptions = new ListView<String>();
+    ObservableList<String> datPlayersOptions = FXCollections.observableArrayList ("Oei");
+    Text headPlayersOptions = new Text("ERROR");
 
     @Override
     public void start(Stage stage) {
@@ -87,12 +92,27 @@ public class MasterView extends View {
         playersOnline.setLayoutX(32);
         playersOnline.setLayoutY(64);
 
-        // Leaderboard - Players
+        // Leaderboard - Playerslist
         pnLauncher.getChildren().add(playerList);
         playerList.setItems(players);
         playerList.setStyle("-fx-font-size:24.0;");
         playerList.setLayoutX(32);
         playerList.setLayoutY(80);
+
+        // Leaderboard - Challenge
+        pnLauncher.getChildren().add(lstPlayersOptions);
+        lstPlayersOptions.setItems(datPlayersOptions);
+        lstPlayersOptions.setStyle("-fx-font-size:24.0;");
+        lstPlayersOptions.setVisible(false);
+        lstPlayersOptions.setLayoutY(80+50);
+
+        // Leaderboard - Challenge Head
+        pnLauncher.getChildren().add(headPlayersOptions);
+        headPlayersOptions.setFill(Color.WHITE);
+        headPlayersOptions.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        headPlayersOptions.setLayoutX(480+64);
+        headPlayersOptions.setLayoutY(80+32);
+        headPlayersOptions.setVisible(false);
 
 
         // Application - Window settings
@@ -127,6 +147,24 @@ public class MasterView extends View {
     }
 
     private void buttonActions(){
+        // Player name clicked
+        playerList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                headPlayersOptions.setVisible(true);
+                if (playerList.getSelectionModel().getSelectedItem().equals( usernameEdit.getCharacters().toString()) ){
+                    headPlayersOptions.setText("Je kan jezelf niet uitdagen");
+                    lstPlayersOptions.setVisible(false);
+                    return;
+                }
+                controller.setRivalName( usernameEdit.getCharacters().toString() );
+                System.out.println("Selected player: " + playerList.getSelectionModel().getSelectedItem());
+                headPlayersOptions.setText(playerList.getSelectionModel().getSelectedItem() + " uitdagen voor een potje");
+                controller.getGameList();
+                lstPlayersOptions.setVisible(true);
+            }
+        });
+
         // Logout button
         btnChangeName.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -149,8 +187,11 @@ public class MasterView extends View {
                         usernameEdit.setDisable(false);
                         bgUsernameUse.setImage(bgUsernameEdit);
                         controller.setLoginName(null);
+                        controller.setRivalName(null);
                         players.clear();
                         playersOnline.setText("Voer rechtsboven een naam in");
+                        lstPlayersOptions.setVisible(false);
+                        headPlayersOptions.setVisible(false);
                     }
                 }
             }
@@ -166,11 +207,20 @@ public class MasterView extends View {
     }
 
     // Update leaderboard
-    public void updateLeaderboard(ObservableList<String> newPlayerlist){
+    public void updatePlayerboard(ObservableList<String> newPlayerlist){
         Platform.runLater(() -> {
             players.clear();
             players.addAll(newPlayerlist);
             playersOnline.setText(players.size() + " spelers online");
+        });
+    }
+
+    // Update leaderboard
+    public void updatePlayerboardChallenges(ObservableList<String> newGamelist){
+        Platform.runLater(() -> {
+            datPlayersOptions.clear();
+            datPlayersOptions.addAll(newGamelist);
+            //playersOnline.setText(players.size() + "DEBUG: Gamelist");
         });
     }
 
@@ -199,6 +249,10 @@ public class MasterView extends View {
         // Leaderboard - playerList
         playerList.setPrefHeight(windowHeight-(80+64));
         playerList.setPrefWidth(480);
+
+        // Leaderboard - Challenge
+        lstPlayersOptions.setLayoutX(480+64);
+        lstPlayersOptions.setPrefWidth(480);
     }
 
 

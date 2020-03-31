@@ -99,7 +99,15 @@ public class MasterController extends Controller {
                             for (int i = 0; i < playerNames.length; i++) {
                                 playerNames[i] = playerNames[i].substring(1);
                             }
-                            view.updateLeaderboard(FXCollections.observableArrayList(playerNames));
+                            view.updatePlayerboard(FXCollections.observableArrayList(playerNames));
+                            break;
+                        case "gamelist":
+                            // Send whole playerlist and filter harmful data
+                            String[] gameNames = originalInput.substring(14, originalInput.length() - 2).split("\", ");
+                            for (int i = 0; i < gameNames.length; i++) {
+                                gameNames[i] = gameNames[i].substring(1);
+                            }
+                            view.updatePlayerboardChallenges(FXCollections.observableArrayList(gameNames));
                             break;
 
                     }
@@ -123,6 +131,8 @@ public class MasterController extends Controller {
         serverCommunication.subscribe(game);
     }
 
+    public void getGameList() { serverCommunication.getGameList(); }
+
     public void getPlayerList() {
         serverCommunication.getPlayerList();
     }
@@ -131,9 +141,13 @@ public class MasterController extends Controller {
         return model.getLoginName();
     }
 
-    public void setLoginName(String loginName) {
-        model.setLoginName(loginName);
+    public void setLoginName(String loginName) { model.setLoginName(loginName); }
+
+    public String getRivalName() {
+        return model.getRivalName();
     }
+
+    public void setRivalName(String rivalName) { model.setRivalName(rivalName); }
 
     @Override
     public void addView(View view) {
