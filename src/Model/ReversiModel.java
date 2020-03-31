@@ -36,7 +36,7 @@ public class ReversiModel extends GameModel {
         }
     }
 
-    public void setFieldStatus(int move) throws MoveException {
+    public void setFieldStatus(int move, FieldStatus status) throws MoveException {
         boolean[][] playableMoves = SetValidMoves();
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
         if (player == 1) {
@@ -99,7 +99,8 @@ public class ReversiModel extends GameModel {
     private boolean validMove(int dr, int dc, int r, int c) {
         if (IsOutOfBounds(r + dr, c + dc))
             return false;
-        if (getFieldStatus(r + dr, c + dc).isCurrentPlayer(player))
+        ReversiFieldStatus reversiFieldStatus = (ReversiFieldStatus)board.getFieldStatus(r + dr, c + dc);
+        if (reversiFieldStatus.isCurrentPlayer(player))
             return false;
         if (IsOutOfBounds(r + dr + dr, c + dc + dc))
             return false;
@@ -107,7 +108,8 @@ public class ReversiModel extends GameModel {
     }
 
     private boolean checkLineMatch(int dr, int dc, int r, int c) {
-        if (getFieldStatus(r, c).isCurrentPlayer(player)) {
+        ReversiFieldStatus reversiFieldStatus = (ReversiFieldStatus)board.getFieldStatus(r, c);
+        if (reversiFieldStatus.isCurrentPlayer(player)) {
             return true;
         }
         if (IsOutOfBounds(r + dr, c + dc)) {
@@ -123,14 +125,19 @@ public class ReversiModel extends GameModel {
     }
 
     public boolean IsPlayable(int x, int y) throws MoveException {
-        if (getFieldStatus(x, y).isPlayable())
+        ReversiFieldStatus reversiFieldStatus = (ReversiFieldStatus)board.getFieldStatus(x, y);
+        if (reversiFieldStatus.isPlayable())
             return true;
         throw new MoveException("Field is not Playable");
     }
 
-    public ReversiFieldStatus getFieldStatus(int x, int y) {
+    @Override
+	public FieldStatus getFieldStatus(int move) {
+        ArrayList<Integer> xAndY = board.getMove(move);
+        int x = xAndY.get(0);
+        int y = xAndY.get(1);
         return (ReversiFieldStatus) board.getFieldStatus(x, y);
-    }
+	}
 
     public int getPlayer() {
         return player;
@@ -151,4 +158,17 @@ public class ReversiModel extends GameModel {
     public void increaseTurns() {
         turns++;
     }
+
+	
+	@Override
+	public int getFieldSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Board getBoard() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

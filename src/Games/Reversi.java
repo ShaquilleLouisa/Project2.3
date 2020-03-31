@@ -11,7 +11,6 @@ public class Reversi extends Game {
     private ReversiView view;
     private ReversiModel model;
     private ReversiController controller;
-    private ReversiAI ai;
 
     public Reversi() {
         controller = new ReversiController();
@@ -22,9 +21,25 @@ public class Reversi extends Game {
         controller.addView(view);
     }
 
+    public ReversiModel getModel() {
+        return model;
+    }
+
+    public int getNextMove() {
+        return ai.calculateNextMove();
+    }
+
     @Override
     public GameName getId() {
         return GameName.REVERSI;
     }
 
+    @Override
+    public void setAI(AI ai) throws WrongAIException {
+        if (ai instanceof ReversiAI) {
+            this.ai = ai;
+        } else {
+            throw new WrongAIException("Reversi AI required");
+        }
+    }
 }

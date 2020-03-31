@@ -1,4 +1,4 @@
-package Model.TicTacToeItems;
+package Model.GameItems;
 
 import Exceptions.MoveException;
 
@@ -6,14 +6,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Board {
-    private ArrayList<Field> fields;
+    public ArrayList<Field> fields;
     private HashMap<Integer, ArrayList<Integer>> moves;
     private int fieldSize;
-    public Board(int xSize, int ySize) {
+
+    public <T extends FieldStatus> Board(int xSize, int ySize, T defaultFieldStatus) {
         if(xSize == ySize) {
             fieldSize = xSize;
         }
-        fields = new ArrayList<>(xSize*ySize);
+        fields = new ArrayList<>(xSize * ySize);
+        // set fieldsstatus in fields.
         moves = new HashMap<>();
 
         int counter = 0;
@@ -22,31 +24,30 @@ public class Board {
                 ArrayList<Integer> xAndY = new ArrayList<>(2);
                 xAndY.add(i);
                 xAndY.add(j);
-                moves.put(counter,xAndY);
+                moves.put(counter, xAndY);
+                fields.add(new Field(i, j, defaultFieldStatus));
                 counter++;
-                Field newField = new Field(i, j);
-                fields.add(newField);
             }
         }
     }
 
-    public void setFieldStatus(int x, int y, FieldStatus status) throws MoveException {
+    public void setFieldStatus(int x, int y, FieldStatus fieldStatus) throws MoveException {
         for (Field field : fields) {
             if (field.getX() == x && field.getY() == y) {
-                    field.setState(status);
-                    return;
+                field.getFieldStatus().setId(fieldStatus.getID());
             }
         }
         throw new MoveException("Field does not exist");
     }
 
-    public FieldStatus getFieldStatus(int x, int y) throws MoveException {
+    public FieldStatus getFieldStatus(int x, int y)  {
         for (Field field : fields) {
             if (field.getX() == x && field.getY() == y) {
                 return field.getFieldStatus();
             }
         }
-        throw new MoveException("Field does not exist");
+        return null;
+        //throw new MoveException("Field does not exist");
     }
 
     public ArrayList<Integer> getMove(int x) {

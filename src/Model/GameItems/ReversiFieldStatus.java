@@ -3,33 +3,33 @@ package Model.GameItems;
 public class ReversiFieldStatus extends FieldStatus {
 
     public void setPlayable(){
-        setId(1);
+        setId(-1);
         setValue("*");
     }
 
     public void setBlack(){
-        setId(2);
+        setId(1);
         setValue("X");
     }
 
     public void setWhite(){
-        setId(3);
+        setId(2);
         setValue("O");
     }
 
     public boolean isPlayable(){
-        return getID() == 1;
+        return getID() == -1;
     }
 
     public boolean isBlack(){
-        return getID() == 2;
+        return getID() == 1;
     }
 
     public boolean isWhite(){
-        return getID() == 3;
+        return getID() == 2;
     }
 
     public boolean isCurrentPlayer(int currentPlayer){
-        return getID() == ((currentPlayer == 0) ? 2 : 3);
+        return getID() == ((currentPlayer == 0) ? 1 : 2);
     }
 }

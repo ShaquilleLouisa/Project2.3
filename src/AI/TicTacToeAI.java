@@ -2,15 +2,13 @@ package AI;
 
 import Games.TicTacToe;
 import Model.AIModel;
-import Model.TicTacToeItems.Board;
-import Model.TicTacToeItems.FieldStatus;
+import Model.GameItems.*;
 import Model.TicTacToeModel;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static Model.TicTacToeItems.FieldStatus.*;
 
 public class TicTacToeAI extends AI {
     private Board boardCopy;
@@ -53,9 +51,11 @@ public class TicTacToeAI extends AI {
         for (int i = 0; i < fieldSize; i++) {
             for (int j = 0; j < fieldSize; j++) {
                 try {
-                    if (aiModel.getFieldStatus(counter) == NONE) {
+                    TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
+                    if (aiModel.getFieldStatus(counter).isEmpty()) {
                         try {
-                            boardCopy.setFieldStatus(i, j, CIRCLE);
+                            fieldStatus.setCircle();
+                            boardCopy.setFieldStatus(i, j, fieldStatus);
                         } catch (Exception e) {
                             System.out.println("OEF");
                         }
@@ -63,7 +63,7 @@ public class TicTacToeAI extends AI {
                         int moveVal = minmax(boardCopy, 0, false);
                         System.out.println(moveVal);
                         try {
-                            boardCopy.setFieldStatus(i, j, NONE);
+                            boardCopy.setFieldStatus(i, j, fieldStatus);
                         } catch (Exception e) {
                             System.out.println("OEF");
                         }
@@ -81,10 +81,8 @@ public class TicTacToeAI extends AI {
                     e.getMessage();
                     System.out.println("OEF");
                 }
-
             }
         }
-
         return bestMove;
     }
 
@@ -107,9 +105,11 @@ public class TicTacToeAI extends AI {
             for (int i = 0; i < fieldSize; i++) {
                 for (int j = 0; j < fieldSize; j++) {
                     try {
-                        if (board.getFieldStatus(i, j) == FieldStatus.NONE) {
+                        TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
+                        if (board.getFieldStatus(i, j).isEmpty()) {
                             try {
-                                board.setFieldStatus(i, j, FieldStatus.CIRCLE);
+                            fieldStatus.isCircle();
+                                board.setFieldStatus(i, j, fieldStatus);
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 e.getMessage();
@@ -117,7 +117,7 @@ public class TicTacToeAI extends AI {
                             }
                             best = Math.max(best, minmax(board, depth + 1, false));
                             try {
-                                board.setFieldStatus(i, j, FieldStatus.NONE);
+                                board.setFieldStatus(i, j, fieldStatus);
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 e.getMessage();
@@ -139,9 +139,11 @@ public class TicTacToeAI extends AI {
             for (int i = 0; i < fieldSize; i++) {
                 for (int j = 0; j < fieldSize; j++) {
                     try {
-                        if (board.getFieldStatus(i, j) == NONE) {
+                        TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
+                        if (board.getFieldStatus(i, j).isEmpty()) {
                             try {
-                                board.setFieldStatus(i, j, CROSS);
+                                fieldStatus.setCross();
+                                board.setFieldStatus(i, j, fieldStatus);
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 e.getMessage();
@@ -150,7 +152,7 @@ public class TicTacToeAI extends AI {
                             best = Math.min(best, minmax(board, depth + 1, true));
 
                             try {
-                                board.setFieldStatus(i, j, NONE);
+                                board.setFieldStatus(i, j, fieldStatus);
                             } catch (Exception e) {
                                 System.out.println("OEF");
                                 e.printStackTrace();
@@ -173,7 +175,7 @@ public class TicTacToeAI extends AI {
         for (int i = 0; i < fieldSize; i++) {
             for (int j = 0; j < fieldSize; j++) {
                 try {
-                    if(boardCopy.getFieldStatus(i,j) == NONE) {
+                    if(boardCopy.getFieldStatus(i,j).isEmpty()) {
                         return true;
                     }
                 } catch (Exception e) {
@@ -195,23 +197,26 @@ public class TicTacToeAI extends AI {
                 }
             }
         }
-        if (fieldStatuses.get(0) != NONE && fieldStatuses.get(0) == fieldStatuses.get(1) && fieldStatuses.get(0) == fieldStatuses.get(2)) {
-            if (fieldStatuses.get(0) == CIRCLE)
-                if (fieldStatuses.get(0) == CIRCLE)
+        if (!fieldStatuses.get(0).isEmpty() && fieldStatuses.get(0) == fieldStatuses.get(1) && fieldStatuses.get(0) == fieldStatuses.get(2)) {
+            TicTacToeFieldStatus fieldStatus = (TicTacToeFieldStatus)fieldStatuses.get(0);
+            if (fieldStatus.isCircle())
+                if (fieldStatus.isCircle())
                     return 10;
                 else
                     return -10;
         }
-        if (fieldStatuses.get(3) != NONE && fieldStatuses.get(3) == fieldStatuses.get(4) && fieldStatuses.get(3) == fieldStatuses.get(5)) {
-            if (fieldStatuses.get(3) == CIRCLE)
-                if (fieldStatuses.get(0) == CIRCLE)
+        if (!fieldStatuses.get(3).isEmpty() && fieldStatuses.get(3) == fieldStatuses.get(4) && fieldStatuses.get(3) == fieldStatuses.get(5)) {
+            TicTacToeFieldStatus fieldStatus = (TicTacToeFieldStatus)fieldStatuses.get(3);
+            if (fieldStatus.isCircle())
+                if (fieldStatus.isCircle())
                     return 10;
                 else
                     return -10;
         }
-        if (fieldStatuses.get(6) != NONE && fieldStatuses.get(6) == fieldStatuses.get(7) && fieldStatuses.get(6) == fieldStatuses.get(8)) {
-            if (fieldStatuses.get(0) == CIRCLE)
-                if (fieldStatuses.get(0) == CIRCLE)
+        if (!fieldStatuses.get(6).isEmpty() && fieldStatuses.get(6) == fieldStatuses.get(7) && fieldStatuses.get(6) == fieldStatuses.get(8)) {
+            TicTacToeFieldStatus fieldStatus = (TicTacToeFieldStatus)fieldStatuses.get(6);
+            if (fieldStatus.isCircle())
+                if (fieldStatus.isCircle())
                     return 10;
                 else
                     return -10;
@@ -228,23 +233,26 @@ public class TicTacToeAI extends AI {
                 }
             }
         }
-        if (fieldStatuses.get(0) != NONE && fieldStatuses.get(0) == fieldStatuses.get(1) && fieldStatuses.get(0) == fieldStatuses.get(2)) {
-            if (fieldStatuses.get(0) == CIRCLE)
-                if (fieldStatuses.get(0) == CIRCLE)
+        if (!fieldStatuses.get(0).isEmpty() && fieldStatuses.get(0) == fieldStatuses.get(1) && fieldStatuses.get(0) == fieldStatuses.get(2)) {
+            TicTacToeFieldStatus fieldStatus = (TicTacToeFieldStatus)fieldStatuses.get(0);
+            if (fieldStatus.isCircle())
+                if (fieldStatus.isCircle())
                     return 10;
                 else
                     return -10;
         }
-        if (fieldStatuses.get(3) != NONE && fieldStatuses.get(3) == fieldStatuses.get(4) && fieldStatuses.get(3) == fieldStatuses.get(5)) {
-            if (fieldStatuses.get(3) == CIRCLE)
-                if (fieldStatuses.get(0) == CIRCLE)
+        if (!fieldStatuses.get(3).isEmpty() && fieldStatuses.get(3) == fieldStatuses.get(4) && fieldStatuses.get(3) == fieldStatuses.get(5)) {
+            TicTacToeFieldStatus fieldStatus = (TicTacToeFieldStatus)fieldStatuses.get(3);
+            if (fieldStatus.isCircle())
+                if (fieldStatus.isCircle())
                     return 10;
                 else
                     return -10;
         }
-        if (fieldStatuses.get(6) != NONE && fieldStatuses.get(6) == fieldStatuses.get(7) && fieldStatuses.get(6) == fieldStatuses.get(8)) {
-            if (fieldStatuses.get(0) == CIRCLE)
-                if (fieldStatuses.get(0) == CIRCLE)
+        if (!fieldStatuses.get(6).isEmpty() && fieldStatuses.get(6) == fieldStatuses.get(7) && fieldStatuses.get(6) == fieldStatuses.get(8)) {
+            TicTacToeFieldStatus fieldStatus = (TicTacToeFieldStatus)fieldStatuses.get(6);
+            if (fieldStatus.isCircle())
+                if (fieldStatus.isCircle())
                     return 10;
                 else
                     return -10;
@@ -252,9 +260,10 @@ public class TicTacToeAI extends AI {
 
         // Check other
         try {
-            if (boardCopy.getFieldStatus(0, 0) != NONE && boardCopy.getFieldStatus(0, 0) == boardCopy.getFieldStatus(1, 1)
+            if (!boardCopy.getFieldStatus(0, 0).isEmpty() && boardCopy.getFieldStatus(0, 0) == boardCopy.getFieldStatus(1, 1)
                     && boardCopy.getFieldStatus(0, 0) == boardCopy.getFieldStatus(2, 2)) {
-                if (boardCopy.getFieldStatus(0, 0) == CIRCLE)
+            TicTacToeFieldStatus fieldStatus = (TicTacToeFieldStatus)boardCopy.getFieldStatus(0, 0);
+                if (fieldStatus.isCircle())
                     return 10;
                 else
                     return -10;
@@ -264,9 +273,10 @@ public class TicTacToeAI extends AI {
         }
 
         try {
-            if (boardCopy.getFieldStatus(2, 0) != NONE && boardCopy.getFieldStatus(2, 0) == boardCopy.getFieldStatus(1, 1)
+            if (!boardCopy.getFieldStatus(2, 0).isEmpty() && boardCopy.getFieldStatus(2, 0) == boardCopy.getFieldStatus(1, 1)
                     && boardCopy.getFieldStatus(2, 0) == boardCopy.getFieldStatus(0, 2)) {
-                if (boardCopy.getFieldStatus(2, 0) == CIRCLE)
+            TicTacToeFieldStatus fieldStatus = (TicTacToeFieldStatus)boardCopy.getFieldStatus(0, 2);
+            if (fieldStatus.isCircle())
                     return 10;
                 else
                     return -10;

@@ -7,32 +7,37 @@ import Games.GameName;
 import Games.TicTacToe;
 import Model.MasterModel;
 import Model.Model;
-import Model.TicTacToeItems.FieldStatus;
+import Model.GameItems.*;
 import View.MasterView;
 import View.View;
-import com.google.gson.Gson;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public class MasterController extends Controller {
     MasterModel model;
     MasterView view;
     private ServerCommunication serverCommunication;
-    public MasterController() {serverCommunication = new ServerCommunication();}
 
+    public MasterController() {
+        serverCommunication = new ServerCommunication();
+    }
 
     public void start(Stage stage) {
-        //Create control panel
+        // Create control panel
         view.start(stage);
 
         serverCommunication.connect();
         view.connected(true);
-        //First read should be empty because garbage 2 lines
-        serverCommunication.read();
-
+        // First read should be empty because garbage 2 lines
+        try {
+            serverCommunication.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         Thread handleThread = new Thread(() -> {
             while (true) {
@@ -46,17 +51,20 @@ public class MasterController extends Controller {
         });
         handleThread.start();
 
-
     }
 
-
     private void handleInput() throws MoveException {
-        String input = serverCommunication.read();
-        if(input != null) {
+        String input = null;
+        try {
+            input = serverCommunication.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (input != null) {
             input = input.toLowerCase();
             String[] words = input.split(" ");
             int totalLetters = 0;
-            if(words.length > 2) {
+            if (words.length > 2) {
                 totalLetters = words[0].length() + words[1].length() + words[2].length() + 3;
             }
             switch (words[0]) {
@@ -68,10 +76,11 @@ public class MasterController extends Controller {
                     // All server commands
                     switch (words[1]) {
                         case "help":
-                            //this would not ever happen
+                            // this would not ever happen
                             break;
                         case "game":
                             System.out.println("Game message");
+                            TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
                             switch (words[2]) {
                                 case "match":
                                     System.out.println("Match message: " + input.substring(totalLetters));
@@ -79,7 +88,8 @@ public class MasterController extends Controller {
                                 case "yourturn":
                                     System.out.println("Your turn");
                                     int ourMove = model.getGame().getNextMove();
-                                    model.getGame().getModel().setFieldStatus(ourMove, FieldStatus.CIRCLE);
+                                    fieldStatus.setCircle();
+                                    model.getGame().getModel().setFieldStatus(ourMove, fieldStatus);
                                     serverCommunication.move(ourMove);
                                     break;
                                 case "loss":
@@ -89,22 +99,26 @@ public class MasterController extends Controller {
                                     System.out.println("You won");
                                     break;
                                 case "draw":
-                                    //DRAW
+                                    // DRAW
                                     System.out.println("Draw");
                                     break;
                                 case "move":
                                     System.out.println("Move has been done: " + input.substring(totalLetters));
-                                    if(!input.substring(totalLetters).contains(model.getLoginName())) {
-                                        int opponentMove = Integer.parseInt(input.substring(totalLetters).substring(input.substring(totalLetters).lastIndexOf("move: ") + "move: ".length() + 1, input.substring(totalLetters).lastIndexOf("move: ") + "move: ".length() + 2));
-                                        model.getGame().getModel().setFieldStatus(opponentMove, FieldStatus.CROSS);
+                                    if (!input.substring(totalLetters).contains(model.getLoginName())) {
+                                        int opponentMove = Integer.parseInt(input.substring(totalLetters).substring(
+                                                input.substring(totalLetters).lastIndexOf("move: ") + "move: ".length()
+                                                        + 1,
+                                                input.substring(totalLetters).lastIndexOf("move: ") + "move: ".length()
+                                                        + 2));
+                                        fieldStatus.setCross();
+                                        model.getGame().getModel().setFieldStatus(opponentMove, fieldStatus);
                                     }
 
-
                             }
-                            //GAME INFO
+                            // GAME INFO
                             break;
                         case "challenge":
-                            //CHALLENGE INFO
+                            // CHALLENGE INFO
                             break;
 
                     }
@@ -122,7 +136,9 @@ public class MasterController extends Controller {
     public String login(String name) {
         serverCommunication.login(name);
         model.setLoginName(name);
+        System.out.println("1");
         subscribe(GameName.TICTACTOE);
+        System.out.println("2");
         return serverCommunication.login(name);
     }
 
@@ -137,18 +153,28 @@ public class MasterController extends Controller {
         serverCommunication.subscribe(game);
     }
 
-    public ObservableList<String> getPlayerList() {
-        return serverCommunication.getPlayerList();
+    public void challengeRival(String rivalName, String gameName) {
+        serverCommunication.challengeRival(rivalName, gameName);
+    }
+
+    public void getGameList() {
+        serverCommunication.getGameList();
+    }
+
+    public void getPlayerList() {
+        serverCommunication.getPlayerList();
     }
 
     public String getLoginName() {
         return model.getLoginName();
     }
 
-    public void setLoginName(String loginName) {model.setLoginName(loginName); }
+    public void setLoginName(String loginName) {
+        model.setLoginName(loginName);
+    }
 
     public void createGame(GameName gameName) {
-        if(gameName == GameName.TICTACTOE) {
+        if (gameName == GameName.TICTACTOE) {
             TicTacToe ticTacToe = new TicTacToe();
             try {
                 ticTacToe.setAI(new TicTacToeAI(ticTacToe.getModel()));
@@ -156,6 +182,14 @@ public class MasterController extends Controller {
                 System.out.println("WRONG AI");
             }
         }
+    }
+
+    public String getRivalName() {
+        return model.getRivalName();
+    }
+
+    public void setRivalName(String rivalName) {
+        model.setRivalName(rivalName);
     }
 
     @Override

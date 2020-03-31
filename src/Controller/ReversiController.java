@@ -32,9 +32,9 @@ public class ReversiController extends GameController {
 // etc...
 
 
-    public void doMove(int move) throws MoveException {
+    public void doMove(int move, FieldStatus Fieldstatus) throws MoveException {
         try {
-            model.setFieldStatus(move);
+            model.setFieldStatus(move, Fieldstatus);
         } catch (MoveException e) {
             throw e;
         }
