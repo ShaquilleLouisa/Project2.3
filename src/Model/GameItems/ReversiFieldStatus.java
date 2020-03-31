@@ -2,6 +2,10 @@ package Model.GameItems;
 
 public class ReversiFieldStatus extends FieldStatus {
 
+    public ReversiFieldStatus(){
+        setUnPlayable();
+    }
+
     public void setUnPlayable(){
         setId(1);
         setValue(" ");
@@ -17,12 +21,16 @@ public class ReversiFieldStatus extends FieldStatus {
         setValue("O");
     }
 
+    public boolean isUnPlayable(){
+        return id == 1;
+    }
+
     public boolean isBlack(){
         return id == 2;
     }
 
     public boolean isWhite(){
-        return id == 2;
+        return id == 3;
     }
 
     public String getValue(){

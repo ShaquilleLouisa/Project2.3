@@ -5,7 +5,7 @@ public abstract class FieldStatus {
     protected String value;
 
     public boolean isEmpty() {
-        return (id == 0);
+        return id == 0;
     }
 
     public int getID() {
