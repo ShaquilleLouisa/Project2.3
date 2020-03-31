@@ -36,11 +36,11 @@ public class ReversiModel extends GameModel {
             throw e;
         }
 
-        //Set surrounding positions to empty a.k.a. playable.
-        fieldStatus.setEmpty();
+        //Set surrounding positions to playable.
+        fieldStatus.isPlayable();
         for (int a = -1; a < 3; a++) {
             for (int b = -1; b < 3; b++) {
-                if (a != 0 && b != 0 && getFieldStatus(x + a, y + b).isUnPlayable()) {
+                if (a != 0 && b != 0 && getFieldStatus(x + a, y + b).isEmpty())
                     try {
                         board.setFieldStatus(x + a, y + b, fieldStatus);
                     } catch (MoveException e) {

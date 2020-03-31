@@ -2,11 +2,7 @@ package Model.GameItems;
 
 public class ReversiFieldStatus extends FieldStatus {
 
-    public ReversiFieldStatus(){
-        setUnPlayable();
-    }
-
-    public void setUnPlayable(){
+    public void Playable(){
         setId(1);
         setValue(" ");
     }
@@ -21,7 +17,7 @@ public class ReversiFieldStatus extends FieldStatus {
         setValue("O");
     }
 
-    public boolean isUnPlayable(){
+    public boolean isPlayable(){
         return getID() == 1;
     }
 
