@@ -3,11 +3,9 @@ package Model;
 import Exceptions.MoveException;
 import Model.GameItems.TicTacToeFieldStatus;
 import Model.GameItems.Board;
-import Model.GameItems.FieldStatus;
 import View.TicTacToeView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class TicTacToeModel extends GameModel {
     private Board board;

@@ -49,7 +49,7 @@ public class TicTacToeView extends GameView {
         stage.show();
     }
 
-    public <T extends FieldStatus>void update(int move, T fieldStatus) {
+    public void update(int move, FieldStatus fieldStatus) {
         Platform.runLater(() -> {
             TicTacToeFieldStatus ticTacToeFieldStatus = (TicTacToeFieldStatus)fieldStatus;
                     for (int i = 0; i < 3; i++) {

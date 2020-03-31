@@ -54,7 +54,7 @@ public class ReversiView extends GameView{
     }
 
     @Override
-    public <T extends FieldStatus> void update(int move, T fieldStatus) {
+    public void update(int move, FieldStatus fieldStatus) {
 
     }
 }

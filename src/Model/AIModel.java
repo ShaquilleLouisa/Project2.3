@@ -19,6 +19,6 @@ public class AIModel extends Model {
     }
 
     public ReversiFieldStatus getFieldStatus(int x, int y) {
-        return gameModel.getFieldStatus(x, y);
+        return (ReversiFieldStatus)gameModel.getFieldStatus(x, y);
     }
 }
