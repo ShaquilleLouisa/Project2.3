@@ -19,6 +19,7 @@ public class Board {
         moves = new HashMap<>();
 
         int counter = 0;
+        System.out.println("xSize " + xSize);
         for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < ySize; j++) {
                 ArrayList<Integer> xAndY = new ArrayList<>(2);
@@ -32,9 +33,13 @@ public class Board {
     }
 
     public void setFieldStatus(int x, int y, FieldStatus fieldStatus) throws MoveException {
+        System.out.println(x + " " + y);
         for (Field field : fields) {
             if (field.getX() == x && field.getY() == y) {
-                field.getFieldStatus().setId(fieldStatus.getID());
+                {
+                    field.getFieldStatus().setId(fieldStatus.getID());
+                    return;
+                }
             }
         }
         throw new MoveException("Field does not exist");
