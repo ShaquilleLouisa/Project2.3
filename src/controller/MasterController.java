@@ -1,9 +1,11 @@
 package controller;
 
+import ai.ReversiAI;
 import ai.TicTacToeAI;
 import exceptions.MoveException;
 import exceptions.WrongAIException;
 import games.GameName;
+import games.Reversi;
 import games.TicTacToe;
 import model.MasterModel;
 import model.Model;
@@ -174,14 +176,25 @@ public class MasterController extends Controller {
     }
 
     public void subscribe(GameName game) {
-        TicTacToe ticTacToe = new TicTacToe();
-        try {
-            ticTacToe.setAI(new TicTacToeAI(ticTacToe.getModel()));
-        } catch (Exception e) {
-            System.out.println("FUCK");
+        if(game == GameName.TICTACTOE) {
+            TicTacToe ticTacToe = new TicTacToe();
+            try {
+                ticTacToe.setAI(new TicTacToeAI(ticTacToe.getModel()));
+            } catch (Exception e) {
+                System.out.println("FUCK");
+            }
+            model.setGame(ticTacToe);
+            serverCommunication.subscribe(game);
+        } else {
+            Reversi reversi = new Reversi();
+            try {
+                reversi.setAI(new ReversiAI(reversi.getModel()));
+            } catch (Exception e) {
+                System.out.println("FUCK");
+            }
+            model.setGame(reversi);
+            serverCommunication.subscribe(game);
         }
-        model.setGame(ticTacToe);
-        serverCommunication.subscribe(game);
     }
 
     public void challengeRival(String rivalName, String gameName) {
@@ -216,8 +229,7 @@ public class MasterController extends Controller {
     }
 
     public String getRivalName() {
-        return "putty";
-        //return model.getRivalName();
+        return model.getRivalName();
     }
 
     public void setRivalName(String rivalName) {

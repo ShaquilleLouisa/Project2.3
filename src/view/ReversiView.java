@@ -14,13 +14,20 @@ import model.gameitems.FieldStatus;
 
 public class ReversiView extends GameView{
     HashMap<ArrayList<Integer>, Button> buttonLocation;
-
+    ReversiController controller;
+    Stage stage;
     public ReversiView() {
 
     }
 
     public ReversiView(Controller controller) {
-        controller = (ReversiController) controller;
+        this.controller = (ReversiController) controller;
+        stage = new Stage();
+        try {
+            start(stage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

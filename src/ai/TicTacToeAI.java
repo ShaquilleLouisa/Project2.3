@@ -1,25 +1,20 @@
 package ai;
 
-import games.TicTacToe;
-import model.AIModel;
-import model.gameitems.*;
+
+import ai.AI;
 import model.TicTacToeModel;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import model.gameitems.Board;
+import model.gameitems.TicTacToeFieldStatus;
 
 public class TicTacToeAI extends AI {
-    private Board boardCopy;
     public TicTacToeAI(TicTacToeModel ticTacToeModel) {
         super(ticTacToeModel);
     }
 
     @Override
     public int calculateNextMove() {
-        boardCopy = aiModel.getBoard();
-        Move move = findBestMove();
+        Board boardCopy = aiModel.getBoard();
+        Move move = findBestMove(boardCopy);
         System.out.println(move.x);
         System.out.println(move.y);
         int counter = 0;
@@ -42,7 +37,7 @@ public class TicTacToeAI extends AI {
         int x, y;
     }
 
-    private Move findBestMove() {
+    private Move findBestMove(Board boardCopy) {
         Move bestMove = new Move();
         bestMove.x = -1;
         bestMove.y = -1;
@@ -53,12 +48,7 @@ public class TicTacToeAI extends AI {
             for (int j = 0; j < fieldSize; j++) {
                 try {
                     TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
-
-                    // System.out.println("ImHere :" + boardCopy.getFieldStatus(i , j).getID() + " " + counter);
-                    // if (boardCopy.getFieldStatus(i, j).isEmpty()) {
-
-                    System.out.println("ImHere :" + aiModel.getFieldStatus(counter).getID() + " " + counter);
-                    if (aiModel.getFieldStatus(counter).isEmpty()) {
+                    if (boardCopy.getFieldStatus(i,j).isEmpty()) {
                         try {
                             fieldStatus.setCircle();
                             boardCopy.setFieldStatus(i, j, fieldStatus);
@@ -74,7 +64,6 @@ public class TicTacToeAI extends AI {
                         } catch (Exception e) {
                             System.out.println("OEF");
                         }
-                        //System.out.println("ImHere (2) :" + aiModel.getFieldStatus(counter).getID());
                         if (moveVal > bestVal) {
                             System.out.println(i + " " + j);
                             bestMove.x = i;
@@ -94,7 +83,7 @@ public class TicTacToeAI extends AI {
     }
 
     private int minmax(Board board, int depth, boolean isMax) {
-        int score = evaluate();
+        int score = evaluate(board);
         if (score == 10) {
             return score;
         }
@@ -103,7 +92,7 @@ public class TicTacToeAI extends AI {
             return score;
         }
 
-        if (!isMovesLeft()) {
+        if (!isMovesLeft(board)) {
             return 0;
         }
 
@@ -179,116 +168,57 @@ public class TicTacToeAI extends AI {
         }
     }
 
-    private boolean isMovesLeft() {
+    private boolean isMovesLeft(Board boardCopy) {
         int fieldSize = boardCopy.getFieldSize();
         for (int i = 0; i < fieldSize; i++) {
             for (int j = 0; j < fieldSize; j++) {
-                try {
-                    if(boardCopy.getFieldStatus(i,j).isEmpty()) {
-                        return true;
-                    }
-                } catch (Exception e) {
+                if(boardCopy.getFieldStatus(i,j).isEmpty()) {
+                    return true;
                 }
+
             }
         }
         return false;
     }
 
-    private int evaluate() {
-//        Check horizontal
-        ArrayList<FieldStatus> fieldStatuses = new ArrayList<>();
-        for (int i = 0; i < boardCopy.getFieldSize(); i++) {
-            for (int j = 0; j < boardCopy.getFieldSize(); j++) {
-                try {
-                    fieldStatuses.add(boardCopy.getFieldStatus(i, j));
-                } catch (Exception e) {
-                    System.out.println("Field not found");
+    private int evaluate(Board boardCopy) {
+        for(int y = 0; y < boardCopy.getFieldSize(); y++) {
+            if(boardCopy.getFieldStatus(0,y).getID() == boardCopy.getFieldStatus(1,y).getID() && boardCopy.getFieldStatus(1,y).getID() == boardCopy.getFieldStatus(2,y).getID()) {
+                if(boardCopy.getFieldStatus(0,y).getID() == 2) {
+                    return +10;
+                } else if(boardCopy.getFieldStatus(0,y).getID() == 1) {
+                    return -10;
                 }
             }
         }
-        if (!fieldStatuses.get(0).isEmpty() && fieldStatuses.get(0) == fieldStatuses.get(1) && fieldStatuses.get(0) == fieldStatuses.get(2)) {
-            TicTacToeFieldStatus fieldStatus = (TicTacToeFieldStatus)fieldStatuses.get(0);
-                if (fieldStatus.isCircle())
-                    return 10;
-                else
-                    return -10;
-        }
-        if (!fieldStatuses.get(3).isEmpty() && fieldStatuses.get(3) == fieldStatuses.get(4) && fieldStatuses.get(3) == fieldStatuses.get(5)) {
-            TicTacToeFieldStatus fieldStatus = (TicTacToeFieldStatus)fieldStatuses.get(3);
-                if (fieldStatus.isCircle())
-                    return 10;
-                else
-                    return -10;
-        }
-        if (!fieldStatuses.get(6).isEmpty() && fieldStatuses.get(6) == fieldStatuses.get(7) && fieldStatuses.get(6) == fieldStatuses.get(8)) {
-            TicTacToeFieldStatus fieldStatus = (TicTacToeFieldStatus)fieldStatuses.get(6);
-                if (fieldStatus.isCircle())
-                    return 10;
-                else
-                    return -10;
-        }
 
+        for(int x = 0; x < boardCopy.getFieldSize(); x++) {
+            if(boardCopy.getFieldStatus(x,0).getID() == boardCopy.getFieldStatus(x,1).getID() && boardCopy.getFieldStatus(x,1).getID() == boardCopy.getFieldStatus(x,2).getID()) {
 
-        fieldStatuses = new ArrayList<>();
-        for (int i = 0; i < boardCopy.getFieldSize(); i++) {
-            for (int j = 0; j < boardCopy.getFieldSize(); j++) {
-                try {
-                    fieldStatuses.add(boardCopy.getFieldStatus(j, i));
-                } catch (Exception e) {
-                    System.out.println("Field not found");
+                if(boardCopy.getFieldStatus(x, 0).getID() == 2) {
+                    return +10;
+                } else if(boardCopy.getFieldStatus(x,0).getID() == 1) {
+                    return -10;
                 }
             }
         }
-        if (!fieldStatuses.get(0).isEmpty() && fieldStatuses.get(0) == fieldStatuses.get(1) && fieldStatuses.get(0) == fieldStatuses.get(2)) {
-            TicTacToeFieldStatus fieldStatus = (TicTacToeFieldStatus)fieldStatuses.get(0);
-                if (fieldStatus.isCircle())
-                    return 10;
-                else
-                    return -10;
-        }
-        if (!fieldStatuses.get(3).isEmpty() && fieldStatuses.get(3) == fieldStatuses.get(4) && fieldStatuses.get(3) == fieldStatuses.get(5)) {
-            TicTacToeFieldStatus fieldStatus = (TicTacToeFieldStatus)fieldStatuses.get(3);
-                if (fieldStatus.isCircle())
-                    return 10;
-                else
-                    return -10;
-        }
-        if (!fieldStatuses.get(6).isEmpty() && fieldStatuses.get(6) == fieldStatuses.get(7) && fieldStatuses.get(6) == fieldStatuses.get(8)) {
-            TicTacToeFieldStatus fieldStatus = (TicTacToeFieldStatus)fieldStatuses.get(6);
-                if (fieldStatus.isCircle())
-                    return 10;
-                else
-                    return -10;
+
+        if(boardCopy.getFieldStatus(0,0).getID() == boardCopy.getFieldStatus(1,1).getID() && boardCopy.getFieldStatus(1,1).getID() == boardCopy.getFieldStatus(2,2).getID()) {
+            if(boardCopy.getFieldStatus(0,0).getID() == 2) {
+                return +10;
+            } else if(boardCopy.getFieldStatus(0,0).getID() == 1) {
+                return -10;
+            }
         }
 
-        // Check other
-        try {
-            if (!boardCopy.getFieldStatus(0, 0).isEmpty() && boardCopy.getFieldStatus(0, 0) == boardCopy.getFieldStatus(1, 1)
-                    && boardCopy.getFieldStatus(0, 0) == boardCopy.getFieldStatus(2, 2)) {
-            TicTacToeFieldStatus fieldStatus = (TicTacToeFieldStatus)boardCopy.getFieldStatus(0, 0);
-                if (fieldStatus.isCircle())
-                    return 10;
-                else
-                    return -10;
+        if(boardCopy.getFieldStatus(0,2).getID() == boardCopy.getFieldStatus(1,1).getID() && boardCopy.getFieldStatus(1,1).getID() == boardCopy.getFieldStatus(2,0).getID()) {
+            if(boardCopy.getFieldStatus(0,2).getID() == 2) {
+                return +10;
+            } else if(boardCopy.getFieldStatus(0,2).getID() == 1) {
+                return -10;
             }
-        } catch (Exception e) {
-            System.out.println("Field not found");
-        }
-
-        try {
-            if (!boardCopy.getFieldStatus(2, 0).isEmpty() && boardCopy.getFieldStatus(2, 0) == boardCopy.getFieldStatus(1, 1)
-                    && boardCopy.getFieldStatus(2, 0) == boardCopy.getFieldStatus(0, 2)) {
-            TicTacToeFieldStatus fieldStatus = (TicTacToeFieldStatus)boardCopy.getFieldStatus(0, 2);
-            if (fieldStatus.isCircle())
-                    return 10;
-                else
-                    return -10;
-            }
-        } catch (Exception e) {
-            System.out.println("Field not found");
         }
         return 0;
-
     }
 }
 
