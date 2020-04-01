@@ -1,11 +1,11 @@
-package Games;
+package games;
 
-import AI.AI;
-import AI.ReversiAI;
-import Controller.ReversiController;
-import Exceptions.WrongAIException;
-import Model.ReversiModel;
-import View.ReversiView;
+import ai.AI;
+import ai.ReversiAI;
+import controller.ReversiController;
+import exceptions.WrongAIException;
+import model.ReversiModel;
+import view.ReversiView;
 
 public class Reversi extends Game {
     private ReversiView view;

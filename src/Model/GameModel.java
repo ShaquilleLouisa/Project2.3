@@ -1,7 +1,7 @@
-package Model;
+package model;
 
-import Exceptions.MoveException;
-import Model.GameItems.*;
+import exceptions.MoveException;
+import model.gameitems.*;
 
 public abstract class GameModel extends Model {
     abstract public void setFieldStatus(int move, FieldStatus status) throws MoveException;

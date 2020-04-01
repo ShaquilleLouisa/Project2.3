@@ -1,8 +1,8 @@
-package View;
+package view;
 
-import Controller.MasterController;
-import Games.GameName;
-import Model.MasterModel;
+import controller.MasterController;
+import games.GameName;
+import model.MasterModel;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

@@ -1,4 +1,4 @@
-package Model.GameItems;
+package model.gameitems;
 
 public class ReversiFieldStatus extends FieldStatus {
 

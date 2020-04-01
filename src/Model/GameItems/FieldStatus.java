@@ -1,4 +1,4 @@
-package Model.GameItems;
+package model.gameitems;
 
 public abstract class FieldStatus {
     private int id;

@@ -1,6 +1,6 @@
-package Controller;
+package controller;
 
-import Games.GameName;
+import games.GameName;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

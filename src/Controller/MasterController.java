@@ -1,15 +1,15 @@
-package Controller;
+package controller;
 
-import AI.TicTacToeAI;
-import Exceptions.MoveException;
-import Exceptions.WrongAIException;
-import Games.GameName;
-import Games.TicTacToe;
-import Model.MasterModel;
-import Model.Model;
-import Model.GameItems.*;
-import View.MasterView;
-import View.View;
+import ai.TicTacToeAI;
+import exceptions.MoveException;
+import exceptions.WrongAIException;
+import games.GameName;
+import games.TicTacToe;
+import model.MasterModel;
+import model.Model;
+import model.gameitems.*;
+import view.MasterView;
+import view.View;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;

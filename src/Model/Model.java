@@ -1,6 +1,6 @@
-package Model;
+package model;
 
-import View.View;
+import view.View;
 
 public abstract class Model {
     View view;

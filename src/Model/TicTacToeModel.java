@@ -1,9 +1,9 @@
-package Model;
+package model;
 
-import Exceptions.MoveException;
-import Games.TicTacToe;
-import Model.GameItems.*;
-import View.TicTacToeView;
+import exceptions.MoveException;
+import games.TicTacToe;
+import model.gameitems.*;
+import view.TicTacToeView;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package Model.GameItems;
+package model.gameitems;
 
 public class TicTacToeFieldStatus extends FieldStatus {
 

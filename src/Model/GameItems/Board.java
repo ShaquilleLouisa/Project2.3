@@ -1,6 +1,6 @@
-package Model.GameItems;
+package model.gameitems;
 
-import Exceptions.MoveException;
+import exceptions.MoveException;
 
 import java.util.ArrayList;
 import java.util.HashMap;

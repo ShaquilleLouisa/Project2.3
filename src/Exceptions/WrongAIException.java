@@ -1,4 +1,4 @@
-package Exceptions;
+package exceptions;
 
 public class WrongAIException extends Exception {
     public WrongAIException(String errorMessage) {

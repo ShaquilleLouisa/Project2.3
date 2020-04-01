@@ -1,11 +1,11 @@
-package Controller;
+package controller;
 
-import Exceptions.MoveException;
-import Model.Model;
-import Model.GameItems.*;
-import Model.TicTacToeModel;
-import View.TicTacToeView;
-import View.View;
+import exceptions.MoveException;
+import model.Model;
+import model.gameitems.*;
+import model.TicTacToeModel;
+import view.TicTacToeView;
+import view.View;
 import javafx.stage.Stage;
 
 import java.util.Scanner;

@@ -1,8 +1,8 @@
-package Model;
+package model;
 
-import Games.Game;
-import Games.GameName;
-import View.MasterView;
+import games.Game;
+import games.GameName;
+import view.MasterView;
 
 public class MasterModel extends Model {
 

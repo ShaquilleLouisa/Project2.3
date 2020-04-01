@@ -1,9 +1,9 @@
-package AI;
+package ai;
 
-import Games.TicTacToe;
-import Model.AIModel;
-import Model.GameItems.*;
-import Model.TicTacToeModel;
+import games.TicTacToe;
+import model.AIModel;
+import model.gameitems.*;
+import model.TicTacToeModel;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

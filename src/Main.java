@@ -1,6 +1,6 @@
-import Controller.MasterController;
-import Model.MasterModel;
-import View.MasterView;
+import controller.MasterController;
+import model.MasterModel;
+import view.MasterView;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

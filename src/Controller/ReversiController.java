@@ -1,11 +1,11 @@
-package Controller;
+package controller;
 
-import Exceptions.MoveException;
-import Model.Model;
-import Model.GameItems.*;
-import Model.ReversiModel;
-import View.ReversiView;
-import View.View;
+import exceptions.MoveException;
+import model.Model;
+import model.gameitems.*;
+import view.ReversiView;
+import view.View;
+import model.ReversiModel;
 
 import java.util.Scanner;
 

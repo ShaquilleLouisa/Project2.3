@@ -1,4 +1,4 @@
-package Games;
+package games;
 
 public enum GameName {
     REVERSI("Reversi"),

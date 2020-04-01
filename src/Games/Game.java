@@ -1,9 +1,8 @@
-package Games;
+package games;
 
-
-import AI.AI;
-import Exceptions.WrongAIException;
-import Model.GameModel;
+import ai.AI;
+import exceptions.WrongAIException;
+import model.GameModel;
 
 public abstract class Game {
     AI ai;

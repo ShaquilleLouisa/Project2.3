@@ -1,6 +1,6 @@
-package AI;
+package ai;
 
-import Model.ReversiModel;
+import model.ReversiModel;
 
 public class ReversiAI extends AI {
 

@@ -1,9 +1,9 @@
-package View;
+package view;
 
-import Controller.Controller;
-import Controller.TicTacToeController;
-import Model.GameItems.*;
-import Model.TicTacToeModel;
+import controller.Controller;
+import controller.TicTacToeController;
+import model.gameitems.*;
+import model.TicTacToeModel;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

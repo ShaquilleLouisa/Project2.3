@@ -1,4 +1,4 @@
-package Model.GameItems;
+package model.gameitems;
 
 class Field {
     final int x, y;

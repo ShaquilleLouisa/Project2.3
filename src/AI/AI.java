@@ -1,6 +1,6 @@
-package AI;
-import Model.AIModel;
-import Model.GameModel;
+package ai;
+import model.AIModel;
+import model.GameModel;
 
 public abstract class AI {
     public AIModel aiModel;

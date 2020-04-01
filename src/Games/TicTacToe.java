@@ -1,13 +1,13 @@
-package Games;
+package games;
 
-import AI.AI;
-import Controller.TicTacToeController;
-import Exceptions.MoveException;
-import Exceptions.WrongAIException;
-import Model.TicTacToeModel;
-import Model.GameItems.*;
-import View.TicTacToeView;
-import AI.TicTacToeAI;
+import ai.AI;
+import controller.TicTacToeController;
+import exceptions.MoveException;
+import exceptions.WrongAIException;
+import model.TicTacToeModel;
+import model.gameitems.*;
+import view.TicTacToeView;
+import ai.TicTacToeAI;
 import javafx.stage.Stage;
 
 public class TicTacToe extends Game {

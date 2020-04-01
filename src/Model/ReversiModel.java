@@ -1,8 +1,8 @@
-package Model;
+package model;
 
-import Exceptions.MoveException;
-import Model.GameItems.*;
-import View.ReversiView;
+import exceptions.MoveException;
+import model.gameitems.*;
+import view.ReversiView;
 
 import java.util.ArrayList;
 

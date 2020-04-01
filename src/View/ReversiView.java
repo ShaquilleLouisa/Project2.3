@@ -1,4 +1,4 @@
-package View;
+package view;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -8,9 +8,9 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import Controller.Controller;
-import Controller.ReversiController;
-import Model.GameItems.FieldStatus;
+import controller.Controller;
+import controller.ReversiController;
+import model.gameitems.FieldStatus;
 
 public class ReversiView extends GameView{
     HashMap<ArrayList<Integer>, Button> buttonLocation;

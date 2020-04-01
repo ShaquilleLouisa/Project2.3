@@ -1,7 +1,7 @@
-package Controller;
+package controller;
 
-import Model.Model;
-import View.View;
+import model.Model;
+import view.View;
 
 public abstract class Controller {
     View view;
