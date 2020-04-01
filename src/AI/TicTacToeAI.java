@@ -32,6 +32,7 @@ public class TicTacToeAI extends AI {
                 }
             }
         }
+        System.out.println("Counter " + counter + " :-1probleem");
         return -1;
     }
 
@@ -52,6 +53,11 @@ public class TicTacToeAI extends AI {
             for (int j = 0; j < fieldSize; j++) {
                 try {
                     TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
+
+                    // System.out.println("ImHere :" + boardCopy.getFieldStatus(i , j).getID() + " " + counter);
+                    // if (boardCopy.getFieldStatus(i, j).isEmpty()) {
+
+                    System.out.println("ImHere :" + aiModel.getFieldStatus(counter).getID() + " " + counter);
                     if (aiModel.getFieldStatus(counter).isEmpty()) {
                         try {
                             fieldStatus.setCircle();
@@ -63,11 +69,12 @@ public class TicTacToeAI extends AI {
                         int moveVal = minmax(boardCopy, 0, false);
                         System.out.println(moveVal);
                         try {
+                            fieldStatus.setEmpty();
                             boardCopy.setFieldStatus(i, j, fieldStatus);
                         } catch (Exception e) {
                             System.out.println("OEF");
                         }
-
+                        //System.out.println("ImHere (2) :" + aiModel.getFieldStatus(counter).getID());
                         if (moveVal > bestVal) {
                             System.out.println(i + " " + j);
                             bestMove.x = i;
@@ -108,7 +115,7 @@ public class TicTacToeAI extends AI {
                         TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
                         if (board.getFieldStatus(i, j).isEmpty()) {
                             try {
-                            fieldStatus.isCircle();
+                                fieldStatus.setCircle();
                                 board.setFieldStatus(i, j, fieldStatus);
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -117,6 +124,7 @@ public class TicTacToeAI extends AI {
                             }
                             best = Math.max(best, minmax(board, depth + 1, false));
                             try {
+                                fieldStatus.setEmpty();
                                 board.setFieldStatus(i, j, fieldStatus);
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -152,6 +160,7 @@ public class TicTacToeAI extends AI {
                             best = Math.min(best, minmax(board, depth + 1, true));
 
                             try {
+                                fieldStatus.setEmpty();
                                 board.setFieldStatus(i, j, fieldStatus);
                             } catch (Exception e) {
                                 System.out.println("OEF");

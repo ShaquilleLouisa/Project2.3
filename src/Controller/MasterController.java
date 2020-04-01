@@ -81,7 +81,6 @@ public class MasterController extends Controller {
                             break;
                         case "game":
                             System.out.println("Game message");
-                            TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
                             switch (words[2]) {
                                 case "match":
                                     System.out.println("Match message: " + inputLowerCase.substring(totalLetters));
@@ -89,6 +88,7 @@ public class MasterController extends Controller {
                                 case "yourturn":
                                     System.out.println("Your turn");
                                     int ourMove = model.getGame().getNextMove();
+                                    TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
                                     fieldStatus.setCircle();
                                     model.getGame().getModel().setFieldStatus(ourMove, fieldStatus);
                                     serverCommunication.move(ourMove);
@@ -104,18 +104,23 @@ public class MasterController extends Controller {
                                     System.out.println("Draw");
                                     break;
                                 case "move":
-                                    System.out.println("Move has been done: " + inputLowerCase.substring(totalLetters));
-                                    if (!inputLowerCase.substring(totalLetters).contains(model.getLoginName())) {
+                                    System.out.println("inputLowerCase " + words[4]);
+                                    System.out.println("Move has been done: " + inputLowerCase.substring(totalLetters)
+                                            + "name: " + getRivalName());
+                                    if (words[4].contains(getRivalName())) {
                                         int opponentMove = Integer
                                                 .parseInt(inputLowerCase.substring(totalLetters).substring(
                                                         inputLowerCase.substring(totalLetters).lastIndexOf("move: ")
                                                                 + "move: ".length() + 1,
                                                         inputLowerCase.substring(totalLetters).lastIndexOf("move: ")
                                                                 + "move: ".length() + 2));
-                                        fieldStatus.setCross();
-                                        model.getGame().getModel().setFieldStatus(opponentMove, fieldStatus);
-                                    }
+                                        TicTacToeFieldStatus fieldStatusCross = new TicTacToeFieldStatus();
 
+                                        fieldStatusCross.setCross();
+                                        System.out.println("opponentMove: " + opponentMove);
+                                        model.getGame().getModel().setFieldStatus(opponentMove, fieldStatusCross);
+                                    }
+                                    break;
                             }
                             // GAME INFO
                             break;
@@ -202,7 +207,8 @@ public class MasterController extends Controller {
     }
 
     public String getRivalName() {
-        return model.getRivalName();
+        return "putty";
+        //return model.getRivalName();
     }
 
     public void setRivalName(String rivalName) {

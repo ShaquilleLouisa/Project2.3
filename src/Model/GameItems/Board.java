@@ -19,40 +19,38 @@ public class Board {
         moves = new HashMap<>();
 
         int counter = 0;
-        System.out.println("xSize " + xSize);
         for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < ySize; j++) {
+                TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
+                fieldStatus.setId(fieldStatus.getID());
                 ArrayList<Integer> xAndY = new ArrayList<>(2);
                 xAndY.add(i);
                 xAndY.add(j);
                 moves.put(counter, xAndY);
-                fields.add(new Field(i, j, defaultFieldStatus));
+                fields.add(new Field(i, j, fieldStatus));
                 counter++;
             }
         }
     }
 
     public void setFieldStatus(int x, int y, FieldStatus fieldStatus) throws MoveException {
-        System.out.println(x + " " + y);
         for (Field field : fields) {
             if (field.getX() == x && field.getY() == y) {
-                {
-                    field.getFieldStatus().setId(fieldStatus.getID());
-                    return;
-                }
+                field.getFieldStatus().setId(fieldStatus.getID());
+                return;
             }
         }
         throw new MoveException("Field does not exist");
     }
 
-    public FieldStatus getFieldStatus(int x, int y)  {
+    public FieldStatus getFieldStatus(int x, int y) {
+
         for (Field field : fields) {
             if (field.getX() == x && field.getY() == y) {
                 return field.getFieldStatus();
             }
         }
         return null;
-        //throw new MoveException("Field does not exist");
     }
 
     public ArrayList<Integer> getMove(int x) {
