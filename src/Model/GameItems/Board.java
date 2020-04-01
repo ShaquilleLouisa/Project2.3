@@ -22,7 +22,7 @@ public class Board {
         for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < ySize; j++) {
                 TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
-                fieldStatus.setId(fieldStatus.getID());
+                fieldStatus.setId(defaultFieldStatus.getID());
                 ArrayList<Integer> xAndY = new ArrayList<>(2);
                 xAndY.add(i);
                 xAndY.add(j);
