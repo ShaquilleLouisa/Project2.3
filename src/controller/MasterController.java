@@ -16,6 +16,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MasterController extends Controller {
     MasterModel model;
@@ -84,6 +86,13 @@ public class MasterController extends Controller {
                             switch (words[2]) {
                                 case "match":
                                     System.out.println("Match message: " + inputLowerCase.substring(totalLetters));
+                                    // Get rival name using regex
+                                    Pattern p = Pattern.compile("OPPONENT: \"([^\"]*)\"");
+                                    Matcher m = p.matcher(originalInput);
+                                    while (m.find()) {
+                                        System.out.println("Rivalname received:" + m.group(1));
+                                        model.setRivalName(m.group(1));
+                                    }
                                     break;
                                 case "yourturn":
                                     System.out.println("Your turn");
