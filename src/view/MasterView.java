@@ -156,9 +156,9 @@ public class MasterView extends View {
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    if (playerList.getSelectionModel().getSelectedItem().equals(usernameEdit.getCharacters().toString())) {
+                    if (controller.getLoginName() == null) {
                         headPlayersOptions.setVisible(true);
-                        headPlayersOptions.setText("Je kan jezelf niet uitdagen");
+                        headPlayersOptions.setText("Je moet ingelogt zijn om iemand uit te dagen");
                         lstPlayersOptions.setVisible(false);
                         return;
                     }
