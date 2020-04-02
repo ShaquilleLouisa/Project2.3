@@ -188,9 +188,12 @@ public class MasterController extends Controller {
     }
 
     public String login(String name) {
-        model.setLoginName(name);
+        String res = serverCommunication.login(name);
+        if (res == "ok"){
+            model.setLoginName(name);
+        }
         // subscribe(GameName.TICTACTOE);
-        return serverCommunication.login(name);
+        return res;
     }
 
     public void subscribe(GameName game) {
