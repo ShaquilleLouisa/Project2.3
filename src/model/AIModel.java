@@ -32,7 +32,5 @@ public class AIModel extends Model {
         return gameModel.getBoard();
     }
 
-    public boolean isPlayable(int x, int y) {return gameModel.isPlayable(x,y); }
-
     public boolean[][] getValidMoves() {return gameModel.getValidMoves();}
 }

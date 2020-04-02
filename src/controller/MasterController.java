@@ -234,7 +234,6 @@ public class MasterController extends Controller {
         try {
             game = (Game) Class.forName("games." + gameName.label).getConstructor().newInstance();
         } catch (Exception e) {
-            e.printStackTrace();
             System.out.println("Game not found");
         }
         if (game != null) {
