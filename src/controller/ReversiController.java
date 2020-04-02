@@ -42,6 +42,21 @@ public class ReversiController extends GameController {
     }
 
     @Override
+    public boolean isDone() {
+        return done;
+    }
+
+    @Override
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
+    @Override
+    public void notifyDone() {
+        setDone(true);
+    }
+
+    @Override
     public void addView(View view) {
         this.view = (ReversiView) view;
     }

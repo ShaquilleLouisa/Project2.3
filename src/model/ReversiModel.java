@@ -11,12 +11,12 @@ public class ReversiModel extends GameModel {
     private int turns;
     private int player = 1;
     private ReversiView view;
-
-
+    private int boardSize = 8;
+    private boolean[][] validMoves;
     public ReversiModel(ReversiView view) {
         this.view = view;
         turns = 0;
-        board = new Board(8, 8, new ReversiFieldStatus());
+        board = new Board(boardSize, boardSize, new ReversiFieldStatus());
         setFirstMoves();
     }
 
@@ -39,7 +39,8 @@ public class ReversiModel extends GameModel {
     }
 
     public void setFieldStatus(int move, FieldStatus status) throws MoveException {
-        boolean[][] playableMoves = SetValidMoves();
+        boolean[][] playableMoves = setValidMoves();
+        validMoves = setValidMoves();
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
         if (player == 1) {
             fieldStatus.setBlack();
@@ -52,7 +53,7 @@ public class ReversiModel extends GameModel {
         int yPosition = xAndY.get(1);
 
         try {
-            if (IsPlayable(xPosition, yPosition)) {
+            if (isPlayable(xPosition, yPosition)) {
                 board.setFieldStatus(xPosition, yPosition, fieldStatus);
             }
         } catch (MoveException e) {
@@ -69,7 +70,7 @@ public class ReversiModel extends GameModel {
         view.update(move, fieldStatus);
     }
 
-    private boolean[][] SetValidMoves() {
+    private boolean[][] setValidMoves() {
 
         boolean[][] playableMoves = new boolean[8][8];
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
@@ -130,10 +131,14 @@ public class ReversiModel extends GameModel {
         return false;
     }
 
-    public boolean IsPlayable(int x, int y) throws MoveException {
+    public boolean isPlayable(int x, int y) {
         if (board.getFieldStatus(x, y).getID() == ReversiFieldStatus.PLAYABLE)
             return true;
-        throw new MoveException("Field is not Playable");
+        return false;
+    }
+
+    public boolean[][] getValidMoves() {
+        return validMoves;
     }
 
     @Override
@@ -166,13 +171,11 @@ public class ReversiModel extends GameModel {
 
     @Override
     public int getFieldSize() {
-        // TODO Auto-generated method stub
-        return 0;
+        return boardSize;
     }
 
     @Override
     public Board getBoard() {
-        // TODO Auto-generated method stub
-        return null;
+        return board;
     }
 }

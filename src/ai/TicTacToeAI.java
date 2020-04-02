@@ -2,6 +2,7 @@ package ai;
 
 
 import ai.AI;
+import ai.ai_items.Move;
 import model.TicTacToeModel;
 import model.gameitems.Board;
 import model.gameitems.TicTacToeFieldStatus;
@@ -33,14 +34,8 @@ public class TicTacToeAI extends AI {
 
     int fieldSize = aiModel.getFieldSize();
 
-    static class Move {
-        int x, y;
-    }
-
     private Move findBestMove(Board boardCopy) {
-        Move bestMove = new Move();
-        bestMove.x = -1;
-        bestMove.y = -1;
+        Move bestMove = new Move(-1, -1);
         int bestVal = -1000;
 
         int counter = 0;

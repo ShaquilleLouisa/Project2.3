@@ -1,9 +1,12 @@
 package controller;
 
+import ai.AI;
+import ai.OurReversiAI;
 import ai.ReversiAI;
 import ai.TicTacToeAI;
 import exceptions.MoveException;
 import exceptions.WrongAIException;
+import games.Game;
 import games.GameName;
 import games.Reversi;
 import games.TicTacToe;
@@ -13,14 +16,13 @@ import javafx.scene.control.MultipleSelectionModel;
 import model.MasterModel;
 import model.Model;
 import model.gameitems.*;
-import view.MasterView;
-import view.TicTacToeView;
-import view.View;
+import view.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
@@ -170,22 +172,22 @@ public class MasterController extends Controller {
                                     if (playerNames[i].equals(model.getLoginName()) || ownNameDetected == true) {
                                         ownNameDetected = true;
                                         try {
-                                            playerNames[i] = playerNames[i+1];
-                                        } catch (Exception e){
+                                            playerNames[i] = playerNames[i + 1];
+                                        } catch (Exception e) {
 
                                         }
                                     }
                                 }
                                 // Create new array without own name
-                                String[] filteredPlayerNames = new String[playerNames.length-1];
+                                String[] filteredPlayerNames = new String[playerNames.length - 1];
                                 if (ownNameDetected == true) {
                                     playerNames[playerNames.length - 1] = "";
-                                    for (int i = 0; i < playerNames.length-1; i++) {
+                                    for (int i = 0; i < playerNames.length - 1; i++) {
                                         filteredPlayerNames[i] = playerNames[i];
                                     }
                                 }
                                 // Update playerlist and set focus
-                                int sel =  view.getNameSelected();
+                                int sel = view.getNameSelected();
                                 if (ownNameDetected == true) {
                                     view.updatePlayerboard(FXCollections.observableArrayList(filteredPlayerNames));
                                 } else {
@@ -220,51 +222,39 @@ public class MasterController extends Controller {
 
     public String login(String name) {
         String res = serverCommunication.login(name);
-        if (res == "ok"){
+        if (res == "ok") {
             model.setLoginName(name);
         }
         // subscribe(GameName.TICTACTOE);
         return res;
     }
 
-    public void subscribe(GameName game) {
-        if (game == GameName.TICTACTOE) {
-            TicTacToe ticTacToe = new TicTacToe();
-            try {
-                ticTacToe.setAI(new TicTacToeAI(ticTacToe.getModel()));
-            } catch (Exception e) {
-                System.out.println("FUCK");
-            }
-            model.setGame(ticTacToe);
-            TicTacToeView ticTacToeView = (TicTacToeView) model.getGame().getView();
-            Scene masterScene = view.getScene();
-            stage.setScene(ticTacToeView.getScene());
-            serverCommunication.subscribe(game);
-
-            TicTacToeController ticTacToeController = (TicTacToeController) ticTacToe.getController();
+    public void subscribe(GameName gameName) {
+        Game game = null;
+        try {
+            game = (Game) Class.forName("games." + gameName.label).getConstructor().newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Game not found");
+        }
+        if (game != null) {
+            model.setGame(game);
+            GameView gameView = model.getGame().getView();
+            stage.setScene(gameView.getScene());
+            serverCommunication.subscribe(gameName);
+            GameController gameController = game.getController();
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    if(ticTacToeController.isDone()) {
+                    if (gameController.isDone()) {
                         Platform.runLater(() -> {
-                            ticTacToeController.setDone(false);
+                            gameController.setDone(false);
                             stage.setScene(view.getScene());
                         });
                     }
                 }
             }, 0, 100);
-
-
-        } else {
-            Reversi reversi = new Reversi();
-            try {
-                reversi.setAI(new ReversiAI(reversi.getModel()));
-            } catch (Exception e) {
-                System.out.println("FUCK");
-            }
-            model.setGame(reversi);
-            serverCommunication.subscribe(game);
         }
     }
 

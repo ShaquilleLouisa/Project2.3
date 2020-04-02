@@ -1,7 +1,11 @@
 package view;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -11,30 +15,35 @@ import java.util.HashMap;
 import controller.Controller;
 import controller.ReversiController;
 import model.gameitems.FieldStatus;
+import model.gameitems.ReversiFieldStatus;
 
 public class ReversiView extends GameView{
-    HashMap<ArrayList<Integer>, Button> buttonLocation;
+    HashMap<Integer, Button> buttonLocation;
     ReversiController controller;
-    Stage stage;
     public ReversiView() {
 
     }
 
     public ReversiView(Controller controller) {
         this.controller = (ReversiController) controller;
-        stage = new Stage();
-        try {
-            start(stage);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
-    public void start(Stage stage) throws Exception {
-        stage.setTitle("Reversi");
+    public Scene getScene() {
+        BorderPane rootPane = new BorderPane();
         GridPane pane = new GridPane();
         buttonLocation = new HashMap<>();
+        Button backButton = new Button("Back");
         int counter = 0;
+
+        EventHandler<ActionEvent> backHandler = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                controller.notifyDone();
+                System.out.println("BACK HAS BEEN PRESSED");
+            }
+        };
+        backButton.setOnAction(backHandler);
+
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Button button = new Button(""+counter);
@@ -45,21 +54,24 @@ public class ReversiView extends GameView{
                 ArrayList<Integer> location = new ArrayList<>();
                 location.add(i);
                 location.add(j);
-                buttonLocation.put(location, button);
+                buttonLocation.put(counter, button);
                 pane.add(button, i, j);
                 counter++;
             }
         }
-
-        stage.setScene(new Scene(pane, 400, 400));
-        stage.show();
+        rootPane.setTop(backButton);
+        rootPane.setCenter(pane);
+        return new Scene(rootPane, 400, 400);
     }
-
-
-
 
     @Override
     public void update(int move, FieldStatus fieldStatus) {
-
+        ReversiFieldStatus reversiFieldStatus = (ReversiFieldStatus)fieldStatus;
+        Platform.runLater(() -> {
+            System.out.println("" + move + fieldStatus.toString());
+            Button button = buttonLocation.get(move);
+            String value = reversiFieldStatus.getValue();
+            button.setText(value);
+        });
     }
 }

@@ -2,7 +2,7 @@ package games;
 
 public enum GameName {
     REVERSI("Reversi"),
-    TICTACTOE("Tic-tac-toe");
+    TICTACTOE("TicTacToe");
 
     public final String label;
 

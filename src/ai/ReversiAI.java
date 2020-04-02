@@ -1,15 +1,8 @@
 package ai;
 
+import model.AIModel;
 import model.ReversiModel;
 
-public class ReversiAI extends AI {
+public interface ReversiAI {
 
-    public ReversiAI(ReversiModel reversiModel) {
-        super(reversiModel);
-    }
-
-    @Override
-    public int calculateNextMove() {
-        return 0;
-    }
 }

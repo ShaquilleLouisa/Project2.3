@@ -73,6 +73,16 @@ public class TicTacToeModel extends GameModel {
         return board;
     }
 
+    @Override
+    public boolean isPlayable(int x, int y) {
+        return board.getFieldStatus(x, y).getID() != 0;
+    }
+
+    @Override
+    public boolean[][] getValidMoves() {
+        return new boolean[0][];
+    }
+
 
     //FOR OFFLINE GAME
     public int checkEnd(Board board) {

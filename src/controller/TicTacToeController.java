@@ -80,15 +80,18 @@ public class TicTacToeController extends GameController {
         this.model = (TicTacToeModel) model;
     }
 
+
     public void notifyDone() {
         done = true;
         System.out.println("NOTIFIED");
     }
 
+    @Override
     public boolean isDone() {
         return done;
     }
 
+    @Override
     public void setDone(boolean done) {
         this.done = done;
     }
