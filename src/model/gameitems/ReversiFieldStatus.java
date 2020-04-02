@@ -32,8 +32,4 @@ public class ReversiFieldStatus extends FieldStatus {
     public boolean isWhite(){
         return getID() == BLACK;
     }
-
-    public boolean isCurrentPlayer(int currentPlayer){
-        return getID() == ((currentPlayer == 0) ? BLACK : WHITE);
-    }
 }

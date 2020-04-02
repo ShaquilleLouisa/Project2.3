@@ -67,11 +67,11 @@ public class ReversiModel extends GameModel {
         view.update(move, fieldStatus);
     }
 
-    private boolean[][] SetValidMoves(){
+    private boolean[][] SetValidMoves() {
 
         boolean[][] playableMoves = new boolean[8][8];
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
-        fieldStatus.isPlayable();
+        fieldStatus.setPlayable();
         // Set surrounding positions to playable.
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
@@ -99,8 +99,7 @@ public class ReversiModel extends GameModel {
     private boolean validMove(int dr, int dc, int r, int c) {
         if (IsOutOfBounds(r + dr, c + dc))
             return false;
-        ReversiFieldStatus reversiFieldStatus = (ReversiFieldStatus)board.getFieldStatus(r + dr, c + dc);
-        if (reversiFieldStatus.isCurrentPlayer(player))
+        if (isCurrentPlayer(r + dr, c + dc))
             return false;
         if (IsOutOfBounds(r + dr + dr, c + dc + dc))
             return false;
@@ -108,8 +107,7 @@ public class ReversiModel extends GameModel {
     }
 
     private boolean checkLineMatch(int dr, int dc, int r, int c) {
-        ReversiFieldStatus reversiFieldStatus = (ReversiFieldStatus)board.getFieldStatus(r, c);
-        if (reversiFieldStatus.isCurrentPlayer(player)) {
+        if (isCurrentPlayer(r, c)) {
             return true;
         }
         if (IsOutOfBounds(r + dr, c + dc)) {
@@ -124,20 +122,25 @@ public class ReversiModel extends GameModel {
         return false;
     }
 
+    public boolean isCurrentPlayer(int x, int y) {
+        if (board.getFieldStatus(x, y).getID() == player)
+            return true;
+        return false;
+    }
+
     public boolean IsPlayable(int x, int y) throws MoveException {
-        ReversiFieldStatus reversiFieldStatus = (ReversiFieldStatus)board.getFieldStatus(x, y);
-        if (reversiFieldStatus.isPlayable())
+        if (board.getFieldStatus(x, y).getID() == ReversiFieldStatus.PLAYABLE)
             return true;
         throw new MoveException("Field is not Playable");
     }
 
     @Override
-	public FieldStatus getFieldStatus(int move) {
+    public FieldStatus getFieldStatus(int move) {
         ArrayList<Integer> xAndY = board.getMove(move);
         int x = xAndY.get(0);
         int y = xAndY.get(1);
         return (ReversiFieldStatus) board.getFieldStatus(x, y);
-	}
+    }
 
     public int getPlayer() {
         return player;
@@ -159,16 +162,15 @@ public class ReversiModel extends GameModel {
         turns++;
     }
 
-	
-	@Override
-	public int getFieldSize() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public int getFieldSize() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 
-	@Override
-	public Board getBoard() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Board getBoard() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
