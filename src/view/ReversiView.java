@@ -68,7 +68,7 @@ public class ReversiView extends GameView{
     public void update(int move, FieldStatus fieldStatus) {
         ReversiFieldStatus reversiFieldStatus = (ReversiFieldStatus)fieldStatus;
         Platform.runLater(() -> {
-            System.out.println("" + move + fieldStatus.toString());
+            //System.out.println("" + move + fieldStatus.getValue());
             Button button = buttonLocation.get(move);
             String value = reversiFieldStatus.getValue();
             button.setText(value);
