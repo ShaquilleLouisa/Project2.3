@@ -1,6 +1,7 @@
 package games;
 
 import ai.AI;
+import controller.GameController;
 import controller.TicTacToeController;
 import exceptions.MoveException;
 import exceptions.WrongAIException;
@@ -63,6 +64,11 @@ public class TicTacToe extends Game {
     @Override
     public GameView getView() {
         return view;
+    }
+
+    @Override
+    public GameController getController() {
+        return controller;
     }
 
 

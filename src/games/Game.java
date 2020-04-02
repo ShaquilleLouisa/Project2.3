@@ -1,6 +1,7 @@
 package games;
 
 import ai.AI;
+import controller.GameController;
 import exceptions.WrongAIException;
 import model.GameModel;
 import view.GameView;
@@ -13,4 +14,5 @@ public abstract class Game {
     abstract public void setMove(int move, boolean isOponent);
     abstract public GameModel getModel();
     abstract public GameView getView();
+    abstract public GameController getController();
 }

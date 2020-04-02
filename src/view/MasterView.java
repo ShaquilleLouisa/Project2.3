@@ -27,6 +27,7 @@ import javax.swing.*;
 public class MasterView extends View {
     MasterController controller;
 
+    Scene scene;
     public MasterView() {
 
     }
@@ -66,7 +67,6 @@ public class MasterView extends View {
     Button btnQuickPlay = new Button("Nu spelen!");
 
     public void start(Stage masterStage) {
-        // Define button actions
         buttonActions();
 
         // Pane - background color
@@ -121,12 +121,14 @@ public class MasterView extends View {
 
         // Application - Window settings
         players.clear();
+        scene = new Scene(pnLauncher, windowWidth, windowHeight);
+        // Define button actions
         masterStage.setTitle("Epic game launcher");
         masterStage.setMinWidth(1024);
         masterStage.setMinHeight(576);
         masterStage.setMaxWidth(2560);
         masterStage.setMaxHeight(1440);
-        masterStage.setScene(new Scene(pnLauncher, windowWidth, windowHeight));
+        masterStage.setScene(scene);
         masterStage.show();
 
         // Update window resolution triggers
@@ -148,6 +150,10 @@ public class MasterView extends View {
         masterStage.setWidth(windowWidth);
         masterStage.setHeight(windowHeight+1);
         masterStage.setHeight(windowHeight);
+    }
+
+    public Scene getScene() {
+        return scene;
     }
 
     private void buttonActions(){

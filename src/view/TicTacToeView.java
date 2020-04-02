@@ -2,6 +2,15 @@ package view;
 
 import controller.Controller;
 import controller.TicTacToeController;
+import exceptions.MoveException;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import model.gameitems.*;
 import model.TicTacToeModel;
 import javafx.application.Platform;
@@ -16,21 +25,44 @@ import java.util.HashMap;
 
 public class TicTacToeView extends GameView {
     HashMap<Integer, Button> buttonLocation;
+    Text notification;
+
     TicTacToeController controller;
+
     public TicTacToeView() {
 
     }
 
     public TicTacToeView(Controller controller) {
-        controller = (TicTacToeController) controller;
+        this.controller = (TicTacToeController) controller;
     }
 
-    public void start(Stage stage) {
-        stage.setTitle("Hello World!");
+    public Scene getScene() {
+        BorderPane rootPane = new BorderPane();
         GridPane pane = new GridPane();
         buttonLocation = new HashMap<>();
-
+        Button backButton = new Button("Back");
         int counter = 0;
+
+        EventHandler<ActionEvent> backHandler = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                controller.notifyDone();
+                System.out.println("BACK HAS BEEN PRESSED");
+            }
+        };
+        backButton.setOnAction(backHandler);
+        EventHandler<ActionEvent> buttonHandler = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Button button = (Button) (event.getSource());
+                try {
+                    controller.doMove(Integer.parseInt(button.getText()));
+                } catch (MoveException e) {
+                    System.out.println("Move not available please try again.");
+                }
+            }
+        };
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
                 Button button = new Button(""+counter);
@@ -38,14 +70,25 @@ public class TicTacToeView extends GameView {
                 button.setMinHeight(100);
                 button.setWrapText(true);
                 button.setStyle(String.format("-fx-font-size: %dpx;", (int) (0.45 * 100)));
+                button.setOnAction(buttonHandler);
                 buttonLocation.put(counter, button);
                 pane.add(button, i, j);
                 counter++;
             }
         }
+        notification = new Text();
+        notification.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        rootPane.setTop(backButton);
+        rootPane.setCenter(pane);
+        rootPane.setBottom(notification);
+        return new Scene(rootPane, 300, 300);
 
-        stage.setScene(new Scene(pane, 300, 300));
-        stage.show();
+    }
+
+    public void updateNotification(String text) {
+        Platform.runLater(() -> {
+            notification.setText(text);
+        });
     }
 
     public void update(int move, FieldStatus status) {
@@ -55,7 +98,5 @@ public class TicTacToeView extends GameView {
             Button button = buttonLocation.get(move);
             button.setText(ticTacToeFieldStatus.getValue());
         });
-
     }
-
 }
