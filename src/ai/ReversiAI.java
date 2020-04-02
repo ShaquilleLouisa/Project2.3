@@ -10,6 +10,6 @@ public class ReversiAI extends AI {
 
     @Override
     public int calculateNextMove() {
-        return 0;
+        return 44;
     }
 }
