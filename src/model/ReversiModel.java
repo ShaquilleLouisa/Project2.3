@@ -17,6 +17,7 @@ public class ReversiModel extends GameModel {
         this.view = view;
         turns = 0;
         board = new Board(boardSize, boardSize, new ReversiFieldStatus());
+        System.out.println("setFirstMoves");
         setFirstMoves();
     }
 
@@ -28,12 +29,13 @@ public class ReversiModel extends GameModel {
         white.setWhite();
 
         try {
-            board.setFieldStatus(3, 3, black);
-            board.setFieldStatus(3, 4, white);
-            board.setFieldStatus(4, 3, black);
-            board.setFieldStatus(4, 4, white);
+            setFieldStatus(28, black);
+            setFieldStatus(29, white);
+            setFieldStatus(36, black);
+            setFieldStatus(37, white);
             System.out.println("Board starting positions done!");
         } catch (MoveException e) {
+            System.out.println(e);
             return;
         }
     }
@@ -52,12 +54,17 @@ public class ReversiModel extends GameModel {
         int xPosition = xAndY.get(0);
         int yPosition = xAndY.get(1);
 
-        try {
-            if (isPlayable(xPosition, yPosition)) {
-                board.setFieldStatus(xPosition, yPosition, fieldStatus);
+        if (move == 28 || move == 29 || move == 36 || move == 37){
+            board.setFieldStatus(xPosition, yPosition, fieldStatus);
+        }
+        else {
+            try {
+                if (isPlayable(xPosition, yPosition)) {
+                    board.setFieldStatus(xPosition, yPosition, fieldStatus);
+                }
+            } catch (MoveException e) {
+                throw e;
             }
-        } catch (MoveException e) {
-            throw e;
         }
 
         fieldStatus.setEmpty();
@@ -116,7 +123,7 @@ public class ReversiModel extends GameModel {
         if (IsOutOfBounds(r + dr, c + dc)) {
             return false;
         }
-        return checkLineMatch(dr, dc, r+dr, c+dc);
+        return checkLineMatch(dr, dc, r + dr, c + dc);
     }
 
     public boolean IsOutOfBounds(int x, int y) {

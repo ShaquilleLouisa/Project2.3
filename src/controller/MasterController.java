@@ -138,12 +138,10 @@ public class MasterController extends Controller {
                                     System.out.println("Move has been done: " + inputLowerCase.substring(totalLetters)
                                             + "name: " + getRivalName());
                                     if (words[4].contains(getRivalName())) {
-                                        int opponentMove = Integer
-                                                .parseInt(inputLowerCase.substring(totalLetters).substring(
-                                                        inputLowerCase.substring(totalLetters).lastIndexOf("move: ")
-                                                                + "move: ".length() + 1,
-                                                        inputLowerCase.substring(totalLetters).lastIndexOf("move: ")
-                                                                + "move: ".length() + 2));
+
+                                        System.out.println(words[6].substring(1, words[6].length() -2));
+
+                                        int opponentMove = Integer.parseInt(words[6].substring(0, words[6].length() -1));//Integer.parseInt(words[6]);
                                         //TicTacToeFieldStatus fieldStatusCross = new TicTacToeFieldStatus();
                                         //fieldStatusCross.setCross();
                                         //model.getGame().getModel().setFieldStatus(opponentMove, fieldStatusCross);
