@@ -34,9 +34,10 @@ public class ReversiView extends GameView{
         stage.setTitle("Reversi");
         GridPane pane = new GridPane();
         buttonLocation = new HashMap<>();
+        int counter = 0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                Button button = new Button("");
+                Button button = new Button(""+counter);
                 button.setMinWidth(50);
                 button.setMinHeight(50);
                 button.setWrapText(true);
@@ -46,6 +47,7 @@ public class ReversiView extends GameView{
                 location.add(j);
                 buttonLocation.put(location, button);
                 pane.add(button, i, j);
+                counter++;
             }
         }
 

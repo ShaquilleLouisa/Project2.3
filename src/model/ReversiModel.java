@@ -12,6 +12,7 @@ public class ReversiModel extends GameModel {
     private int player = 1;
     private ReversiView view;
 
+
     public ReversiModel(ReversiView view) {
         this.view = view;
         turns = 0;
@@ -31,6 +32,7 @@ public class ReversiModel extends GameModel {
             board.setFieldStatus(3, 4, white);
             board.setFieldStatus(4, 3, black);
             board.setFieldStatus(4, 4, white);
+            System.out.println("Board starting positions done!");
         } catch (MoveException e) {
             return;
         }
@@ -113,7 +115,7 @@ public class ReversiModel extends GameModel {
         if (IsOutOfBounds(r + dr, c + dc)) {
             return false;
         }
-        return checkLineMatch(dr, dc, r, c);
+        return checkLineMatch(dr, dc, r+dr, c+dc);
     }
 
     public boolean IsOutOfBounds(int x, int y) {
