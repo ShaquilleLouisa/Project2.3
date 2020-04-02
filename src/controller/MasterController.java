@@ -7,6 +7,7 @@ import exceptions.WrongAIException;
 import games.GameName;
 import games.Reversi;
 import games.TicTacToe;
+import javafx.scene.control.MultipleSelectionModel;
 import model.MasterModel;
 import model.Model;
 import model.gameitems.*;
@@ -160,7 +161,9 @@ public class MasterController extends Controller {
                                 for (int i = 0; i < playerNames.length; i++) {
                                     playerNames[i] = playerNames[i].substring(1);
                                 }
+                                int sel =  view.getNameSelected();
                                 view.updatePlayerboard(FXCollections.observableArrayList(playerNames));
+                                view.setNameSelected(sel);
                             } catch (Exception e) {
                                 view.updatePlayerboard(FXCollections.observableArrayList());
                             }

@@ -2,8 +2,6 @@ package view;
 
 import controller.MasterController;
 import games.GameName;
-import javafx.application.Application;
-import model.MasterModel;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -309,6 +307,19 @@ public class MasterView extends View {
         btnQuickPlay.setLayoutX(windowWidth-256);
         btnQuickPlay.setLayoutY(windowHeight-128);
 
+    }
+
+    public int getNameSelected() {
+        return playerList.getSelectionModel().getSelectedIndex();
+    }
+
+    public void setNameSelected(int sel) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                playerList.getSelectionModel().select(sel);
+            }
+        });
     }
 
 
