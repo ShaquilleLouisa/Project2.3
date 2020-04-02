@@ -10,7 +10,7 @@ public class Board {
     private HashMap<Integer, ArrayList<Integer>> moves;
     private int fieldSize;
 
-    public <T extends FieldStatus> Board(int xSize, int ySize, T defaultFieldStatus) {
+    public <T extends FieldStatus> Board(int xSize, int ySize, T fieldStatus) {
         if(xSize == ySize) {
             fieldSize = xSize;
         }
@@ -21,13 +21,14 @@ public class Board {
         int counter = 0;
         for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < ySize; j++) {
-                TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
-                fieldStatus.setId(defaultFieldStatus.getID());
+                FieldStatus abstractFieldStatus = new FieldStatus() {
+                };
+                T newFieldStatus = (T)abstractFieldStatus;
                 ArrayList<Integer> xAndY = new ArrayList<>(2);
                 xAndY.add(i);
                 xAndY.add(j);
                 moves.put(counter, xAndY);
-                fields.add(new Field(i, j, fieldStatus));
+                fields.add(new Field(i, j, newFieldStatus));
                 counter++;
             }
         }

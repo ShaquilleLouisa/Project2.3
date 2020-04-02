@@ -3,8 +3,10 @@ package games;
 import ai.AI;
 import ai.ReversiAI;
 import controller.ReversiController;
+import exceptions.MoveException;
 import exceptions.WrongAIException;
 import model.ReversiModel;
+import model.gameitems.ReversiFieldStatus;
 import view.ReversiView;
 
 public class Reversi extends Game {
@@ -27,6 +29,19 @@ public class Reversi extends Game {
 
     public int getNextMove() {
         return ai.calculateNextMove();
+    }
+
+    public void setMove(int move, boolean isOponent) {
+        ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
+        if (isOponent) {
+            fieldStatus.setBlack();
+        } else {
+            fieldStatus.setWhite();
+        }
+        try {
+            model.setFieldStatus(move, fieldStatus);
+        } catch (MoveException e) {
+        }
     }
 
     @Override

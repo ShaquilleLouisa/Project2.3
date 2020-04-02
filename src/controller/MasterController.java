@@ -99,9 +99,10 @@ public class MasterController extends Controller {
                                 case "yourturn":
                                     System.out.println("Your turn");
                                     int ourMove = model.getGame().getNextMove();
-                                    TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
-                                    fieldStatus.setCircle();
-                                    model.getGame().getModel().setFieldStatus(ourMove, fieldStatus);
+                                    //TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
+                                    //fieldStatus.setCircle();
+                                    //model.getGame().getModel().setFieldStatus(ourMove, fieldStatus);
+                                    model.getGame().setMove(ourMove, false);
                                     serverCommunication.move(ourMove);
                                     break;
                                 case "loss":
@@ -125,11 +126,11 @@ public class MasterController extends Controller {
                                                                 + "move: ".length() + 1,
                                                         inputLowerCase.substring(totalLetters).lastIndexOf("move: ")
                                                                 + "move: ".length() + 2));
-                                        TicTacToeFieldStatus fieldStatusCross = new TicTacToeFieldStatus();
-
-                                        fieldStatusCross.setCross();
+                                        //TicTacToeFieldStatus fieldStatusCross = new TicTacToeFieldStatus();
+                                        //fieldStatusCross.setCross();
+                                        //model.getGame().getModel().setFieldStatus(opponentMove, fieldStatusCross);
                                         System.out.println("opponentMove: " + opponentMove);
-                                        model.getGame().getModel().setFieldStatus(opponentMove, fieldStatusCross);
+                                        model.getGame().setMove(opponentMove, true);
                                     }
                                     break;
                             }

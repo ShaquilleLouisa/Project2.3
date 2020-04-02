@@ -46,15 +46,29 @@ public class TicTacToe extends Game {
         return ai.calculateNextMove();
     }
 
-    public FieldStatus getFieldStatus(int move) {
-        return model.getFieldStatus(move);
-    }
-
-    public void setFieldStatus(int move, FieldStatus fieldStatus) throws MoveException {
+    public void setMove(int move, boolean isOponent) {
+        TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
+        if (isOponent) {
+            fieldStatus.setCross();
+        } else {
+            fieldStatus.setCircle();
+        }
         try {
             model.setFieldStatus(move, fieldStatus);
         } catch (MoveException e) {
-            throw (e);
         }
     }
+
+    // public FieldStatus getFieldStatus(int move) {
+    // return model.getFieldStatus(move);
+    // }
+
+    // public void setFieldStatus(int move, FieldStatus fieldStatus) throws
+    // MoveException {
+    // try {
+    // model.setFieldStatus(move, fieldStatus);
+    // } catch (MoveException e) {
+    // throw (e);
+    // }
+    // }
 }
