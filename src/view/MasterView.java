@@ -243,7 +243,6 @@ public class MasterView extends View {
                 if (dialogResult == JOptionPane.YES_OPTION || dialogResult == JOptionPane.NO_OPTION) {
                     headPlayersOptions.setVisible(false);
                     playersOnline.setVisible(true);
-                    playerList.setVisible(false);
                 }
             }
         });
