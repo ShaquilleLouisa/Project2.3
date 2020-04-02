@@ -20,7 +20,7 @@ public class TicTacToeController extends GameController {
     }
 
 
-//      MOVES DRAWN OUT
+    //      MOVES DRAWN OUT
 //    -------------------------
 //    |       |       |       |
 //    |  0,0  |  0,1  |  0,2  |
@@ -43,6 +43,33 @@ public class TicTacToeController extends GameController {
         model.switchPlayer();
     }
 
+    //FOR OFFLINE GAME
+    public void doMove(int move) throws MoveException {
+        if(model.checkEnd(model.getBoard()) == -1) {
+            TicTacToeFieldStatus ticTacToeFieldStatus = new TicTacToeFieldStatus();
+            if (model.getPlayer() == 1) {
+                ticTacToeFieldStatus.setCross();
+            } else {
+                ticTacToeFieldStatus.setCircle();
+            }
+            try {
+                doMove(move, ticTacToeFieldStatus);
+            } catch (MoveException e) {
+                throw e;
+            }
+            if(model.checkEnd(model.getBoard()) != -1) {
+                String winner;
+                if(model.checkEnd(model.getBoard()) == 1) {
+                    winner = "Cross";
+                } else {
+                    winner = "Circle";
+                }
+                view.updateNotification("Player with " + winner + " has won");
+            }
+        }
+    }
+
+
     @Override
     public void addView(View view) {
         this.view = (TicTacToeView) view;
@@ -51,5 +78,18 @@ public class TicTacToeController extends GameController {
     @Override
     public void addModel(Model model) {
         this.model = (TicTacToeModel) model;
+    }
+
+    public void notifyDone() {
+        done = true;
+        System.out.println("NOTIFIED");
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
 }

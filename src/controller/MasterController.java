@@ -7,6 +7,8 @@ import exceptions.WrongAIException;
 import games.GameName;
 import games.Reversi;
 import games.TicTacToe;
+import javafx.application.Platform;
+import javafx.scene.Scene;
 import javafx.scene.control.MultipleSelectionModel;
 import model.MasterModel;
 import model.Model;
@@ -235,8 +237,25 @@ public class MasterController extends Controller {
             }
             model.setGame(ticTacToe);
             TicTacToeView ticTacToeView = (TicTacToeView) model.getGame().getView();
-            ticTacToeView.start(stage);
+            Scene masterScene = view.getScene();
+            stage.setScene(ticTacToeView.getScene());
             serverCommunication.subscribe(game);
+
+            TicTacToeController ticTacToeController = (TicTacToeController) ticTacToe.getController();
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if(ticTacToeController.isDone()) {
+                        Platform.runLater(() -> {
+                            ticTacToeController.setDone(false);
+                            stage.setScene(view.getScene());
+                        });
+                    }
+                }
+            }, 0, 100);
+
+
         } else {
             Reversi reversi = new Reversi();
             try {
@@ -297,5 +316,9 @@ public class MasterController extends Controller {
     @Override
     public void addModel(Model model) {
         this.model = (MasterModel) model;
+    }
+
+    public void resetStage() {
+        stage.setScene(view.getScene());
     }
 }
