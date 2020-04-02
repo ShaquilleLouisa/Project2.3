@@ -156,13 +156,39 @@ public class MasterController extends Controller {
                         case "playerlist":
                             // Send whole playerlist and filter harmful data
                             try {
+                                // Safely split player names
                                 String[] playerNames = originalInput.substring(16, originalInput.length() - 2)
                                         .split("\", ");
                                 for (int i = 0; i < playerNames.length; i++) {
                                     playerNames[i] = playerNames[i].substring(1);
                                 }
+                                // Delete own name in playerlist
+                                boolean ownNameDetected = false;
+                                for (int i = 0; i < playerNames.length; i++) {
+                                    if (playerNames[i].equals(model.getLoginName()) || ownNameDetected == true) {
+                                        ownNameDetected = true;
+                                        try {
+                                            playerNames[i] = playerNames[i+1];
+                                        } catch (Exception e){
+
+                                        }
+                                    }
+                                }
+                                // Create new array without own name
+                                String[] filteredPlayerNames = new String[playerNames.length-1];
+                                if (ownNameDetected == true) {
+                                    playerNames[playerNames.length - 1] = "";
+                                    for (int i = 0; i < playerNames.length-1; i++) {
+                                        filteredPlayerNames[i] = playerNames[i];
+                                    }
+                                }
+                                // Update playerlist and set focus
                                 int sel =  view.getNameSelected();
-                                view.updatePlayerboard(FXCollections.observableArrayList(playerNames));
+                                if (ownNameDetected == true) {
+                                    view.updatePlayerboard(FXCollections.observableArrayList(filteredPlayerNames));
+                                } else {
+                                    view.updatePlayerboard(FXCollections.observableArrayList(playerNames));
+                                }
                                 view.setNameSelected(sel);
                             } catch (Exception e) {
                                 view.updatePlayerboard(FXCollections.observableArrayList());

@@ -257,7 +257,7 @@ public class MasterView extends View {
         Platform.runLater(() -> {
             players.clear();
             players.addAll(newPlayerlist);
-            playersOnline.setText(players.size() + " spelers online");
+            playersOnline.setText(players.size() + " andere spelers online");
         });
     }
 
