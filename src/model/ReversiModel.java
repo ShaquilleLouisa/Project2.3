@@ -78,39 +78,42 @@ public class ReversiModel extends GameModel {
         int counter = 0;
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                // boolean isValid = false;
-                // for (int xx = -1; xx < 2; xx++) {
-                // if (xx != 0 && y != 0) {
-                // isValid = validMove(xx, y, x, y);
-                // }
-                // }
-                // for (int yy = -1; yy < 2; yy++) {
-                // if (x != 0 && yy != 0) {
-                // isValid = validMove(x, yy, x, y);
-                // }
-                // }
-                boolean nw = validMove(-1, -1, x, y);
-                boolean nn = validMove(-1, 0, x, y);
-                boolean ne = validMove(-1, 1, x, y);
+                if (board.getFieldStatus(x, y).getID() == 0) {
 
-                boolean ww = validMove(0, -1, x, y);
-                boolean ee = validMove(0, 1, x, y);
-
-                boolean sw = validMove(1, -1, x, y);
-                boolean ss = validMove(1, 0, x, y);
-                boolean se = validMove(1, 1, x, y);
-
-                // isValid = validMove(0, -1, x, y);
-                // isValid = validMove(0, 1, x, y);
-
-                if (nw || nn || ne || ww || ee || sw || ss || se) {
-                    // try {
-                    // board.setFieldStatus(x, y, fieldStatus);
-                    // view.update(counter, fieldStatus);
-                    playableMoves[x][y] = true;
-                    // } catch (MoveException e) {
-                    // continue;
+                    // boolean isValid = false;
+                    // for (int xx = -1; xx < 2; xx++) {
+                    // if (xx != 0 && y != 0) {
+                    // isValid = validMove(xx, y, x, y);
                     // }
+                    // }
+                    // for (int yy = -1; yy < 2; yy++) {
+                    // if (x != 0 && yy != 0) {
+                    // isValid = validMove(x, yy, x, y);
+                    // }
+                    // }
+                    boolean nw = validMove(-1, -1, x, y);
+                    boolean nn = validMove(-1, 0, x, y);
+                    boolean ne = validMove(-1, 1, x, y);
+
+                    boolean ww = validMove(0, -1, x, y);
+                    boolean ee = validMove(0, 1, x, y);
+
+                    boolean sw = validMove(1, -1, x, y);
+                    boolean ss = validMove(1, 0, x, y);
+                    boolean se = validMove(1, 1, x, y);
+
+                    // isValid = validMove(0, -1, x, y);
+                    // isValid = validMove(0, 1, x, y);
+
+                    if (nw || nn || ne || ww || ee || sw || ss || se) {
+                        // try {
+                        // board.setFieldStatus(x, y, fieldStatus);
+                        // view.update(counter, fieldStatus);
+                        playableMoves[x][y] = true;
+                        // } catch (MoveException e) {
+                        // continue;
+                        // }
+                    }
                 }
                 counter++;
             }
@@ -136,10 +139,10 @@ public class ReversiModel extends GameModel {
 
     private boolean validMove(int dr, int dc, int r, int c) {
 
-        if ((r + dr < 0) || r + dr > 7) {
+        if (r + dr < 0 || r + dr > 7) {
             return false;
         }
-        if ((c + dc < 0) || c + dc > 7) {
+        if (c + dc < 0 || c + dc > 7) {
             return false;
         }
 
@@ -147,10 +150,10 @@ public class ReversiModel extends GameModel {
             return false;
         }
 
-        if ((r + dr + dr < 0) || r + dr + dr > 7) {
+        if (r + dr + dr < 0 || r + dr + dr > 7) {
             return false;
         }
-        if ((c + dc + dc < 0) || c + dc + dc > 7) {
+        if (c + dc + dc < 0 || c + dc + dc > 7) {
             return false;
         }
         // if (IsOutOfBounds(r + dr, c + dc))
@@ -169,10 +172,10 @@ public class ReversiModel extends GameModel {
             return false;
         }
 
-        if ((r + dr < 0) || r + dr > 7) {
+        if (r + dr < 0 || r + dr > 7) {
             return false;
         }
-        if ((c + dc < 0) || c + dc > 7) {
+        if (c + dc < 0 || c + dc > 7) {
             return false;
         }
         // if (IsOutOfBounds(r + dr, r + dr)) {
