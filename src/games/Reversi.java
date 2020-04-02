@@ -2,6 +2,7 @@ package games;
 
 import ai.AI;
 import ai.ReversiAI;
+import controller.GameController;
 import controller.ReversiController;
 import exceptions.MoveException;
 import exceptions.WrongAIException;
@@ -31,6 +32,11 @@ public class Reversi extends Game {
     @Override
     public GameView getView() {
         return view;
+    }
+
+    @Override
+    public GameController getController() {
+        return controller;
     }
 
     public int getNextMove() {

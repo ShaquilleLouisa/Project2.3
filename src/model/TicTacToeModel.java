@@ -16,6 +16,7 @@ public class TicTacToeModel extends GameModel {
     private int FieldSize = 3;
 
     public TicTacToeModel(TicTacToeView view) {
+
         this.view = view;
         turns = 0;
         board = new Board(FieldSize, FieldSize, new TicTacToeFieldStatus());
@@ -70,5 +71,47 @@ public class TicTacToeModel extends GameModel {
 
     public Board getBoard() {
         return board;
+    }
+
+
+    //FOR OFFLINE GAME
+    public int checkEnd(Board board) {
+        for(int y = 0; y < board.getFieldSize(); y++) {
+            if(board.getFieldStatus(0,y).getID() == board.getFieldStatus(1,y).getID() && board.getFieldStatus(1,y).getID() == board.getFieldStatus(2,y).getID()) {
+                if(board.getFieldStatus(0,y).getID() == TicTacToeFieldStatus.CIRCLE) {
+                    return 2;
+                } else if(board.getFieldStatus(0,y).getID() == TicTacToeFieldStatus.CROSS) {
+                    return 1;
+                }
+            }
+        }
+
+        for(int x = 0; x < board.getFieldSize(); x++) {
+            if(board.getFieldStatus(x,0).getID() == board.getFieldStatus(x,1).getID() && board.getFieldStatus(x,1).getID() == board.getFieldStatus(x,2).getID()) {
+
+                if(board.getFieldStatus(x, 0).getID() == TicTacToeFieldStatus.CIRCLE) {
+                    return 2;
+                } else if(board.getFieldStatus(x,0).getID() == TicTacToeFieldStatus.CROSS) {
+                    return 1;
+                }
+            }
+        }
+
+        if(board.getFieldStatus(0,0).getID() == board.getFieldStatus(1,1).getID() && board.getFieldStatus(1,1).getID() == board.getFieldStatus(2,2).getID()) {
+            if(board.getFieldStatus(0,0).getID() == TicTacToeFieldStatus.CIRCLE) {
+                return 2;
+            } else if(board.getFieldStatus(0,0).getID() == TicTacToeFieldStatus.CROSS) {
+                return 1;
+            }
+        }
+
+        if(board.getFieldStatus(0,2).getID() == board.getFieldStatus(1,1).getID() && board.getFieldStatus(1,1).getID() == board.getFieldStatus(2,0).getID()) {
+            if(board.getFieldStatus(0,2).getID() == TicTacToeFieldStatus.CIRCLE) {
+                return 2;
+            } else if(board.getFieldStatus(0,2).getID() == TicTacToeFieldStatus.CROSS) {
+                return 1;
+            }
+        }
+        return -1;
     }
 }
