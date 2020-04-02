@@ -67,7 +67,7 @@ public class MasterView extends View {
     Button btnQuickPlay = new Button("Nu spelen!");
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage masterStage) {
         // Define button actions
         buttonActions();
 
@@ -123,22 +123,22 @@ public class MasterView extends View {
 
         // Application - Window settings
         players.clear();
-        stage.setTitle("Epic game launcher");
-        stage.setMinWidth(1024);
-        stage.setMinHeight(576);
-        stage.setMaxWidth(2560);
-        stage.setMaxHeight(1440);
-        stage.setScene(new Scene(pnLauncher, windowWidth, windowHeight));
-        stage.show();
+        masterStage.setTitle("Epic game launcher");
+        masterStage.setMinWidth(1024);
+        masterStage.setMinHeight(576);
+        masterStage.setMaxWidth(2560);
+        masterStage.setMaxHeight(1440);
+        masterStage.setScene(new Scene(pnLauncher, windowWidth, windowHeight));
+        masterStage.show();
 
         // Update window resolution triggers
-        stage.widthProperty().addListener(new ChangeListener<Number>() {
+        masterStage.widthProperty().addListener(new ChangeListener<Number>() {
             @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
                 windowWidth = newSceneWidth.intValue();
                 relocatePanes();
             }
         });
-        stage.heightProperty().addListener(new ChangeListener<Number>() {
+        masterStage.heightProperty().addListener(new ChangeListener<Number>() {
             @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
                 windowHeight = newSceneHeight.intValue();
                 relocatePanes();
@@ -146,10 +146,10 @@ public class MasterView extends View {
         });
 
         // Trigger relocators
-        stage.setWidth(windowWidth+1);
-        stage.setWidth(windowWidth);
-        stage.setHeight(windowHeight+1);
-        stage.setHeight(windowHeight);
+        masterStage.setWidth(windowWidth+1);
+        masterStage.setWidth(windowWidth);
+        masterStage.setHeight(windowHeight+1);
+        masterStage.setHeight(windowHeight);
     }
 
     private void buttonActions(){
@@ -227,14 +227,19 @@ public class MasterView extends View {
 
                 int dialogResult = JOptionPane.showConfirmDialog (null, "Druk op Yes voor reversi. Druk op No voor tic-tac-toe","Tijdelijke popup",JOptionPane.YES_NO_OPTION);
                 if(dialogResult == JOptionPane.YES_OPTION){
-                    headPlayersOptions.setVisible(true);
-                    headPlayersOptions.setText("Subscribed to Reversi");
+                    playersOnline.setText("Subscribed to Reversi");
                     controller.subscribe(GameName.REVERSI);
                 }
                 if(dialogResult == JOptionPane.NO_OPTION){
-                    headPlayersOptions.setVisible(true);
-                    headPlayersOptions.setText("Subscribed to Tic-tac-toe");
+                    playersOnline.setText("Subscribed to Tic-tac-toe");
                     controller.subscribe(GameName.TICTACTOE);
+                }
+
+                // If any selected disable challenging
+                if (dialogResult == JOptionPane.YES_OPTION || dialogResult == JOptionPane.NO_OPTION) {
+                    headPlayersOptions.setVisible(false);
+                    playersOnline.setVisible(true);
+                    playerList.setVisible(false);
                 }
             }
         });
