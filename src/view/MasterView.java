@@ -52,7 +52,7 @@ public class MasterView extends View {
     ImageView bgUsernameUse = new ImageView("File:assets/launcher/bgUsernameEdit.png");
 
     // Leaderboard - Textfields
-    Text playersOnline = new Text("Voer rechtsboven een naam in");
+    Text playersOnline = new Text("Er kan geen verbinding worden gemaakt met de server");
 
     // Leaderboard - playerlist
     ListView<String> playerList = new ListView<String>();
@@ -188,13 +188,13 @@ public class MasterView extends View {
             public void handle(ActionEvent event) {
                 if (controller.getLoginName() == null) {
                     String loginStatus = controller.login((usernameEdit.getCharacters().toString()));
-                    System.out.println(loginStatus);
                     if (loginStatus == "ok") {
                         usernameEdit.setDisable(true);
                         bgUsernameUse.setImage(bgUsernameOk);
                         controller.setLoginName(usernameEdit.getCharacters().toString());
                         controller.getPlayerList();
                         btnQuickPlay.setVisible(true);
+                        enableChallengeOptions(false);
                     } else if (loginStatus == "short") {
                         JOptionPane.showConfirmDialog(null, "Deze naam is niet lang genoeg", "Waarschuwing", JOptionPane.CLOSED_OPTION);
                     }
@@ -208,9 +208,8 @@ public class MasterView extends View {
                         controller.setLoginName(null);
                         controller.setRivalName(null);
                         players.clear();
-                        playersOnline.setText("Voer rechtsboven een naam in");
-                        lstPlayersOptions.setVisible(false);
-                        headPlayersOptions.setVisible(false);
+                        //playersOnline.setText("Voer rechtsboven een naam in");
+                        enableChallengeOptions(false);
                     }
                 }
             }
@@ -220,8 +219,7 @@ public class MasterView extends View {
         btnQuickPlay.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                headPlayersOptions.setVisible(false);
-                lstPlayersOptions.setVisible(false);
+                enableChallengeOptions(false);
 
                 int dialogResult = JOptionPane.showConfirmDialog (null, "Druk op Yes voor reversi. Druk op No voor tic-tac-toe","Tijdelijke popup",JOptionPane.YES_NO_OPTION);
                 if(dialogResult == JOptionPane.YES_OPTION){
@@ -320,6 +318,11 @@ public class MasterView extends View {
                 playerList.getSelectionModel().select(sel);
             }
         });
+    }
+
+    private void enableChallengeOptions(boolean state){
+        lstPlayersOptions.setVisible(state);
+        headPlayersOptions.setVisible(state);
     }
 
 
