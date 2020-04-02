@@ -2,34 +2,38 @@ package model.gameitems;
 
 public class ReversiFieldStatus extends FieldStatus {
 
+    public static final int PLAYABLE = -1;
+    public static final int BLACK = 1;
+    public static final int WHITE = 2;
+
     public void setPlayable(){
-        setId(-1);
+        setId(PLAYABLE);
         setValue("*");
     }
 
     public void setBlack(){
-        setId(1);
+        setId(BLACK);
         setValue("X");
     }
 
     public void setWhite(){
-        setId(2);
+        setId(WHITE);
         setValue("O");
     }
 
     public boolean isPlayable(){
-        return getID() == -1;
+        return getID() == PLAYABLE;
     }
 
     public boolean isBlack(){
-        return getID() == 1;
+        return getID() == BLACK;
     }
 
     public boolean isWhite(){
-        return getID() == 2;
+        return getID() == BLACK;
     }
 
     public boolean isCurrentPlayer(int currentPlayer){
-        return getID() == ((currentPlayer == 0) ? 1 : 2);
+        return getID() == ((currentPlayer == 0) ? BLACK : WHITE);
     }
 }
