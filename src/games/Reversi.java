@@ -1,6 +1,7 @@
 package games;
 
 import ai.AI;
+import ai.DefaultReversiAI;
 import ai.OurReversiAI;
 import ai.ReversiAI;
 import controller.GameController;
@@ -22,7 +23,7 @@ public class Reversi extends Game {
         controller = new ReversiController();
         view = new ReversiView(controller);
         model = new ReversiModel(view);
-        ai = new OurReversiAI(model);
+        ai = new DefaultReversiAI(model);
         controller.addModel(model);
         controller.addView(view);
     }
