@@ -141,7 +141,7 @@ public class MasterController extends Controller {
 
                                         System.out.println(words[6].substring(1, words[6].length() -2));
 
-                                        int opponentMove = Integer.parseInt(words[6].substring(0, words[6].length() -1));//Integer.parseInt(words[6]);
+                                        int opponentMove = Integer.parseInt(words[6].substring(1, words[6].length() -2));//Integer.parseInt(words[6]);
                                         //TicTacToeFieldStatus fieldStatusCross = new TicTacToeFieldStatus();
                                         //fieldStatusCross.setCross();
                                         //model.getGame().getModel().setFieldStatus(opponentMove, fieldStatusCross);

@@ -55,7 +55,7 @@ public class ReversiView extends GameView{
                 location.add(i);
                 location.add(j);
                 buttonLocation.put(counter, button);
-                pane.add(button, i, j);
+                pane.add(button, j, i);
                 counter++;
             }
         }

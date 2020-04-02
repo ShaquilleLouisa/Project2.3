@@ -23,7 +23,7 @@ public class Reversi extends Game {
         controller = new ReversiController();
         view = new ReversiView(controller);
         model = new ReversiModel(view);
-        ai = new DefaultReversiAI(model);
+        ai = new OurReversiAI(model);
         controller.addModel(model);
         controller.addView(view);
     }

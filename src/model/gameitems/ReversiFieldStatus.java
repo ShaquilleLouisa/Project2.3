@@ -13,12 +13,12 @@ public class ReversiFieldStatus extends FieldStatus {
 
     public void setBlack(){
         setId(BLACK);
-        setValue("X");
+        setValue("B");
     }
 
     public void setWhite(){
         setId(WHITE);
-        setValue("O");
+        setValue("W");
     }
 
     public boolean isPlayable(){

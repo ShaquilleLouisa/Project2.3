@@ -13,6 +13,7 @@ public class ReversiModel extends GameModel {
     private ReversiView view;
     private int boardSize = 8;
     private boolean[][] validMoves;
+
     public ReversiModel(ReversiView view) {
         this.view = view;
         turns = 0;
@@ -29,10 +30,10 @@ public class ReversiModel extends GameModel {
         white.setWhite();
 
         try {
-            setFieldStatus(28, black);
-            setFieldStatus(29, white);
+            setFieldStatus(27, black);
+            setFieldStatus(28, white);
             setFieldStatus(36, black);
-            setFieldStatus(37, white);
+            setFieldStatus(35, white);
             System.out.println("Board starting positions done!");
         } catch (MoveException e) {
             System.out.println(e);
@@ -42,39 +43,36 @@ public class ReversiModel extends GameModel {
 
     public void setFieldStatus(int move, FieldStatus status) throws MoveException {
         boolean[][] playableMoves = setValidMoves();
-        validMoves = setValidMoves();
-        ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
-        if (player == 1) {
-            fieldStatus.setBlack();
-        } else {
-            fieldStatus.setWhite();
-        }
+        validMoves = playableMoves;// setValidMoves();
+        // ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
 
         ArrayList<Integer> xAndY = board.getMove(move);
         int xPosition = xAndY.get(0);
         int yPosition = xAndY.get(1);
 
-        if (move == 28 || move == 29 || move == 36 || move == 37){
-            board.setFieldStatus(xPosition, yPosition, fieldStatus);
-        }
-        else {
+        if (move == 27 || move == 28 || move == 35 || move == 36) {
+            board.setFieldStatus(xPosition, yPosition, status);
+        } else {
+
             try {
                 if (isPlayable(xPosition, yPosition)) {
-                    board.setFieldStatus(xPosition, yPosition, fieldStatus);
+                    board.setFieldStatus(xPosition, yPosition, status);
                 }
             } catch (MoveException e) {
                 throw e;
             }
-        }
 
-        fieldStatus.setEmpty();
-        for (int x = 0; x < 8; x++) {
-            for (int y = 0; y < 8; y++) {
-                if (playableMoves[x][y] && x != xPosition && y != yPosition)
-                    board.setFieldStatus(x, y, fieldStatus);
-            }
+            board.setFieldStatus(xPosition, yPosition, status);
+
+            // // fieldStatus.setEmpty();
+            // for (int x = 0; x < 8; x++) {
+            // for (int y = 0; y < 8; y++) {
+            // if (playableMoves[x][y] && x != xPosition && y != yPosition)
+            // board.setFieldStatus(x, y, fieldStatus);
+            // }
+            // }
         }
-        view.update(move, fieldStatus);
+        view.update(move, status);
     }
 
     private boolean[][] setValidMoves() {
@@ -83,6 +81,7 @@ public class ReversiModel extends GameModel {
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
         fieldStatus.setPlayable();
         // Set surrounding positions to playable.
+        int counter = 0;
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 boolean isValid = false;
@@ -96,11 +95,13 @@ public class ReversiModel extends GameModel {
                 if (isValid) {
                     try {
                         board.setFieldStatus(x, y, fieldStatus);
+                        view.update(counter, fieldStatus);
                         playableMoves[x][y] = true;
                     } catch (MoveException e) {
                         continue;
                     }
                 }
+                counter++;
             }
         }
         return playableMoves;

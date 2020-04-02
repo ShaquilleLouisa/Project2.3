@@ -6,7 +6,7 @@ public abstract class FieldStatus {
 
     public void setEmpty() {
          setId(0);
-         setValue(" ");
+         setValue("E");
     }
 
     public boolean isEmpty() {

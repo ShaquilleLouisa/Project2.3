@@ -30,6 +30,6 @@ public class OurReversiAI extends AI implements ReversiAI{
 
             }
         }
-        return 0;
+        return 44;
     }
 }
