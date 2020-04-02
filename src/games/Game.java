@@ -3,6 +3,7 @@ package games;
 import ai.AI;
 import exceptions.WrongAIException;
 import model.GameModel;
+import view.GameView;
 
 public abstract class Game {
     AI ai;
@@ -11,4 +12,5 @@ public abstract class Game {
     abstract public int getNextMove();
     abstract public void setMove(int move, boolean isOponent);
     abstract public GameModel getModel();
+    abstract public GameView getView();
 }

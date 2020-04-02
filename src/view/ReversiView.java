@@ -30,7 +30,6 @@ public class ReversiView extends GameView{
         }
     }
 
-    @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("Reversi");
         GridPane pane = new GridPane();
@@ -56,9 +55,6 @@ public class ReversiView extends GameView{
 
 
 
-    public static void main(String[] args) {
-        launch(args);
-    }
 
     @Override
     public void update(int move, FieldStatus fieldStatus) {

@@ -11,6 +11,7 @@ import model.MasterModel;
 import model.Model;
 import model.gameitems.*;
 import view.MasterView;
+import view.TicTacToeView;
 import view.View;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,12 +19,17 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MasterController extends Controller {
     MasterModel model;
     MasterView view;
+    Stage stage;
     private ServerCommunication serverCommunication;
 
     public MasterController() {
@@ -32,6 +38,7 @@ public class MasterController extends Controller {
 
     public void start(Stage stage) {
         // Create control panel
+        this.stage = stage;
         view.start(stage);
 
         serverCommunication.connect();
@@ -43,9 +50,16 @@ public class MasterController extends Controller {
             e.printStackTrace();
         }
 
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                serverCommunication.getPlayerList();
+            }
+        }, 0, 1000);
+
         Thread handleThread = new Thread(() -> {
             while (true) {
-
                 try {
                     handleInput();
                 } catch (MoveException e) {
@@ -65,7 +79,6 @@ public class MasterController extends Controller {
             System.out.println("No connecting with server:handleInput");
         }
         if (originalInput != null) {
-            System.out.println(originalInput);
             String inputLowerCase = originalInput.toLowerCase();
             String[] words = inputLowerCase.split(" ");
             int totalLetters = 0;
@@ -141,12 +154,17 @@ public class MasterController extends Controller {
                             break;
                         case "playerlist":
                             // Send whole playerlist and filter harmful data
-                            String[] playerNames = originalInput.substring(16, originalInput.length() - 2)
-                                    .split("\", ");
-                            for (int i = 0; i < playerNames.length; i++) {
-                                playerNames[i] = playerNames[i].substring(1);
+                            try {
+                                String[] playerNames = originalInput.substring(16, originalInput.length() - 2)
+                                        .split("\", ");
+                                for (int i = 0; i < playerNames.length; i++) {
+                                    playerNames[i] = playerNames[i].substring(1);
+                                }
+                                view.updatePlayerboard(FXCollections.observableArrayList(playerNames));
+                            } catch (Exception e) {
+                                view.updatePlayerboard(FXCollections.observableArrayList());
                             }
-                            view.updatePlayerboard(FXCollections.observableArrayList(playerNames));
+
                             break;
                         case "gamelist":
                             // Send whole playerlist and filter harmful data
@@ -170,14 +188,13 @@ public class MasterController extends Controller {
     }
 
     public String login(String name) {
-        serverCommunication.login(name);
         model.setLoginName(name);
         // subscribe(GameName.TICTACTOE);
         return serverCommunication.login(name);
     }
 
     public void subscribe(GameName game) {
-        if(game == GameName.TICTACTOE) {
+        if (game == GameName.TICTACTOE) {
             TicTacToe ticTacToe = new TicTacToe();
             try {
                 ticTacToe.setAI(new TicTacToeAI(ticTacToe.getModel()));
@@ -185,6 +202,8 @@ public class MasterController extends Controller {
                 System.out.println("FUCK");
             }
             model.setGame(ticTacToe);
+            TicTacToeView ticTacToeView = (TicTacToeView) model.getGame().getView();
+            ticTacToeView.start(stage);
             serverCommunication.subscribe(game);
         } else {
             Reversi reversi = new Reversi();
@@ -241,6 +260,7 @@ public class MasterController extends Controller {
     public void addView(View view) {
         this.view = (MasterView) view;
     }
+
 
     @Override
     public void addModel(Model model) {

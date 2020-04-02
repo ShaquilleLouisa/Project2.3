@@ -100,7 +100,6 @@ public class ServerCommunication {
 
     public void getPlayerList() {
         if (connected == true) {
-            System.out.println("Running");
             try {
                 write("get playerlist");
             } catch (IOException e) {

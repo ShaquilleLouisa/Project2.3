@@ -17,23 +17,15 @@ import java.util.HashMap;
 public class TicTacToeView extends GameView {
     HashMap<Integer, Button> buttonLocation;
     TicTacToeController controller;
-    Stage stage;
     public TicTacToeView() {
 
     }
 
     public TicTacToeView(Controller controller) {
         controller = (TicTacToeController) controller;
-        stage = new Stage();
-        try {
-            start(stage);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
-    @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         stage.setTitle("Hello World!");
         GridPane pane = new GridPane();
         buttonLocation = new HashMap<>();
@@ -66,7 +58,4 @@ public class TicTacToeView extends GameView {
 
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
 }

@@ -7,6 +7,7 @@ import exceptions.MoveException;
 import exceptions.WrongAIException;
 import model.ReversiModel;
 import model.gameitems.ReversiFieldStatus;
+import view.GameView;
 import view.ReversiView;
 
 public class Reversi extends Game {
@@ -25,6 +26,11 @@ public class Reversi extends Game {
 
     public ReversiModel getModel() {
         return model;
+    }
+
+    @Override
+    public GameView getView() {
+        return view;
     }
 
     public int getNextMove() {

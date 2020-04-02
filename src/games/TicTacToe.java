@@ -6,6 +6,7 @@ import exceptions.MoveException;
 import exceptions.WrongAIException;
 import model.TicTacToeModel;
 import model.gameitems.*;
+import view.GameView;
 import view.TicTacToeView;
 import ai.TicTacToeAI;
 import javafx.stage.Stage;
@@ -58,6 +59,12 @@ public class TicTacToe extends Game {
         } catch (MoveException e) {
         }
     }
+
+    @Override
+    public GameView getView() {
+        return view;
+    }
+
 
     // public FieldStatus getFieldStatus(int move) {
     // return model.getFieldStatus(move);

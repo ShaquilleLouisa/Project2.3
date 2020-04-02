@@ -2,6 +2,7 @@ package view;
 
 import controller.MasterController;
 import games.GameName;
+import javafx.application.Application;
 import model.MasterModel;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -66,7 +67,6 @@ public class MasterView extends View {
     // Quick play
     Button btnQuickPlay = new Button("Nu spelen!");
 
-    @Override
     public void start(Stage masterStage) {
         // Define button actions
         buttonActions();
@@ -313,9 +313,6 @@ public class MasterView extends View {
 
 
 
-    public static void main(String[] args) {
-        launch(args);
-    }
 
 //    public void update() {
 //        Platform.runLater(() -> {
