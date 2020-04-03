@@ -30,6 +30,16 @@
 }
 
 
+/* btnQuickPlay */
+#btnQuickPlay {
+    -fx-background-color: white;
+    -fx-padding: 16; /* 0 top 0 bottom*/
+    -fx-border-radius: 1px;
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+}
+
+
 /*  btnP1Online  */
 #btnP1Online {
     -fx-padding: 0;

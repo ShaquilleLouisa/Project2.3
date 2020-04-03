@@ -2,6 +2,7 @@ package view;
 
 import controller.MasterController;
 import games.GameName;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,6 +21,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import javax.swing.*;
 
@@ -134,8 +136,9 @@ public class MasterView extends View {
 
         // Quick player
         pnLauncher.getChildren().add(btnQuickPlay);
-        btnQuickPlay.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        btnQuickPlay.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         btnQuickPlay.setVisible(false);
+        btnQuickPlay.setId("btnQuickPlay");
 
         // Gamemode selection screen
         pnLauncher.getChildren().add(txtOnline);
@@ -144,12 +147,22 @@ public class MasterView extends View {
         txtOnline.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         txtOnline.setLayoutX(128);
         txtOnline.setLayoutY(96);
+
         pnLauncher.getChildren().add(btnP1Online);
         btnP1Online.setVisible(false);
+        btnP1Online.setLayoutX(0);
         btnP1Online.setLayoutY(128);
-        btnP1Online.setLayoutX(128);
         btnP1Online.setGraphic(imgP1Online);
         btnP1Online.setId("btnP1Online");
+
+        pnLauncher.getChildren().add(btnAIOnline);
+        btnAIOnline.setVisible(false);
+        btnAIOnline.setLayoutX(0);
+        btnAIOnline.setLayoutY(128);
+        btnAIOnline.setGraphic(imgAIOnline);
+        btnAIOnline.setId("btnP1Online");
+
+
 
         // Application - Window settings
         players.clear();
@@ -279,6 +292,8 @@ public class MasterView extends View {
                     btnQuickPlay.setText("Nu spelen!");
                 }
 
+                // Update position
+                setQuickPlayPosition();
             }
         });
 
@@ -344,9 +359,20 @@ public class MasterView extends View {
     }
 
     private void setQuickPlayPosition(){
+        // Get smallest dimension
+        int smDimension = windowHeight;
+        if (windowWidth < windowHeight){
+            smDimension = windowWidth;
+        }
+
         // Quick player
-        btnQuickPlay.setLayoutX(windowWidth-256);
+        if (btnQuickPlay.getText() == "Terug") {
+            btnQuickPlay.setLayoutX(64);
+        } else {
+            btnQuickPlay.setLayoutX(windowWidth - windowWidth / 8 - 64);
+        }
         btnQuickPlay.setLayoutY(windowHeight-128);
+        btnQuickPlay.setPrefWidth(windowWidth/8);
 
     }
 
@@ -358,10 +384,18 @@ public class MasterView extends View {
         }
 
         // Online mode button
+        btnP1Online.setTranslateX(128);
         btnP1Online.setPrefHeight(smDimension/6);
         btnP1Online.setPrefWidth(smDimension/6);
         imgP1Online.setFitHeight(smDimension/6);
         imgP1Online.setFitWidth(smDimension/6);
+
+        // Online mode button AI
+        btnAIOnline.setTranslateX(128+(smDimension/24*1)+(smDimension/6));
+        btnAIOnline.setPrefHeight(smDimension/6);
+        btnAIOnline.setPrefWidth(smDimension/6);
+        imgAIOnline.setFitHeight(smDimension/6);
+        imgAIOnline.setFitWidth(smDimension/6);
     }
 
     public int getNameSelected() {
@@ -403,14 +437,22 @@ public class MasterView extends View {
     }
 
     private void selectGameModeScreen(boolean state){
+        // Clear rival name
+        controller.setRivalName(null);
+        playerList.getSelectionModel().select(-1);
+
+        if (state) {
+            enableChallengeOptions(!state);
+        }
+
         // Hide all unrelated items
-        enableChallengeOptions(!state);
         playerList.setVisible(!state);
         playersOnline.setVisible(!state);
 
         // Unhide items
         txtOnline.setVisible(state);
         btnP1Online.setVisible(state);
+        btnAIOnline.setVisible(state);
 
 
 //        OUDE TEST CODE
