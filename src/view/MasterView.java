@@ -2,7 +2,6 @@ package view;
 
 import controller.MasterController;
 import games.GameName;
-import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -21,7 +20,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import javax.swing.*;
 
@@ -348,6 +346,7 @@ public class MasterView extends View {
             public void handle(ActionEvent event) {
 
                 if (btnQuickPlay.getText() == "Nu spelen!") {
+                    lstGameSelectOptions.getSelectionModel().select(-1);
                     selectGameModeScreen(true);
                     btnQuickPlay.setText("Terug");
                     selectGameModeScreenOnlineButtons(true);
@@ -362,11 +361,29 @@ public class MasterView extends View {
             }
         });
 
+        //        OUDE TEST CODE
+//        int dialogResult = JOptionPane.showConfirmDialog (null, "Druk op Yes voor reversi. Druk op No voor tic-tac-toe","Tijdelijke popup",JOptionPane.YES_NO_OPTION);
+//        if(dialogResult == JOptionPane.YES_OPTION){
+//            playersOnline.setText("Subscribed to Reversi");
+//            controller.subscribe(GameName.REVERSI);
+//        }
+//        if(dialogResult == JOptionPane.NO_OPTION){
+//            playersOnline.setText("Subscribed to Tic-tac-toe");
+//            controller.subscribe(GameName.TICTACTOE);
+//        }
+//
+//        // If any selected disable challenging
+//        if (dialogResult == JOptionPane.YES_OPTION || dialogResult == JOptionPane.NO_OPTION) {
+//            headPlayersOptions.setVisible(false);
+//            playersOnline.setVisible(true);
+//        }
+
         // P1 VS P2 -- online
         btnP1Online.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 System.out.println("Button pressed -> P1 VS Online");
+                controller.subscribe(getSelectedGameName());
             }
         });
 
@@ -617,6 +634,15 @@ public class MasterView extends View {
         btnP1vsP2Offline.setDisable(state);
         btnP1vsAIOffline.setDisable(state);
         btnAIvsAIOffline.setDisable(state);
+    }
+
+    private GameName getSelectedGameName(){
+        if (lstGameSelectOptions.getSelectionModel().getSelectedItem().equals("Reversi")) {
+            return GameName.REVERSI;
+        } else if (lstGameSelectOptions.getSelectionModel().getSelectedItem().equals("Tic-tac-toe")) {
+            return GameName.TICTACTOE;
+        }
+        return null;
     }
 
     private void selectGameModeScreen(boolean state){
