@@ -47,10 +47,10 @@ public class ReversiView extends GameView{
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Button button = new Button(""+counter);
-                button.setMinWidth(50);
-                button.setMinHeight(50);
+                button.setMinWidth(80);
+                button.setMinHeight(80);
                 button.setWrapText(true);
-                button.setStyle(String.format("-fx-font-size: %dpx;", (int) (0.45 * 100)));
+                button.setStyle(String.format("-fx-font-size: %dpx;", (int) (0.35 * 80)));
                 ArrayList<Integer> location = new ArrayList<>();
                 location.add(i);
                 location.add(j);

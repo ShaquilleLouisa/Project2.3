@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class ReversiModel extends GameModel {
     private Board board;
     private int turns;
-    private int player = 1;
+    private int player = ReversiFieldStatus.WHITE;
     private ReversiView view;
     private int boardSize = 8;
     private boolean[][] validMoves;
@@ -73,9 +73,28 @@ public class ReversiModel extends GameModel {
 
         boolean[][] playableMoves = new boolean[8][8];
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
+
+        fieldStatus.setEmpty();
+
+        int counter = 0;
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                try {
+                    if (playableMoves[x][y] && board.getFieldStatus(x, y).getID() == ReversiFieldStatus.PLAYABLE) {
+                        System.out.println("" + counter + " " + fieldStatus.getValue());
+                        board.setFieldStatus(x, y, fieldStatus);
+                        view.update(counter, fieldStatus);
+                    }
+                } catch (MoveException e) {
+                    continue;
+                }
+                counter++;
+            }
+        }
+
         fieldStatus.setPlayable();
         // Set surrounding positions to playable.
-        int counter = 0;
+        counter = 0;
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 if (board.getFieldStatus(x, y).getID() == 0) {
@@ -139,10 +158,15 @@ public class ReversiModel extends GameModel {
 
     private boolean validMove(int dr, int dc, int r, int c) {
 
-        if (r + dr < 0 || r + dr > 7) {
+        if (IsOutOfBounds(r + dr, r + dr)) {
             return false;
         }
-        if (c + dc < 0 || c + dc > 7) {
+
+        if (IsOutOfBounds(c + dc, c + dc)) {
+            return false;
+        }
+
+        if (board.getFieldStatus(r + dr, c + dc).getID() == 0) {
             return false;
         }
 
@@ -150,17 +174,12 @@ public class ReversiModel extends GameModel {
             return false;
         }
 
-        if (r + dr + dr < 0 || r + dr + dr > 7) {
+        if (IsOutOfBounds(r + dr + dr, r + dr + dr))
             return false;
-        }
-        if (c + dc + dc < 0 || c + dc + dc > 7) {
-            return false;
-        }
-        // if (IsOutOfBounds(r + dr, c + dc))
-        // return false;
 
-        // if (IsOutOfBounds(r + dr + dr, c + dc + dc))
-        // return false;
+        if (IsOutOfBounds(c + dc + dc, c + dc + dc))
+            return false;
+
         return checkLineMatch(dr, dc, r + dr + dr, c + dc + dc);
     }
 
@@ -172,18 +191,12 @@ public class ReversiModel extends GameModel {
             return false;
         }
 
-        if (r + dr < 0 || r + dr > 7) {
+        if (IsOutOfBounds(r + dr, r + dr)) {
             return false;
         }
-        if (c + dc < 0 || c + dc > 7) {
+        if (IsOutOfBounds(c + dc, c + dc)) {
             return false;
         }
-        // if (IsOutOfBounds(r + dr, r + dr)) {
-        // return false;
-        // }
-        // if (IsOutOfBounds(c + dc, c + dc)) {
-        // return false;
-        // }
         return checkLineMatch(dr, dc, r + dr, c + dc);
     }
 

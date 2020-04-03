@@ -14,12 +14,4 @@ public class TicTacToeFieldStatus extends FieldStatus {
         setId(2);
         setValue("O");
     }
-
-    public boolean isCross(){
-        return getID() == CROSS;
-    }
-
-    public boolean isCircle(){
-        return getID() == CIRCLE;
-    }
 }

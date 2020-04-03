@@ -3,17 +3,12 @@ package model.gameitems;
 public class ReversiFieldStatus extends FieldStatus {
 
     public static final int PLAYABLE = -1;
-    public static final int BLACK = 1;
-    public static final int WHITE = 2;
+    public static final int WHITE = 1;
+    public static final int BLACK = 2;
 
     public void setPlayable(){
         setId(PLAYABLE);
         setValue("*");
-    }
-
-    public void setBlack(){
-        setId(BLACK);
-        setValue("B");
     }
 
     public void setWhite(){
@@ -21,15 +16,8 @@ public class ReversiFieldStatus extends FieldStatus {
         setValue("W");
     }
 
-    public boolean isPlayable(){
-        return getID() == PLAYABLE;
-    }
-
-    public boolean isBlack(){
-        return getID() == BLACK;
-    }
-
-    public boolean isWhite(){
-        return getID() == BLACK;
+    public void setBlack(){
+        setId(BLACK);
+        setValue("B");
     }
 }
