@@ -18,7 +18,7 @@ public class Reversi extends Game {
     private ReversiModel model;
     private ReversiController controller;
     private AI ai;
-    private boolean isFirstMove = true;
+    public static boolean isFirstMove = true;
 
     public Reversi() {
         controller = new ReversiController();
@@ -55,7 +55,11 @@ public class Reversi extends Game {
             fieldStatus.setBlack();
         }
         try {
+            if(isFirstMove && isOponent){
+                model.switchPlayer();
+            }
             model.setFieldStatus(move, fieldStatus);
+            model.flipBoard(move, fieldStatus);
         } catch (MoveException e) {
         }
         isFirstMove = false;
