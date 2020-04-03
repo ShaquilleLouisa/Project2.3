@@ -172,6 +172,10 @@ public class MasterView extends View {
                         lstPlayersOptions.setVisible(false);
                         return;
                     }
+                    // Check if playername is valid
+                    if (playerList.getSelectionModel().getSelectedItem() == null){
+                        return;
+                    }
                     headPlayersOptions.setVisible(true);
                     controller.setRivalName(playerList.getSelectionModel().getSelectedItem());
                     headPlayersOptions.setText(playerList.getSelectionModel().getSelectedItem() + " uitdagen voor een potje");
@@ -187,6 +191,12 @@ public class MasterView extends View {
         lstPlayersOptions.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                // Check if selected game is valid game
+                if (lstPlayersOptions.getSelectionModel().getSelectedItem() == null) {
+                    return;
+                }
+
+                // Challenge rival
                 headPlayersOptions.setText(playerList.getSelectionModel().getSelectedItem() + " is uitgedaagd voor een potje " + lstPlayersOptions.getSelectionModel().getSelectedItem());
                 controller.challengeRival(controller.getRivalName(), lstPlayersOptions.getSelectionModel().getSelectedItem());
             }
@@ -327,6 +337,26 @@ public class MasterView extends View {
             @Override
             public void run() {
                 playerList.getSelectionModel().select(sel);
+
+                // Check if rivalname is set
+                if (controller.getRivalName() == null) {
+                    return;
+                }
+
+                // Check if rivalname is at same position in the list
+                if (controller.getRivalName().equals( playerList.getSelectionModel().getSelectedItem() ) == false) {
+                    for (int i=0; i<players.size(); i++) {
+                        playerList.getSelectionModel().select(i);
+                        if (playerList.getSelectionModel().getSelectedItem().equals(controller.getRivalName())) {
+                            return;
+                        }
+                    }
+                    // Rivalname has left the game
+                    controller.setRivalName(null);
+                    playerList.getSelectionModel().select(null);
+                    enableChallengeOptions(false);
+                }
+
             }
         });
     }
