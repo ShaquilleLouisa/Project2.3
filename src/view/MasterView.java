@@ -70,16 +70,24 @@ public class MasterView extends View {
     // Quick play
     Button btnQuickPlay = new Button("Nu spelen!");
 
-    // Gamemode selection screen
-    Button btnOnline = new Button("");
-    TextField txtOnline = new TextField();
-    ImageView imgOnline = new ImageView("File:assets/launcherStart/modeOnline.png");
+    // Gamemode selection screen - Online
+    Text txtOnline = new Text("Online spelen");
+
+    // P1 VS P2
+    Button btnP1Online = new Button("");
+    ImageView imgP1Online = new ImageView("File:assets/launcherStart/modeP1Online.png");
+
+    // AI VS P2
+    Button btnAIOnline = new Button("");
+    ImageView imgAIOnline = new ImageView("File:assets/launcherStart/modeAIOnline.png");
+
+    // Gamemode selection screen - Offline
 
     public void start(Stage masterStage) {
         buttonActions();
 
         // Pane - background color
-        pnLauncher.setStyle("-fx-background-color: #262626"); // Default background color
+        pnLauncher.setStyle("-fx-background-color: #262626;"); // Default background color
 
         // Username - Background
         pnLauncher.getChildren().add(bgUsernameUse);
@@ -90,6 +98,7 @@ public class MasterView extends View {
 
         // Username - edit name button
         pnLauncher.getChildren().add(btnChangeName);
+        btnChangeName.setId("btnChangeName");
         //ImageView btnUsernameEdit = new ImageView("File:assets/launcher/nameEdit.png");
         btnChangeName.setStyle("-fx-background-color: #262626;");
         btnChangeName.setGraphic(imgUsernameLogin);
@@ -129,17 +138,23 @@ public class MasterView extends View {
         btnQuickPlay.setVisible(false);
 
         // Gamemode selection screen
-        pnLauncher.getChildren().add(btnOnline);
-        btnOnline.setLayoutY(128);
-        btnOnline.setLayoutX(128);
-        btnOnline.setGraphic(imgOnline);
-//        pnLauncher.getChildren().add(txtOnline);
-//        btnOnline.setVisible(false);
-//        txtOnline.setVisible(false);
+        pnLauncher.getChildren().add(txtOnline);
+        txtOnline.setVisible(false);
+        txtOnline.setFill(Color.WHITE);
+        txtOnline.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        txtOnline.setLayoutX(128);
+        txtOnline.setLayoutY(96);
+        pnLauncher.getChildren().add(btnP1Online);
+        btnP1Online.setVisible(false);
+        btnP1Online.setLayoutY(128);
+        btnP1Online.setLayoutX(128);
+        btnP1Online.setGraphic(imgP1Online);
+        btnP1Online.setId("btnP1Online");
 
         // Application - Window settings
         players.clear();
         scene = new Scene(pnLauncher, windowWidth, windowHeight);
+        scene.getStylesheets().add("File:assets/css/buttons.css");
         // Define button actions
         masterStage.setTitle("Epic game launcher");
         masterStage.setMinWidth(1024);
@@ -255,7 +270,15 @@ public class MasterView extends View {
         btnQuickPlay.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                selectGameMode();
+
+                if (btnQuickPlay.getText() == "Nu spelen!") {
+                    selectGameModeScreen(true);
+                    btnQuickPlay.setText("Terug");
+                } else {
+                    selectGameModeScreen(false);
+                    btnQuickPlay.setText("Nu spelen!");
+                }
+
             }
         });
 
@@ -335,10 +358,10 @@ public class MasterView extends View {
         }
 
         // Online mode button
-        btnOnline.setPrefHeight(smDimension/6);
-        btnOnline.setPrefWidth(smDimension/6);
-        imgOnline.setFitHeight(smDimension/6);
-        imgOnline.setFitWidth(smDimension/6);
+        btnP1Online.setPrefHeight(smDimension/6);
+        btnP1Online.setPrefWidth(smDimension/6);
+        imgP1Online.setFitHeight(smDimension/6);
+        imgP1Online.setFitWidth(smDimension/6);
     }
 
     public int getNameSelected() {
@@ -379,11 +402,15 @@ public class MasterView extends View {
         headPlayersOptions.setVisible(state);
     }
 
-    private void selectGameMode(){
+    private void selectGameModeScreen(boolean state){
         // Hide all unrelated items
-        enableChallengeOptions(false);
-        playerList.setVisible(false);
-        playersOnline.setVisible(false);
+        enableChallengeOptions(!state);
+        playerList.setVisible(!state);
+        playersOnline.setVisible(!state);
+
+        // Unhide items
+        txtOnline.setVisible(state);
+        btnP1Online.setVisible(state);
 
 
 //        OUDE TEST CODE

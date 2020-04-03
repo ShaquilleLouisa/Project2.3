@@ -1,0 +1,57 @@
+/*
+    Online knoppen
+    - P1 VS P2
+    AI VS P2
+
+    Offline knoppen
+    P1 VS P2
+    P1 VS COM
+    COM VS COM
+*/
+
+/*  Default styles  */
+.button {
+    -fx-border-width: 0px;
+}
+
+
+/*  btnChangeName  */
+#btnChangeName {
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );
+}
+
+#btnChangeName:hover {
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );
+    -fx-border-color: #262626;
+    -fx-border-width: 2px;
+    -fx-border-radius: 2px;
+	-fx-translate-y: -2px;
+	-fx-translate-x: -2px;
+}
+
+
+/*  btnP1Online  */
+#btnP1Online {
+    -fx-padding: 0;
+    -fx-border-color: #4b4b4b;
+    -fx-border-width: 8px;
+    -fx-border-radius: 2px;
+    -fx-translate-y: -4px;
+    -fx-background-color: #262626;
+}
+
+#btnP1Online:hover {
+    -fx-padding: 0;
+    -fx-border-color: white;
+    -fx-border-width: 8px;
+    -fx-border-radius: 2px;
+    -fx-translate-y: -4px;
+}
+
+#btnP1Online:pressed {
+    -fx-padding: 0;
+    -fx-border-color: #fbff00;
+    -fx-border-width: 8px;
+    -fx-border-radius: 2px;
+    -fx-translate-y: -4px;
+}
