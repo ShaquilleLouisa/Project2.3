@@ -70,6 +70,11 @@ public class MasterView extends View {
     // Quick play
     Button btnQuickPlay = new Button("Nu spelen!");
 
+    // Gamemode selection screen
+    Button btnOnline = new Button("");
+    TextField txtOnline = new TextField();
+    ImageView imgOnline = new ImageView("File:assets/launcherStart/modeOnline.png");
+
     public void start(Stage masterStage) {
         buttonActions();
 
@@ -122,6 +127,15 @@ public class MasterView extends View {
         pnLauncher.getChildren().add(btnQuickPlay);
         btnQuickPlay.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         btnQuickPlay.setVisible(false);
+
+        // Gamemode selection screen
+        pnLauncher.getChildren().add(btnOnline);
+        btnOnline.setLayoutY(128);
+        btnOnline.setLayoutX(128);
+        btnOnline.setGraphic(imgOnline);
+//        pnLauncher.getChildren().add(txtOnline);
+//        btnOnline.setVisible(false);
+//        txtOnline.setVisible(false);
 
         // Application - Window settings
         players.clear();
@@ -241,23 +255,7 @@ public class MasterView extends View {
         btnQuickPlay.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                enableChallengeOptions(false);
-
-                int dialogResult = JOptionPane.showConfirmDialog (null, "Druk op Yes voor reversi. Druk op No voor tic-tac-toe","Tijdelijke popup",JOptionPane.YES_NO_OPTION);
-                if(dialogResult == JOptionPane.YES_OPTION){
-                    playersOnline.setText("Subscribed to Reversi");
-                    controller.subscribe(GameName.REVERSI);
-                }
-                if(dialogResult == JOptionPane.NO_OPTION){
-                    playersOnline.setText("Subscribed to Tic-tac-toe");
-                    controller.subscribe(GameName.TICTACTOE);
-                }
-
-                // If any selected disable challenging
-                if (dialogResult == JOptionPane.YES_OPTION || dialogResult == JOptionPane.NO_OPTION) {
-                    headPlayersOptions.setVisible(false);
-                    playersOnline.setVisible(true);
-                }
+                selectGameMode();
             }
         });
 
@@ -293,6 +291,7 @@ public class MasterView extends View {
         setUsernamePosition();
         setLeaderboardPosition();
         setQuickPlayPosition();
+        setGameModePosition();
     }
 
     private void setUsernamePosition(){
@@ -326,6 +325,20 @@ public class MasterView extends View {
         btnQuickPlay.setLayoutX(windowWidth-256);
         btnQuickPlay.setLayoutY(windowHeight-128);
 
+    }
+
+    private void setGameModePosition(){
+        // Get smallest dimension
+        int smDimension = windowHeight;
+        if (windowWidth < windowHeight){
+            smDimension = windowWidth;
+        }
+
+        // Online mode button
+        btnOnline.setPrefHeight(smDimension/6);
+        btnOnline.setPrefWidth(smDimension/6);
+        imgOnline.setFitHeight(smDimension/6);
+        imgOnline.setFitWidth(smDimension/6);
     }
 
     public int getNameSelected() {
@@ -366,7 +379,30 @@ public class MasterView extends View {
         headPlayersOptions.setVisible(state);
     }
 
+    private void selectGameMode(){
+        // Hide all unrelated items
+        enableChallengeOptions(false);
+        playerList.setVisible(false);
+        playersOnline.setVisible(false);
 
+
+//        OUDE TEST CODE
+//        int dialogResult = JOptionPane.showConfirmDialog (null, "Druk op Yes voor reversi. Druk op No voor tic-tac-toe","Tijdelijke popup",JOptionPane.YES_NO_OPTION);
+//        if(dialogResult == JOptionPane.YES_OPTION){
+//            playersOnline.setText("Subscribed to Reversi");
+//            controller.subscribe(GameName.REVERSI);
+//        }
+//        if(dialogResult == JOptionPane.NO_OPTION){
+//            playersOnline.setText("Subscribed to Tic-tac-toe");
+//            controller.subscribe(GameName.TICTACTOE);
+//        }
+//
+//        // If any selected disable challenging
+//        if (dialogResult == JOptionPane.YES_OPTION || dialogResult == JOptionPane.NO_OPTION) {
+//            headPlayersOptions.setVisible(false);
+//            playersOnline.setVisible(true);
+//        }
+    }
 
 
 //    public void update() {
