@@ -66,7 +66,7 @@ public class MasterView extends View {
     ObservableList<String> players = FXCollections.observableArrayList ("");
     // Leaderboard - player options list
     ListView<String> lstPlayersOptions = new ListView<String>();
-    ObservableList<String> datPlayersOptions = FXCollections.observableArrayList ("Oei");
+    ObservableList<String> datPlayersOptions = FXCollections.observableArrayList ("");
     Text headPlayersOptions = new Text("ERROR");
 
     // Quick play
@@ -74,6 +74,9 @@ public class MasterView extends View {
 
     // Gamemode selection screen - Online
     Text txtOnline = new Text("Online spelen");
+
+    // Gamemode selection screen - Online
+    Text txtSpellen = new Text("Spellen");
 
     // P1 VS P2 - online
     Button btnP1Online = new Button("");
@@ -98,9 +101,10 @@ public class MasterView extends View {
     Button btnAIvsAIOffline = new Button("");
     ImageView imgAIvsAIOffline = new ImageView("File:assets/launcherStart/modeAIvsAIOffline.png");
 
+    ListView<String> lstGameSelectOptions = new ListView<String>();
+
     public void start(Stage masterStage) {
         buttonActions();
-
         // Pane - background color
         pnLauncher.setStyle("-fx-background-color: #262626;"); // Default background color
 
@@ -161,6 +165,14 @@ public class MasterView extends View {
         txtOnline.setLayoutX(128);
         txtOnline.setLayoutY(96);
 
+        // Text spellen - Online
+        pnLauncher.getChildren().add(txtSpellen);
+        txtSpellen.setVisible(false);
+        txtSpellen.setFill(Color.WHITE);
+        txtSpellen.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        txtSpellen.setLayoutX(64);
+        txtSpellen.setLayoutY(96);
+
         pnLauncher.getChildren().add(btnP1Online);
         btnP1Online.setVisible(false);
         btnP1Online.setLayoutY(128);
@@ -197,6 +209,15 @@ public class MasterView extends View {
         btnAIvsAIOffline.setVisible(false);
         btnAIvsAIOffline.setGraphic(imgAIvsAIOffline);
         btnAIvsAIOffline.setId("btnP1Online");
+
+        // Quick player game options
+        pnLauncher.getChildren().add(lstGameSelectOptions);
+        lstGameSelectOptions.setItems(datPlayersOptions);
+        lstGameSelectOptions.setStyle("-fx-font-size:24.0;");
+        lstGameSelectOptions.setVisible(false);
+        lstGameSelectOptions.setLayoutY(128);
+        lstGameSelectOptions.setLayoutX(64);
+        lstGameSelectOptions.setPrefWidth(256);
 
         // Application - Window settings
         players.clear();
@@ -255,7 +276,6 @@ public class MasterView extends View {
                     headPlayersOptions.setVisible(true);
                     controller.setRivalName(playerList.getSelectionModel().getSelectedItem());
                     headPlayersOptions.setText(playerList.getSelectionModel().getSelectedItem() + " uitdagen voor een potje");
-                    controller.getGameList();
                     lstPlayersOptions.setVisible(true);
                 } catch(Exception e) {
                     System.out.println("playerList:empty");
@@ -292,6 +312,13 @@ public class MasterView extends View {
                         btnQuickPlay.setVisible(true);
                         enableChallengeOptions(false);
                         btnChangeName.setGraphic(imgUsernameEdit);
+                        controller.getGameList();
+                        // Update state of online buttons
+                        if (lstGameSelectOptions.getSelectionModel().getSelectedItem() != null) {
+                            if (controller.getLoginName() != null) {
+                                selectGameModeScreenOnlineButtons(false);
+                            }
+                        }
                     } else if (loginStatus == "short") {
                         JOptionPane.showConfirmDialog(null, "Deze naam is niet lang genoeg", "Waarschuwing", JOptionPane.CLOSED_OPTION);
                     }
@@ -308,6 +335,8 @@ public class MasterView extends View {
                         //playersOnline.setText("Voer rechtsboven een naam in");
                         enableChallengeOptions(false);
                         btnChangeName.setGraphic(imgUsernameLogin);
+                        // Update state of online buttons
+                        selectGameModeScreenOnlineButtons(true);
                     }
                 }
             }
@@ -321,6 +350,8 @@ public class MasterView extends View {
                 if (btnQuickPlay.getText() == "Nu spelen!") {
                     selectGameModeScreen(true);
                     btnQuickPlay.setText("Terug");
+                    selectGameModeScreenOnlineButtons(true);
+                    selectGameModeScreenOfflineButtons(true);
                 } else {
                     selectGameModeScreen(false);
                     btnQuickPlay.setText("Nu spelen!");
@@ -372,6 +403,38 @@ public class MasterView extends View {
             public void handle(ActionEvent event) {
                 System.out.println("Button pressed -> AI VS AI");
 
+            }
+        });
+
+        lstGameSelectOptions.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (lstGameSelectOptions.getSelectionModel().getSelectedItem() != null){
+                    if (controller.getLoginName() != null) {
+                        selectGameModeScreenOnlineButtons(false);
+                        selectGameModeScreenOfflineButtons(false);
+                        return;
+                    }
+                    selectGameModeScreenOfflineButtons(false);
+                }
+//                try {
+//                    if (controller.getLoginName() == null) {
+//                        headPlayersOptions.setVisible(true);
+//                        headPlayersOptions.setText("Je moet ingelogt zijn om iemand uit te dagen");
+//                        lstPlayersOptions.setVisible(false);
+//                        return;
+//                    }
+//                    // Check if playername is valid
+//                    if (playerList.getSelectionModel().getSelectedItem() == null){
+//                        return;
+//                    }
+//                    headPlayersOptions.setVisible(true);
+//                    controller.setRivalName(playerList.getSelectionModel().getSelectedItem());
+//                    headPlayersOptions.setText(playerList.getSelectionModel().getSelectedItem() + " uitdagen voor een potje");
+//                    lstPlayersOptions.setVisible(true);
+//                } catch(Exception e) {
+//                    System.out.println("playerList:empty");
+//                }
             }
         });
     }
@@ -460,15 +523,20 @@ public class MasterView extends View {
             smDimension = windowWidth;
         }
 
+        int gameListWidth = 256;
+
+        txtOffline.setLayoutX(gameListWidth+128);
+        txtOnline.setLayoutX(gameListWidth+128);
+
         // Online mode button
-        btnP1Online.setTranslateX(128);
+        btnP1Online.setTranslateX(gameListWidth+128);
         btnP1Online.setPrefHeight(smDimension/6);
         btnP1Online.setPrefWidth(smDimension/6);
         imgP1Online.setFitHeight(smDimension/6);
         imgP1Online.setFitWidth(smDimension/6);
 
         // Online mode button AI
-        btnAIOnline.setTranslateX(128+(smDimension/24*1)+(smDimension/6));
+        btnAIOnline.setTranslateX(gameListWidth+128+(smDimension/24*1)+(smDimension/6));
         btnAIOnline.setPrefHeight(smDimension/6);
         btnAIOnline.setPrefWidth(smDimension/6);
         imgAIOnline.setFitHeight(smDimension/6);
@@ -477,7 +545,7 @@ public class MasterView extends View {
         // Offline mode button AI
         txtOffline.setTranslateY(96+96+(smDimension/6));
         btnP1vsP2Offline.setTranslateY(96+128+(smDimension/6));
-        btnP1vsP2Offline.setTranslateX(128);
+        btnP1vsP2Offline.setTranslateX(gameListWidth+128);
         btnP1vsP2Offline.setPrefHeight(smDimension/6);
         btnP1vsP2Offline.setPrefWidth(smDimension/6);
         imgP1vsP2Offline.setFitHeight(smDimension/6);
@@ -485,7 +553,7 @@ public class MasterView extends View {
 
         // Offline mode button AI
         btnP1vsAIOffline.setTranslateY(96+128+(smDimension/6));
-        btnP1vsAIOffline.setTranslateX(128+(smDimension/24*1)+(smDimension/6));
+        btnP1vsAIOffline.setTranslateX(gameListWidth+128+(smDimension/24*1)+(smDimension/6));
         btnP1vsAIOffline.setPrefHeight(smDimension/6);
         btnP1vsAIOffline.setPrefWidth(smDimension/6);
         imgP1vsAIOffline.setFitHeight(smDimension/6);
@@ -493,11 +561,13 @@ public class MasterView extends View {
 
         // Offline mode button AI
         btnAIvsAIOffline.setTranslateY(96+128+(smDimension/6));
-        btnAIvsAIOffline.setTranslateX(128+(smDimension/24*2)+(smDimension/6)*2);
+        btnAIvsAIOffline.setTranslateX(gameListWidth+128+(smDimension/24*2)+(smDimension/6)*2);
         btnAIvsAIOffline.setPrefHeight(smDimension/6);
         btnAIvsAIOffline.setPrefWidth(smDimension/6);
         imgAIvsAIOffline.setFitHeight(smDimension/6);
         imgAIvsAIOffline.setFitWidth(smDimension/6);
+
+        lstGameSelectOptions.setPrefHeight(windowHeight*0.5);
     }
 
     public int getNameSelected() {
@@ -538,6 +608,17 @@ public class MasterView extends View {
         headPlayersOptions.setVisible(state);
     }
 
+    private void selectGameModeScreenOnlineButtons(boolean state){
+        btnP1Online.setDisable(state);
+        btnAIOnline.setDisable(state);
+    }
+
+    private void selectGameModeScreenOfflineButtons(boolean state){
+        btnP1vsP2Offline.setDisable(state);
+        btnP1vsAIOffline.setDisable(state);
+        btnAIvsAIOffline.setDisable(state);
+    }
+
     private void selectGameModeScreen(boolean state){
         // Clear rival name
         controller.setRivalName(null);
@@ -551,6 +632,8 @@ public class MasterView extends View {
         playerList.setVisible(!state);
         playersOnline.setVisible(!state);
 
+        txtSpellen.setVisible(state);
+
         // Unhide items - online
         txtOnline.setVisible(state);
         btnP1Online.setVisible(state);
@@ -562,6 +645,7 @@ public class MasterView extends View {
         btnP1vsP2Offline.setVisible(state);
         btnP1vsAIOffline.setVisible(state);
         btnAIvsAIOffline.setVisible(state);
+        lstGameSelectOptions.setVisible(state);
 
 
 //        OUDE TEST CODE
