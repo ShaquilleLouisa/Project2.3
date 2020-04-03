@@ -56,6 +56,7 @@ public class Reversi extends Game {
         }
         try {
             model.setFieldStatus(move, fieldStatus);
+            model.flipBoard(move, fieldStatus);
         } catch (MoveException e) {
         }
         isFirstMove = false;

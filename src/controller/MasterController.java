@@ -147,6 +147,7 @@ public class MasterController extends Controller {
                                         //model.getGame().getModel().setFieldStatus(opponentMove, fieldStatusCross);
                                         System.out.println("opponentMove: " + opponentMove);
                                         model.getGame().setMove(opponentMove, true);
+
                                     }
                                     break;
                             }
