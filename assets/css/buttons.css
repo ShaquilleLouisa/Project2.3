@@ -46,7 +46,6 @@
     -fx-border-color: #4b4b4b;
     -fx-border-width: 8px;
     -fx-border-radius: 2px;
-    -fx-translate-y: -4px;
     -fx-background-color: #262626;
 }
 
@@ -55,7 +54,6 @@
     -fx-border-color: white;
     -fx-border-width: 8px;
     -fx-border-radius: 2px;
-    -fx-translate-y: -4px;
 }
 
 #btnP1Online:pressed {
@@ -63,5 +61,4 @@
     -fx-border-color: #fbff00;
     -fx-border-width: 8px;
     -fx-border-radius: 2px;
-    -fx-translate-y: -4px;
 }

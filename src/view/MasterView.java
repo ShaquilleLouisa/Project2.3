@@ -75,15 +75,28 @@ public class MasterView extends View {
     // Gamemode selection screen - Online
     Text txtOnline = new Text("Online spelen");
 
-    // P1 VS P2
+    // P1 VS P2 - online
     Button btnP1Online = new Button("");
     ImageView imgP1Online = new ImageView("File:assets/launcherStart/modeP1Online.png");
 
-    // AI VS P2
+    // AI VS P2 - online
     Button btnAIOnline = new Button("");
     ImageView imgAIOnline = new ImageView("File:assets/launcherStart/modeAIOnline.png");
 
     // Gamemode selection screen - Offline
+    Text txtOffline = new Text("Offline spelen");
+
+    // P1 VS P2 - offline
+    Button btnP1vsP2Offline = new Button("");
+    ImageView imgP1vsP2Offline = new ImageView("File:assets/launcherStart/modeP1vsP2Offline.png");
+
+    // P1 VS COM - offline
+    Button btnP1vsAIOffline = new Button("");
+    ImageView imgP1vsAIOffline = new ImageView("File:assets/launcherStart/modeP1vsAIOffline.png");
+
+    // COM VS COM - offline
+    Button btnAIvsAIOffline = new Button("");
+    ImageView imgAIvsAIOffline = new ImageView("File:assets/launcherStart/modeAIvsAIOffline.png");
 
     public void start(Stage masterStage) {
         buttonActions();
@@ -140,7 +153,7 @@ public class MasterView extends View {
         btnQuickPlay.setVisible(false);
         btnQuickPlay.setId("btnQuickPlay");
 
-        // Gamemode selection screen
+        // Gamemode selection screen - Online
         pnLauncher.getChildren().add(txtOnline);
         txtOnline.setVisible(false);
         txtOnline.setFill(Color.WHITE);
@@ -150,19 +163,40 @@ public class MasterView extends View {
 
         pnLauncher.getChildren().add(btnP1Online);
         btnP1Online.setVisible(false);
-        btnP1Online.setLayoutX(0);
         btnP1Online.setLayoutY(128);
         btnP1Online.setGraphic(imgP1Online);
         btnP1Online.setId("btnP1Online");
 
         pnLauncher.getChildren().add(btnAIOnline);
         btnAIOnline.setVisible(false);
-        btnAIOnline.setLayoutX(0);
         btnAIOnline.setLayoutY(128);
         btnAIOnline.setGraphic(imgAIOnline);
         btnAIOnline.setId("btnP1Online");
 
+        // Gamemode selection screen - Offline
+        pnLauncher.getChildren().add(txtOffline);
+        txtOffline.setVisible(false);
+        txtOffline.setFill(Color.WHITE);
+        txtOffline.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        txtOffline.setLayoutX(128);
 
+        // btnP1vsP2Offline - offline
+        pnLauncher.getChildren().add(btnP1vsP2Offline);
+        btnP1vsP2Offline.setVisible(false);
+        btnP1vsP2Offline.setGraphic(imgP1vsP2Offline);
+        btnP1vsP2Offline.setId("btnP1Online");
+
+        // btnP1vsAIOffline - offline
+        pnLauncher.getChildren().add(btnP1vsAIOffline);
+        btnP1vsAIOffline.setVisible(false);
+        btnP1vsAIOffline.setGraphic(imgP1vsAIOffline);
+        btnP1vsAIOffline.setId("btnP1Online");
+
+        // btnAIvsAIOffline - offline
+        pnLauncher.getChildren().add(btnAIvsAIOffline);
+        btnAIvsAIOffline.setVisible(false);
+        btnAIvsAIOffline.setGraphic(imgAIvsAIOffline);
+        btnAIvsAIOffline.setId("btnP1Online");
 
         // Application - Window settings
         players.clear();
@@ -297,6 +331,49 @@ public class MasterView extends View {
             }
         });
 
+        // P1 VS P2 -- online
+        btnP1Online.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Button pressed -> P1 VS Online");
+            }
+        });
+
+        // AI VS P2 -- online
+        btnAIOnline.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Button pressed -> AI VS Online");
+
+            }
+        });
+
+        // P1 VS P2 -- offline
+        btnP1vsP2Offline.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Button pressed -> P1 VS P2");
+
+            }
+        });
+
+        // P1 VS AI -- offline
+        btnP1vsAIOffline.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Button pressed -> P1 VS AI");
+
+            }
+        });
+
+        // AI VS AI -- offline
+        btnAIvsAIOffline.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Button pressed -> AI VS AI");
+
+            }
+        });
     }
 
 
@@ -396,6 +473,31 @@ public class MasterView extends View {
         btnAIOnline.setPrefWidth(smDimension/6);
         imgAIOnline.setFitHeight(smDimension/6);
         imgAIOnline.setFitWidth(smDimension/6);
+
+        // Offline mode button AI
+        txtOffline.setTranslateY(96+96+(smDimension/6));
+        btnP1vsP2Offline.setTranslateY(96+128+(smDimension/6));
+        btnP1vsP2Offline.setTranslateX(128);
+        btnP1vsP2Offline.setPrefHeight(smDimension/6);
+        btnP1vsP2Offline.setPrefWidth(smDimension/6);
+        imgP1vsP2Offline.setFitHeight(smDimension/6);
+        imgP1vsP2Offline.setFitWidth(smDimension/6);
+
+        // Offline mode button AI
+        btnP1vsAIOffline.setTranslateY(96+128+(smDimension/6));
+        btnP1vsAIOffline.setTranslateX(128+(smDimension/24*1)+(smDimension/6));
+        btnP1vsAIOffline.setPrefHeight(smDimension/6);
+        btnP1vsAIOffline.setPrefWidth(smDimension/6);
+        imgP1vsAIOffline.setFitHeight(smDimension/6);
+        imgP1vsAIOffline.setFitWidth(smDimension/6);
+
+        // Offline mode button AI
+        btnAIvsAIOffline.setTranslateY(96+128+(smDimension/6));
+        btnAIvsAIOffline.setTranslateX(128+(smDimension/24*2)+(smDimension/6)*2);
+        btnAIvsAIOffline.setPrefHeight(smDimension/6);
+        btnAIvsAIOffline.setPrefWidth(smDimension/6);
+        imgAIvsAIOffline.setFitHeight(smDimension/6);
+        imgAIvsAIOffline.setFitWidth(smDimension/6);
     }
 
     public int getNameSelected() {
@@ -449,10 +551,17 @@ public class MasterView extends View {
         playerList.setVisible(!state);
         playersOnline.setVisible(!state);
 
-        // Unhide items
+        // Unhide items - online
         txtOnline.setVisible(state);
         btnP1Online.setVisible(state);
         btnAIOnline.setVisible(state);
+
+        // Offline
+        txtOffline.setVisible(state);
+        btnP1Online.setVisible(state);
+        btnP1vsP2Offline.setVisible(state);
+        btnP1vsAIOffline.setVisible(state);
+        btnAIvsAIOffline.setVisible(state);
 
 
 //        OUDE TEST CODE
