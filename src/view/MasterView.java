@@ -64,17 +64,47 @@ public class MasterView extends View {
     ObservableList<String> players = FXCollections.observableArrayList ("");
     // Leaderboard - player options list
     ListView<String> lstPlayersOptions = new ListView<String>();
-    ObservableList<String> datPlayersOptions = FXCollections.observableArrayList ("Oei");
+    ObservableList<String> datPlayersOptions = FXCollections.observableArrayList ("");
     Text headPlayersOptions = new Text("ERROR");
 
     // Quick play
     Button btnQuickPlay = new Button("Nu spelen!");
 
+    // Gamemode selection screen - Online
+    Text txtOnline = new Text("Online spelen");
+
+    // Gamemode selection screen - Online
+    Text txtSpellen = new Text("Spellen");
+
+    // P1 VS P2 - online
+    Button btnP1Online = new Button("");
+    ImageView imgP1Online = new ImageView("File:assets/launcherStart/modeP1Online.png");
+
+    // AI VS P2 - online
+    Button btnAIOnline = new Button("");
+    ImageView imgAIOnline = new ImageView("File:assets/launcherStart/modeAIOnline.png");
+
+    // Gamemode selection screen - Offline
+    Text txtOffline = new Text("Offline spelen");
+
+    // P1 VS P2 - offline
+    Button btnP1vsP2Offline = new Button("");
+    ImageView imgP1vsP2Offline = new ImageView("File:assets/launcherStart/modeP1vsP2Offline.png");
+
+    // P1 VS COM - offline
+    Button btnP1vsAIOffline = new Button("");
+    ImageView imgP1vsAIOffline = new ImageView("File:assets/launcherStart/modeP1vsAIOffline.png");
+
+    // COM VS COM - offline
+    Button btnAIvsAIOffline = new Button("");
+    ImageView imgAIvsAIOffline = new ImageView("File:assets/launcherStart/modeAIvsAIOffline.png");
+
+    ListView<String> lstGameSelectOptions = new ListView<String>();
+
     public void start(Stage masterStage) {
         buttonActions();
-
         // Pane - background color
-        pnLauncher.setStyle("-fx-background-color: #262626"); // Default background color
+        pnLauncher.setStyle("-fx-background-color: #262626;"); // Default background color
 
         // Username - Background
         pnLauncher.getChildren().add(bgUsernameUse);
@@ -85,6 +115,7 @@ public class MasterView extends View {
 
         // Username - edit name button
         pnLauncher.getChildren().add(btnChangeName);
+        btnChangeName.setId("btnChangeName");
         //ImageView btnUsernameEdit = new ImageView("File:assets/launcher/nameEdit.png");
         btnChangeName.setStyle("-fx-background-color: #262626;");
         btnChangeName.setGraphic(imgUsernameLogin);
@@ -120,12 +151,76 @@ public class MasterView extends View {
 
         // Quick player
         pnLauncher.getChildren().add(btnQuickPlay);
-        btnQuickPlay.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        btnQuickPlay.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         btnQuickPlay.setVisible(false);
+        btnQuickPlay.setId("btnQuickPlay");
+
+        // Gamemode selection screen - Online
+        pnLauncher.getChildren().add(txtOnline);
+        txtOnline.setVisible(false);
+        txtOnline.setFill(Color.WHITE);
+        txtOnline.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        txtOnline.setLayoutX(128);
+        txtOnline.setLayoutY(96);
+
+        // Text spellen - Online
+        pnLauncher.getChildren().add(txtSpellen);
+        txtSpellen.setVisible(false);
+        txtSpellen.setFill(Color.WHITE);
+        txtSpellen.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        txtSpellen.setLayoutX(64);
+        txtSpellen.setLayoutY(96);
+
+        pnLauncher.getChildren().add(btnP1Online);
+        btnP1Online.setVisible(false);
+        btnP1Online.setLayoutY(128);
+        btnP1Online.setGraphic(imgP1Online);
+        btnP1Online.setId("btnP1Online");
+
+        pnLauncher.getChildren().add(btnAIOnline);
+        btnAIOnline.setVisible(false);
+        btnAIOnline.setLayoutY(128);
+        btnAIOnline.setGraphic(imgAIOnline);
+        btnAIOnline.setId("btnP1Online");
+
+        // Gamemode selection screen - Offline
+        pnLauncher.getChildren().add(txtOffline);
+        txtOffline.setVisible(false);
+        txtOffline.setFill(Color.WHITE);
+        txtOffline.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        txtOffline.setLayoutX(128);
+
+        // btnP1vsP2Offline - offline
+        pnLauncher.getChildren().add(btnP1vsP2Offline);
+        btnP1vsP2Offline.setVisible(false);
+        btnP1vsP2Offline.setGraphic(imgP1vsP2Offline);
+        btnP1vsP2Offline.setId("btnP1Online");
+
+        // btnP1vsAIOffline - offline
+        pnLauncher.getChildren().add(btnP1vsAIOffline);
+        btnP1vsAIOffline.setVisible(false);
+        btnP1vsAIOffline.setGraphic(imgP1vsAIOffline);
+        btnP1vsAIOffline.setId("btnP1Online");
+
+        // btnAIvsAIOffline - offline
+        pnLauncher.getChildren().add(btnAIvsAIOffline);
+        btnAIvsAIOffline.setVisible(false);
+        btnAIvsAIOffline.setGraphic(imgAIvsAIOffline);
+        btnAIvsAIOffline.setId("btnP1Online");
+
+        // Quick player game options
+        pnLauncher.getChildren().add(lstGameSelectOptions);
+        lstGameSelectOptions.setItems(datPlayersOptions);
+        lstGameSelectOptions.setStyle("-fx-font-size:24.0;");
+        lstGameSelectOptions.setVisible(false);
+        lstGameSelectOptions.setLayoutY(128);
+        lstGameSelectOptions.setLayoutX(64);
+        lstGameSelectOptions.setPrefWidth(256);
 
         // Application - Window settings
         players.clear();
         scene = new Scene(pnLauncher, windowWidth, windowHeight);
+        scene.getStylesheets().add("File:assets/css/buttons.css");
         // Define button actions
         masterStage.setTitle("Epic game launcher");
         masterStage.setMinWidth(1024);
@@ -179,7 +274,6 @@ public class MasterView extends View {
                     headPlayersOptions.setVisible(true);
                     controller.setRivalName(playerList.getSelectionModel().getSelectedItem());
                     headPlayersOptions.setText(playerList.getSelectionModel().getSelectedItem() + " uitdagen voor een potje");
-                    controller.getGameList();
                     lstPlayersOptions.setVisible(true);
                 } catch(Exception e) {
                     System.out.println("playerList:empty");
@@ -216,6 +310,13 @@ public class MasterView extends View {
                         btnQuickPlay.setVisible(true);
                         enableChallengeOptions(false);
                         btnChangeName.setGraphic(imgUsernameEdit);
+                        controller.getGameList();
+                        // Update state of online buttons
+                        if (lstGameSelectOptions.getSelectionModel().getSelectedItem() != null) {
+                            if (controller.getLoginName() != null) {
+                                selectGameModeScreenOnlineButtons(false);
+                            }
+                        }
                     } else if (loginStatus == "short") {
                         JOptionPane.showConfirmDialog(null, "Deze naam is niet lang genoeg", "Waarschuwing", JOptionPane.CLOSED_OPTION);
                     }
@@ -232,6 +333,8 @@ public class MasterView extends View {
                         //playersOnline.setText("Voer rechtsboven een naam in");
                         enableChallengeOptions(false);
                         btnChangeName.setGraphic(imgUsernameLogin);
+                        // Update state of online buttons
+                        selectGameModeScreenOnlineButtons(true);
                     }
                 }
             }
@@ -241,26 +344,116 @@ public class MasterView extends View {
         btnQuickPlay.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                enableChallengeOptions(false);
 
-                int dialogResult = JOptionPane.showConfirmDialog (null, "Druk op Yes voor reversi. Druk op No voor tic-tac-toe","Tijdelijke popup",JOptionPane.YES_NO_OPTION);
-                if(dialogResult == JOptionPane.YES_OPTION){
-                    playersOnline.setText("Subscribed to Reversi");
-                    controller.subscribe(GameName.REVERSI);
-                }
-                if(dialogResult == JOptionPane.NO_OPTION){
-                    playersOnline.setText("Subscribed to Tic-tac-toe");
-                    controller.subscribe(GameName.TICTACTOE);
+                if (btnQuickPlay.getText() == "Nu spelen!") {
+                    lstGameSelectOptions.getSelectionModel().select(-1);
+                    selectGameModeScreen(true);
+                    btnQuickPlay.setText("Terug");
+                    selectGameModeScreenOnlineButtons(true);
+                    selectGameModeScreenOfflineButtons(true);
+                } else {
+                    selectGameModeScreen(false);
+                    btnQuickPlay.setText("Nu spelen!");
                 }
 
-                // If any selected disable challenging
-                if (dialogResult == JOptionPane.YES_OPTION || dialogResult == JOptionPane.NO_OPTION) {
-                    headPlayersOptions.setVisible(false);
-                    playersOnline.setVisible(true);
-                }
+                // Update position
+                setQuickPlayPosition();
             }
         });
 
+        //        OUDE TEST CODE
+//        int dialogResult = JOptionPane.showConfirmDialog (null, "Druk op Yes voor reversi. Druk op No voor tic-tac-toe","Tijdelijke popup",JOptionPane.YES_NO_OPTION);
+//        if(dialogResult == JOptionPane.YES_OPTION){
+//            playersOnline.setText("Subscribed to Reversi");
+//            controller.subscribe(GameName.REVERSI);
+//        }
+//        if(dialogResult == JOptionPane.NO_OPTION){
+//            playersOnline.setText("Subscribed to Tic-tac-toe");
+//            controller.subscribe(GameName.TICTACTOE);
+//        }
+//
+//        // If any selected disable challenging
+//        if (dialogResult == JOptionPane.YES_OPTION || dialogResult == JOptionPane.NO_OPTION) {
+//            headPlayersOptions.setVisible(false);
+//            playersOnline.setVisible(true);
+//        }
+
+        // P1 VS P2 -- online
+        btnP1Online.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Button pressed -> P1 VS Online");
+                controller.subscribe(getSelectedGameName());
+            }
+        });
+
+        // AI VS P2 -- online
+        btnAIOnline.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Button pressed -> AI VS Online");
+
+            }
+        });
+
+        // P1 VS P2 -- offline
+        btnP1vsP2Offline.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Button pressed -> P1 VS P2");
+
+            }
+        });
+
+        // P1 VS AI -- offline
+        btnP1vsAIOffline.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Button pressed -> P1 VS AI");
+
+            }
+        });
+
+        // AI VS AI -- offline
+        btnAIvsAIOffline.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Button pressed -> AI VS AI");
+
+            }
+        });
+
+        lstGameSelectOptions.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (lstGameSelectOptions.getSelectionModel().getSelectedItem() != null){
+                    if (controller.getLoginName() != null) {
+                        selectGameModeScreenOnlineButtons(false);
+                        selectGameModeScreenOfflineButtons(false);
+                        return;
+                    }
+                    selectGameModeScreenOfflineButtons(false);
+                }
+//                try {
+//                    if (controller.getLoginName() == null) {
+//                        headPlayersOptions.setVisible(true);
+//                        headPlayersOptions.setText("Je moet ingelogt zijn om iemand uit te dagen");
+//                        lstPlayersOptions.setVisible(false);
+//                        return;
+//                    }
+//                    // Check if playername is valid
+//                    if (playerList.getSelectionModel().getSelectedItem() == null){
+//                        return;
+//                    }
+//                    headPlayersOptions.setVisible(true);
+//                    controller.setRivalName(playerList.getSelectionModel().getSelectedItem());
+//                    headPlayersOptions.setText(playerList.getSelectionModel().getSelectedItem() + " uitdagen voor een potje");
+//                    lstPlayersOptions.setVisible(true);
+//                } catch(Exception e) {
+//                    System.out.println("playerList:empty");
+//                }
+            }
+        });
     }
 
 
@@ -293,6 +486,7 @@ public class MasterView extends View {
         setUsernamePosition();
         setLeaderboardPosition();
         setQuickPlayPosition();
+        setGameModePosition();
     }
 
     private void setUsernamePosition(){
@@ -322,10 +516,75 @@ public class MasterView extends View {
     }
 
     private void setQuickPlayPosition(){
-        // Quick player
-        btnQuickPlay.setLayoutX(windowWidth-256);
-        btnQuickPlay.setLayoutY(windowHeight-128);
+        // Get smallest dimension
+        int smDimension = windowHeight;
+        if (windowWidth < windowHeight){
+            smDimension = windowWidth;
+        }
 
+        // Quick player
+        if (btnQuickPlay.getText() == "Terug") {
+            btnQuickPlay.setLayoutX(64);
+        } else {
+            btnQuickPlay.setLayoutX(windowWidth - windowWidth / 8 - 64);
+        }
+        btnQuickPlay.setLayoutY(windowHeight-128);
+        btnQuickPlay.setPrefWidth(windowWidth/8);
+
+    }
+
+    private void setGameModePosition(){
+        // Get smallest dimension
+        int smDimension = windowHeight;
+        if (windowWidth < windowHeight){
+            smDimension = windowWidth;
+        }
+
+        int gameListWidth = 256;
+
+        txtOffline.setLayoutX(gameListWidth+128);
+        txtOnline.setLayoutX(gameListWidth+128);
+
+        // Online mode button
+        btnP1Online.setTranslateX(gameListWidth+128);
+        btnP1Online.setPrefHeight(smDimension/6);
+        btnP1Online.setPrefWidth(smDimension/6);
+        imgP1Online.setFitHeight(smDimension/6);
+        imgP1Online.setFitWidth(smDimension/6);
+
+        // Online mode button AI
+        btnAIOnline.setTranslateX(gameListWidth+128+(smDimension/24*1)+(smDimension/6));
+        btnAIOnline.setPrefHeight(smDimension/6);
+        btnAIOnline.setPrefWidth(smDimension/6);
+        imgAIOnline.setFitHeight(smDimension/6);
+        imgAIOnline.setFitWidth(smDimension/6);
+
+        // Offline mode button AI
+        txtOffline.setTranslateY(96+96+(smDimension/6));
+        btnP1vsP2Offline.setTranslateY(96+128+(smDimension/6));
+        btnP1vsP2Offline.setTranslateX(gameListWidth+128);
+        btnP1vsP2Offline.setPrefHeight(smDimension/6);
+        btnP1vsP2Offline.setPrefWidth(smDimension/6);
+        imgP1vsP2Offline.setFitHeight(smDimension/6);
+        imgP1vsP2Offline.setFitWidth(smDimension/6);
+
+        // Offline mode button AI
+        btnP1vsAIOffline.setTranslateY(96+128+(smDimension/6));
+        btnP1vsAIOffline.setTranslateX(gameListWidth+128+(smDimension/24*1)+(smDimension/6));
+        btnP1vsAIOffline.setPrefHeight(smDimension/6);
+        btnP1vsAIOffline.setPrefWidth(smDimension/6);
+        imgP1vsAIOffline.setFitHeight(smDimension/6);
+        imgP1vsAIOffline.setFitWidth(smDimension/6);
+
+        // Offline mode button AI
+        btnAIvsAIOffline.setTranslateY(96+128+(smDimension/6));
+        btnAIvsAIOffline.setTranslateX(gameListWidth+128+(smDimension/24*2)+(smDimension/6)*2);
+        btnAIvsAIOffline.setPrefHeight(smDimension/6);
+        btnAIvsAIOffline.setPrefWidth(smDimension/6);
+        imgAIvsAIOffline.setFitHeight(smDimension/6);
+        imgAIvsAIOffline.setFitWidth(smDimension/6);
+
+        lstGameSelectOptions.setPrefHeight(windowHeight*0.5);
     }
 
     public int getNameSelected() {
@@ -366,7 +625,72 @@ public class MasterView extends View {
         headPlayersOptions.setVisible(state);
     }
 
+    private void selectGameModeScreenOnlineButtons(boolean state){
+        btnP1Online.setDisable(state);
+        btnAIOnline.setDisable(state);
+    }
 
+    private void selectGameModeScreenOfflineButtons(boolean state){
+        btnP1vsP2Offline.setDisable(state);
+        btnP1vsAIOffline.setDisable(state);
+        btnAIvsAIOffline.setDisable(state);
+    }
+
+    private GameName getSelectedGameName(){
+        if (lstGameSelectOptions.getSelectionModel().getSelectedItem().equals("Reversi")) {
+            return GameName.REVERSI;
+        } else if (lstGameSelectOptions.getSelectionModel().getSelectedItem().equals("Tic-tac-toe")) {
+            return GameName.TICTACTOE;
+        }
+        return null;
+    }
+
+    private void selectGameModeScreen(boolean state){
+        // Clear rival name
+        controller.setRivalName(null);
+        playerList.getSelectionModel().select(-1);
+
+        if (state) {
+            enableChallengeOptions(!state);
+        }
+
+        // Hide all unrelated items
+        playerList.setVisible(!state);
+        playersOnline.setVisible(!state);
+
+        txtSpellen.setVisible(state);
+
+        // Unhide items - online
+        txtOnline.setVisible(state);
+        btnP1Online.setVisible(state);
+        btnAIOnline.setVisible(state);
+
+        // Offline
+        txtOffline.setVisible(state);
+        btnP1Online.setVisible(state);
+        btnP1vsP2Offline.setVisible(state);
+        btnP1vsAIOffline.setVisible(state);
+        btnAIvsAIOffline.setVisible(state);
+        lstGameSelectOptions.setVisible(state);
+
+
+//        OUDE TEST CODE
+//        int dialogResult = JOptionPane.showConfirmDialog (null, "Druk op Yes voor reversi. Druk op No voor tic-tac-toe","Tijdelijke popup",JOptionPane.YES_NO_OPTION);
+//        if(dialogResult == JOptionPane.YES_OPTION){
+//            playersOnline.setText("Subscribed to Reversi");
+//            controller.subscribe(GameName.REVERSI);
+//        }
+//        if(dialogResult == JOptionPane.NO_OPTION){
+//            playersOnline.setText("Subscribed to Tic-tac-toe");
+//            controller.subscribe(GameName.TICTACTOE);
+//        }
+//
+//        // If any selected disable challenging
+//        if (dialogResult == JOptionPane.YES_OPTION || dialogResult == JOptionPane.NO_OPTION) {
+//            headPlayersOptions.setVisible(false);
+//            playersOnline.setVisible(true);
+//        }
+    }
 
 
 //    public void update() {
