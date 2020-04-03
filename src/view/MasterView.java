@@ -42,6 +42,10 @@ public class MasterView extends View {
     // Username - Text fields
     TextField usernameEdit = new TextField();
 
+    // Username - Edit name button
+    ImageView imgUsernameEdit = new ImageView("File:assets/launcher/nameEdit.png");
+    ImageView imgUsernameLogin = new ImageView("File:assets/launcher/nameLogin.png");
+
     // Application - window settings
     int windowWidth = 1280; // Default screen size
     int windowHeight = 720;
@@ -81,9 +85,9 @@ public class MasterView extends View {
 
         // Username - edit name button
         pnLauncher.getChildren().add(btnChangeName);
-        ImageView btnUsernameEdit = new ImageView("File:assets/launcher/nameEdit.png");
+        //ImageView btnUsernameEdit = new ImageView("File:assets/launcher/nameEdit.png");
         btnChangeName.setStyle("-fx-background-color: #262626;");
-        btnChangeName.setGraphic(btnUsernameEdit);
+        btnChangeName.setGraphic(imgUsernameLogin);
 
         // Leaderboard - players online
         pnLauncher.getChildren().add(playersOnline);
@@ -201,6 +205,7 @@ public class MasterView extends View {
                         controller.getPlayerList();
                         btnQuickPlay.setVisible(true);
                         enableChallengeOptions(false);
+                        btnChangeName.setGraphic(imgUsernameEdit);
                     } else if (loginStatus == "short") {
                         JOptionPane.showConfirmDialog(null, "Deze naam is niet lang genoeg", "Waarschuwing", JOptionPane.CLOSED_OPTION);
                     }
@@ -216,6 +221,7 @@ public class MasterView extends View {
                         players.clear();
                         //playersOnline.setText("Voer rechtsboven een naam in");
                         enableChallengeOptions(false);
+                        btnChangeName.setGraphic(imgUsernameLogin);
                     }
                 }
             }
@@ -285,7 +291,7 @@ public class MasterView extends View {
 
         // Username - change name
         btnChangeName.setLayoutX(windowWidth-80);
-        btnChangeName.setMinHeight(50);
+        //btnChangeName.setMinHeight(50);
         btnChangeName.setLayoutY(8);
 
         // Username - edit field
