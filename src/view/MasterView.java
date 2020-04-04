@@ -339,7 +339,6 @@ public class MasterView extends View {
                     bgUsernameUse.setImage(bgUsernameEdit);
                     controller.setLoginName(null);
                     controller.setRivalName(null);
-                    players.clear();
                     enableChallengeOptions(false);
                     btnChangeName.setGraphic(imgUsernameLogin);
                     // Update state of online buttons
