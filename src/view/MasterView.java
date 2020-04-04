@@ -148,6 +148,8 @@ public class MasterView extends View {
         lstPlayersOptions.setStyle("-fx-font-size:24.0;");
         lstPlayersOptions.setVisible(false);
         lstPlayersOptions.setLayoutY(80+48);
+        lstPlayersOptions.setPrefHeight(48*2+1);
+        lstPlayersOptions.setPrefWidth(200);
 
         // Leaderboard - Challenge Head
         pnLauncher.getChildren().add(headPlayersOptions);
@@ -495,13 +497,18 @@ public class MasterView extends View {
     }
 
     private void setLeaderboardPosition(){
+        int playerListWidth = windowWidth/3;
+        if (playerListWidth < 320) {
+            playerListWidth = 320;
+        }
+
         // Leaderboard - playerList
         playerList.setPrefHeight(windowHeight-(80+64));
-        playerList.setPrefWidth(480);
+        playerList.setPrefWidth(playerListWidth);
 
         // Leaderboard - Challenge
-        lstPlayersOptions.setLayoutX(480+64);
-        lstPlayersOptions.setPrefWidth(320);
+        lstPlayersOptions.setLayoutX(playerListWidth+64);
+        headPlayersOptions.setLayoutX(playerListWidth+64);
     }
 
     private void setQuickPlayPosition(){
