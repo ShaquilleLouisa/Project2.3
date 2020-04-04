@@ -59,6 +59,10 @@ public class MasterView extends View {
     ImageView bgUsernameUse = new ImageView("File:assets/launcher/bgUsernameError.png");
     Rectangle bgUsernameLine = new Rectangle(0, 0,   windowWidth,   12);
 
+    // Inivitation icon
+    Image icoInvitation = new Image("File:assets/launcher/iconInvitation.png");
+    Image icoInvitationSend = new Image("File:assets/launcher/iconInvitationSend.png");
+
 
     // Leaderboard - Textfields
     Text playersOnline = new Text("Server niet gevonden"); // Lange versie Er kan geen verbinding worden gemaakt met de server
@@ -295,7 +299,8 @@ public class MasterView extends View {
                         return;
                     }
                     headPlayersOptions.setVisible(true);
-                    controller.setRivalName(playerList.getSelectionModel().getSelectedItem());
+                    //controller.setRivalName(playerList.getSelectionModel().getSelectedItem());
+                    playerList.setId(playerList.getSelectionModel().getSelectedItem());
                     headPlayersOptions.setText(playerList.getSelectionModel().getSelectedItem() + " uitdagen voor een potje");
                     lstPlayersOptions.setVisible(true);
                 } catch(Exception e) {
@@ -315,6 +320,8 @@ public class MasterView extends View {
 
                 // Challenge rival
                 headPlayersOptions.setText(playerList.getSelectionModel().getSelectedItem() + " is uitgedaagd voor een potje " + lstPlayersOptions.getSelectionModel().getSelectedItem());
+                controller.setRivalName(playerList.getSelectionModel().getSelectedItem());
+                updatePlayerboardImages();
                 controller.challengeRival(controller.getRivalName(), lstPlayersOptions.getSelectionModel().getSelectedItem());
             }
         });
@@ -458,6 +465,29 @@ public class MasterView extends View {
             players.addAll(newPlayerlist);
             playersOnline.setText(players.size() + " andere spelers online");
             NoConnection(false);
+
+            // Update images
+            updatePlayerboardImages();
+        });
+    }
+
+    private void updatePlayerboardImages() {
+        // Add invitation image
+        playerList.setCellFactory(param -> new ListCell<String>() {
+            private ImageView imageView = new ImageView();
+            @Override
+            public void updateItem(String name, boolean empty) {
+                super.updateItem(name, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    if(name.equals(controller.getRivalName()))
+                        imageView.setImage(icoInvitationSend);
+                    setText(name + " ");
+                    setGraphic(imageView);
+                }
+            }
         });
     }
 
@@ -596,11 +626,12 @@ public class MasterView extends View {
 
                 // Check if rivalname is set
                 if (controller.getRivalName() == null) {
+                    playerList.setId("");
                     return;
                 }
 
                 // Check if rivalname is at same position in the list
-                if (controller.getRivalName().equals( playerList.getSelectionModel().getSelectedItem() ) == false) {
+                if (playerList.getId().equals( playerList.getSelectionModel().getSelectedItem() ) == false) {
                     for (int i=0; i<players.size(); i++) {
                         playerList.getSelectionModel().select(i);
                         if (playerList.getSelectionModel().getSelectedItem().equals(controller.getRivalName())) {
@@ -609,6 +640,7 @@ public class MasterView extends View {
                     }
                     // Rivalname has left the game
                     controller.setRivalName(null);
+                    playerList.setId("");
                     playerList.getSelectionModel().select(null);
                     enableChallengeOptions(false);
                 }
