@@ -4,6 +4,8 @@ import games.Game;
 import games.GameName;
 import view.MasterView;
 
+import java.util.ArrayList;
+
 public class MasterModel extends Model {
 
     private MasterView view;
@@ -14,6 +16,7 @@ public class MasterModel extends Model {
     private boolean onlineGame;
     private boolean useAi;
     private boolean doubleAi;
+    ArrayList<String[]> challengesReceived = new ArrayList<String[]>();
 
     public MasterModel(MasterView view) {
         this.view = view;
@@ -24,6 +27,14 @@ public class MasterModel extends Model {
         onlineGame = false;
         useAi = false;
         doubleAi = false;
+    }
+
+    public void addChallenge(String CHALLENGER, String CHALLENGERNUMBER,  String GAMETYPE) {
+        String[] finData = new String[3];
+        finData[0] = CHALLENGER;
+        finData[1] = CHALLENGERNUMBER;
+        finData[2] = GAMETYPE;
+        challengesReceived.add(finData);
     }
 
     public Game getGame() {

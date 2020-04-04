@@ -109,12 +109,36 @@ public class MasterController extends Controller {
                             System.out.println("Game message");
                             System.out.println(" ");
                             switch (words[2]) {
+                                case "challenge":
+                                    // Get challenger name using regex and store
+                                    String challenger = "";
+                                    Pattern p = Pattern.compile("CHALLENGER: \"([^\"]*)\"");
+                                    Matcher m = p.matcher(originalInput);
+                                    while (m.find()) {
+                                        challenger=m.group(1);
+                                    }
+                                    String challengeNumber = "";
+                                    // Get challengenumber using regex and store
+                                    p = Pattern.compile("CHALLENGENUMBER: \"([^\"]*)\"");
+                                    m = p.matcher(originalInput);
+                                    while (m.find()) {
+                                        challengeNumber=m.group(1);
+                                    }
+                                    String gameType = "";
+                                    // Get gameType using regex and store
+                                    p = Pattern.compile("GAMETYPE: \"([^\"]*)\"");
+                                    m = p.matcher(originalInput);
+                                    while (m.find()) {
+                                        gameType=m.group(1);
+                                    }
+                                    model.addChallenge(challenger, challengeNumber, gameType);
+                                    break;
                                 case "match":
                                     System.out.println(" ");
                                     System.out.println("Match message: " + inputLowerCase.substring(totalLetters));
                                     // Get rival name using regex
-                                    Pattern p = Pattern.compile("OPPONENT: \"([^\"]*)\"");
-                                    Matcher m = p.matcher(originalInput);
+                                    p = Pattern.compile("OPPONENT: \"([^\"]*)\"");
+                                    m = p.matcher(originalInput);
                                     while (m.find()) {
                                         System.out.println("Rivalname received:" + m.group(1));
                                         model.setRivalName(m.group(1));
