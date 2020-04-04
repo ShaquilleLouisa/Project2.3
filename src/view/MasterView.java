@@ -152,7 +152,6 @@ public class MasterView extends View {
         // Quick player
         pnLauncher.getChildren().add(btnQuickPlay);
         btnQuickPlay.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        btnQuickPlay.setVisible(false);
         btnQuickPlay.setId("btnQuickPlay");
 
         // Gamemode selection screen - Online
@@ -216,6 +215,9 @@ public class MasterView extends View {
         lstGameSelectOptions.setLayoutY(128);
         lstGameSelectOptions.setLayoutX(64);
         lstGameSelectOptions.setPrefWidth(256);
+
+        // Add games to gamelist
+        updatePlayerboardChallenges(FXCollections.observableArrayList("Reversi", "Tic-tac-toe"));
 
         // Application - Window settings
         players.clear();
@@ -307,10 +309,8 @@ public class MasterView extends View {
                         bgUsernameUse.setImage(bgUsernameOk);
                         controller.setLoginName(usernameEdit.getCharacters().toString());
                         controller.getPlayerList();
-                        btnQuickPlay.setVisible(true);
                         enableChallengeOptions(false);
                         btnChangeName.setGraphic(imgUsernameEdit);
-                        controller.getGameList();
                         // Update state of online buttons
                         if (lstGameSelectOptions.getSelectionModel().getSelectedItem() != null) {
                             if (controller.getLoginName() != null) {
