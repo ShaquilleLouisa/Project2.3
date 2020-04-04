@@ -16,6 +16,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -54,10 +56,13 @@ public class MasterView extends View {
     // Username backgrounds
     Image bgUsernameOk = new Image("File:assets/launcher/bgUsernameOk.png");
     Image bgUsernameEdit = new Image("File:assets/launcher/bgUsernameEdit.png");
-    ImageView bgUsernameUse = new ImageView("File:assets/launcher/bgUsernameEdit.png");
+    Image bgUsernameError = new Image("File:assets/launcher/bgUsernameError.png");
+    ImageView bgUsernameUse = new ImageView("File:assets/launcher/bgUsernameError.png");
+    Rectangle bgUsernameLine = new Rectangle(0, 0,   windowWidth,   12);
+
 
     // Leaderboard - Textfields
-    Text playersOnline = new Text("Er kan geen verbinding worden gemaakt met de server");
+    Text playersOnline = new Text("Server niet gevonden"); // Lange versie Er kan geen verbinding worden gemaakt met de server
 
     // Leaderboard - playerlist
     ListView<String> playerList = new ListView<String>();
@@ -108,13 +113,17 @@ public class MasterView extends View {
 
         // Username - Background
         pnLauncher.getChildren().add(bgUsernameUse);
+        pnLauncher.getChildren().add(bgUsernameLine);
+        bgUsernameLine.setFill(Color.rgb(183, 64, 31));
 
         // Username - edit field
-        usernameEdit.setFont(Font.font("Arial", FontWeight.BOLD, 28));
         pnLauncher.getChildren().add(usernameEdit);
+        usernameEdit.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+        usernameEdit.setDisable(true);
 
         // Username - edit name button
         pnLauncher.getChildren().add(btnChangeName);
+        btnChangeName.setDisable(true);
         btnChangeName.setId("btnChangeName");
         //ImageView btnUsernameEdit = new ImageView("File:assets/launcher/nameEdit.png");
         btnChangeName.setStyle("-fx-background-color: #262626;");
@@ -228,8 +237,6 @@ public class MasterView extends View {
         masterStage.setTitle("Epic game launcher");
         masterStage.setMinWidth(1024);
         masterStage.setMinHeight(576);
-        masterStage.setMaxWidth(2560);
-        masterStage.setMaxHeight(1440);
         masterStage.setScene(scene);
         masterStage.show();
 
@@ -470,7 +477,7 @@ public class MasterView extends View {
 
     private void setUsernamePosition(){
         // Username - background
-        bgUsernameUse.setLayoutX(-3300+windowWidth); // Top right
+        bgUsernameUse.setLayoutX(windowWidth-480); // Top right
 
         // Username - change name
         btnChangeName.setLayoutX(windowWidth-80);
@@ -481,6 +488,9 @@ public class MasterView extends View {
         usernameEdit.setLayoutY(8);
         usernameEdit.setLayoutX(windowWidth-400);
         usernameEdit.setMaxWidth(312);
+
+        // Set line width
+        bgUsernameLine.setWidth(windowWidth);
 
     }
 
