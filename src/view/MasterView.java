@@ -482,8 +482,11 @@ public class MasterView extends View {
                     setText(null);
                     setGraphic(null);
                 } else {
-                    if(name.equals(controller.getRivalName()))
+                    if(controller.checkChallenger(name)) {
+                        imageView.setImage(icoInvitation);
+                    } else if(name.equals(controller.getRivalName())) {
                         imageView.setImage(icoInvitationSend);
+                    }
                     setText(name + " ");
                     setGraphic(imageView);
                 }

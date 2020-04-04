@@ -37,6 +37,15 @@ public class MasterModel extends Model {
         challengesReceived.add(finData);
     }
 
+    public boolean checkChallenger(String challengerName) {
+        for (int i=0; i<challengesReceived.size(); i++){
+            if (challengerName.equals(challengesReceived.get(i)[0])){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Game getGame() {
         return game;
     }

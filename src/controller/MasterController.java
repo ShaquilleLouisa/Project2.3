@@ -351,6 +351,9 @@ public class MasterController extends Controller {
         }
     }
 
+    public boolean checkChallenger(String challengerName) {
+        return model.checkChallenger(challengerName);
+    }
 
     public void challengeRival(String rivalName, String gameName) {
         serverCommunication.challengeRival(rivalName, gameName);
