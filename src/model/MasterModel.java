@@ -11,6 +11,9 @@ public class MasterModel extends Model {
     private String loginName;
     private String rivalName;
     private boolean inGame;
+    private boolean onlineGame;
+    private boolean useAi;
+    private boolean doubleAi;
 
     public MasterModel(MasterView view) {
         this.view = view;
@@ -18,6 +21,9 @@ public class MasterModel extends Model {
         loginName = null;
         rivalName = null;
         inGame = false;
+        onlineGame = false;
+        useAi = false;
+        doubleAi = false;
     }
 
     public Game getGame() {
@@ -46,5 +52,30 @@ public class MasterModel extends Model {
 
     public boolean isInGame() {
         return inGame;
+    }
+
+    public boolean isOnlineGame() {
+        return onlineGame;
+    }
+
+    public void setOnlineGame(boolean onlineGame) {
+        this.onlineGame = onlineGame;
+    }
+
+    public boolean isUseAi() {
+        return useAi;
+    }
+
+    public void setUseAi(boolean useAi, boolean doubleAi) {
+        this.useAi = useAi;
+        this.doubleAi = doubleAi;
+    }
+
+    public void setDoubleAi(boolean doubleAi) {
+        this.doubleAi = doubleAi;
+    }
+
+    public boolean isDoubleAi() {
+        return doubleAi;
     }
 }

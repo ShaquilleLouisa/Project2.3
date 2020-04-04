@@ -43,28 +43,32 @@ public class TicTacToeController extends GameController {
         model.switchPlayer();
     }
 
-    //FOR OFFLINE GAME
     public void doMove(int move) throws MoveException {
-        if(model.checkEnd(model.getBoard()) == -1) {
-            TicTacToeFieldStatus ticTacToeFieldStatus = new TicTacToeFieldStatus();
-            if (model.getPlayer() == 1) {
-                ticTacToeFieldStatus.setCross();
-            } else {
-                ticTacToeFieldStatus.setCircle();
-            }
-            try {
-                doMove(move, ticTacToeFieldStatus);
-            } catch (MoveException e) {
-                throw e;
-            }
-            if(model.checkEnd(model.getBoard()) != -1) {
-                String winner;
-                if(model.checkEnd(model.getBoard()) == 1) {
-                    winner = "Cross";
-                } else {
-                    winner = "Circle";
+        if(!model.isDoubleAi()) {
+            if(!model.isOnline() || !model.isDoubleAi()) {
+                System.out.println("no ai");
+                if (model.checkEnd(model.getBoard()) == -1) {
+                    TicTacToeFieldStatus ticTacToeFieldStatus = new TicTacToeFieldStatus();
+                    if (model.getPlayer() == 1) {
+                        ticTacToeFieldStatus.setCross();
+                    } else {
+                        ticTacToeFieldStatus.setCircle();
+                    }
+                    try {
+                        doMove(move, ticTacToeFieldStatus);
+                    } catch (MoveException e) {
+                        throw e;
+                    }
+                    if (model.checkEnd(model.getBoard()) != -1) {
+                        String winner;
+                        if (model.checkEnd(model.getBoard()) == 1) {
+                            winner = "Cross";
+                        } else {
+                            winner = "Circle";
+                        }
+                        view.updateNotification("Player with " + winner + " has won");
+                    }
                 }
-                view.updateNotification("Player with " + winner + " has won");
             }
         }
     }
