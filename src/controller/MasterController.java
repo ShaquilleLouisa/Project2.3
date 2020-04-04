@@ -53,6 +53,7 @@ public class MasterController extends Controller {
             try {
                 serverCommunication.read();
             } catch (IOException e) {
+                System.out.println("MasterController:read()");
                 e.printStackTrace();
             }
         }
@@ -80,6 +81,7 @@ public class MasterController extends Controller {
             originalInput = serverCommunication.read();
         } catch (IOException e) {
             System.out.println("No connecting with server:handleInput");
+            view.NoConnection(true);
             try {
                 Thread.sleep(500);
             } catch (Exception es) {

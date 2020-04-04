@@ -194,7 +194,7 @@ public class ServerCommunication {
                 writer.newLine();
                 writer.flush();
             } catch (IOException e) {
-                System.out.println("Could not read from server:ServerCommunication:write()");
+                System.out.println("Could not read from server -> ServerCommunication:write()");
                 System.out.println(e);
             }
         } else {
