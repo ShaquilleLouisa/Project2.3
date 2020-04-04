@@ -49,19 +49,30 @@ public class Reversi extends Game {
 
     public void setMove(int move, boolean isOponent) {
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
+//        if(isFirstMove && isOponent){
+//            model.switchPlayer();
+//        }
+//      if(isOponent){
+//          model.flipBoard(move, fieldStatus);
+//          model.setFieldStatus(move, fieldStatus);
+//      }
+
         if (isFirstMove) {
             fieldStatus.setWhite();
-        } else {
+        } else if (model.getPlayer()== 2) {
             fieldStatus.setBlack();
+        }else {
+            fieldStatus.setWhite();
         }
-        try {
-            if(isFirstMove && isOponent){
-                model.switchPlayer();
-            }
-            model.setFieldStatus(move, fieldStatus);
-            model.flipBoard(move, fieldStatus);
+        try{
+// De correcte stenen worden geflipt op het bord
+        model.flipBoard(move, fieldStatus);
+        model.switchPlayer();
+// De zet wordt gedaan op het model
+        model.setFieldStatus(move, fieldStatus);
+// Het model wordt geswitched van speler
         } catch (MoveException e) {
-        }
+                }
         isFirstMove = false;
     }
 

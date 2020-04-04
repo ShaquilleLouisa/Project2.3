@@ -18,7 +18,7 @@ public class ReversiModel extends GameModel {
         this.view = view;
         turns = 0;
         board = new Board(boardSize, boardSize, new ReversiFieldStatus());
-        System.out.println("setFirstMoves");
+        //System.out.println("setFirstMoves");
         setFirstMoves();
     }
 
@@ -40,6 +40,7 @@ public class ReversiModel extends GameModel {
             return;
         }
         validMoves = setValidMoves();
+
 
     }
 
@@ -71,6 +72,7 @@ public class ReversiModel extends GameModel {
     }
 
     private boolean[][] setValidMoves() {
+        System.out.println("Starting setting valid moves for: "+getPlayer());
 
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
         fieldStatus.setEmpty();
@@ -147,7 +149,7 @@ public class ReversiModel extends GameModel {
             for (int y = 0; y < 8; y++) {
                 try {
                     if (playableMoves[x][y]) {
-                        System.out.println("" + counter + " " + fieldStatus.getValue());
+                        System.out.println("This position is playable: " + counter);
                         board.setFieldStatus(x, y, fieldStatus);
 
                         view.update(counter, fieldStatus);
@@ -164,13 +166,13 @@ public class ReversiModel extends GameModel {
 
     private boolean validMove(int dr, int dc, int r, int c) {
 
-        if (IsOutOfBounds(r + dr, r + dr)) {
+        if (IsOutOfBounds(r + dr, c + dc)) {
             return false;
         }
 
-        if (IsOutOfBounds(c + dc, c + dc)) {
-            return false;
-        }
+//        if (IsOutOfBounds(c + dc, c + dc)) {
+//            return false;
+//        }
 
         if (board.getFieldStatus(r + dr, c + dc).getID() == 0) {
             return false;
@@ -180,11 +182,11 @@ public class ReversiModel extends GameModel {
             return false;
         }
 
-        if (IsOutOfBounds(r + dr + dr, r + dr + dr))
+        if (IsOutOfBounds(r + dr + dr, c + dc + dc))
             return false;
 
-        if (IsOutOfBounds(c + dc + dc, c + dc + dc))
-            return false;
+//        if (IsOutOfBounds(c + dc + dc, c + dc + dc))
+//            return false;
 
         return checkLineMatch(dr, dc, r + dr + dr, c + dc + dc);
     }
@@ -197,12 +199,12 @@ public class ReversiModel extends GameModel {
             return false;
         }
 
-        if (IsOutOfBounds(r + dr, r + dr)) {
+        if (IsOutOfBounds(r + dr, c + dc)) {
             return false;
         }
-        if (IsOutOfBounds(c + dc, c + dc)) {
-            return false;
-        }
+//        if (IsOutOfBounds(c + dc, c + dc)) {
+//            return false;
+//        }
         return checkLineMatch(dr, dc, r + dr, c + dc);
     }
 
@@ -221,7 +223,7 @@ public class ReversiModel extends GameModel {
         if (isCurrentPlayer(r + dr, c + dc)) {
             try {
                 System.out.println(
-                        "flipped: " + (r + dr) + ", " + (c + dc) + " fieldstatus value: " + fieldstatus.getValue());
+                        "flipped: " + (r + dr) + ", " + (c + dc) + " fieldstatus value: " + fieldstatus.getValue()+ " de huidige speler is: "+ getPlayer());
                 board.setFieldStatus(r + dr, c + dc, fieldstatus);
                 int count = 0;
                 for (int x = 0; x < 8; x++) {

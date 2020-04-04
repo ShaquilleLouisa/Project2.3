@@ -6,6 +6,7 @@ import model.GameModel;
 import model.ReversiModel;
 import model.gameitems.Board;
 import model.gameitems.FieldStatus;
+import java.util.Random;
 
 import java.util.ArrayList;
 
@@ -18,23 +19,34 @@ public class OurReversiAI extends AI implements ReversiAI {
     @Override
     public int calculateNextMove() {
         boolean[][] validMoves = aiModel.getValidMoves();
+        int counter = 0;
         if (validMoves != null) {
-            System.out.println("All valid moves");
-            int counter = 0;
-            for (boolean[] moveRow : validMoves) {
-                for (boolean move : moveRow) {
-                    if (move) {
-                        System.out.println(counter + "");
+
+
+            int rnd = new Random().nextInt(validMoves.length);
+            System.out.println("All valid moves: "+ rnd+" number of valid moves: "+validMoves.length);
+            for (int x = 0; x < 8; x++) {
+                for (int y = 0; y< 8; y++) {
+                    //System.out.print(validMoves[x][y]+" ");
+                    if(validMoves[x][y]){
+                        return counter;
                     }
-                    counter++;
+//                    if (move) {
+//                        System.out.println(counter + " is a valid move!");
+//
+//                    }
+                   counter++;
+
                 }
+                //System.out.println();
 
             }
+
         }
-        if (Reversi.isFirstMove) {
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            return 44;
-        }
-        return 29;
+//        if (Reversi.isFirstMove) {
+//            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//            return 44;
+//        }
+        return counter;
     }
 }
