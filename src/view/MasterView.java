@@ -153,6 +153,7 @@ public class MasterView extends View {
         pnLauncher.getChildren().add(btnQuickPlay);
         btnQuickPlay.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         btnQuickPlay.setId("btnQuickPlay");
+        btnQuickPlay.setMinWidth(192);
 
         // Gamemode selection screen - Online
         pnLauncher.getChildren().add(txtOnline);
@@ -234,15 +235,27 @@ public class MasterView extends View {
 
         // Update window resolution triggers
         masterStage.widthProperty().addListener(new ChangeListener<Number>() {
-            @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
                 windowWidth = newSceneWidth.intValue();
                 relocatePanes();
             }
         });
         masterStage.heightProperty().addListener(new ChangeListener<Number>() {
-            @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
                 windowHeight = newSceneHeight.intValue();
                 relocatePanes();
+            }
+        });
+        masterStage.maximizedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> ov, Boolean t, Boolean t1) {
+                Platform.runLater(() -> {
+                    windowWidth = (int)masterStage.getWidth();
+                    windowHeight = (int)masterStage.getHeight();
+                    relocatePanes();
+                });
             }
         });
 
@@ -321,8 +334,8 @@ public class MasterView extends View {
                         JOptionPane.showConfirmDialog(null, "Deze naam is niet lang genoeg", "Waarschuwing", JOptionPane.CLOSED_OPTION);
                     }
                 } else {
-                    int dialogResult = JOptionPane.showConfirmDialog (null, "Om uw naam te wijzigen moet u eerst de lobby verlaten. Wilt u de lobby nu verlaten?","Waarschuwing",JOptionPane.YES_NO_OPTION);
-                    if(dialogResult == JOptionPane.YES_OPTION){
+//                    int dialogResult = JOptionPane.showConfirmDialog (null, "Om uw naam te wijzigen moet u eerst de lobby verlaten. Wilt u de lobby nu verlaten?","Waarschuwing",JOptionPane.YES_NO_OPTION);
+//                    if(dialogResult == JOptionPane.YES_OPTION){
                         // Saving code here
                         controller.logout();
                         usernameEdit.setDisable(false);
@@ -335,7 +348,7 @@ public class MasterView extends View {
                         btnChangeName.setGraphic(imgUsernameLogin);
                         // Update state of online buttons
                         selectGameModeScreenOnlineButtons(true);
-                    }
+//                    }
                 }
             }
         });
@@ -523,13 +536,14 @@ public class MasterView extends View {
         }
 
         // Quick player
+        btnQuickPlay.setPrefWidth(windowWidth/8);
+        btnQuickPlay.setLayoutY(windowHeight-128);
+
         if (btnQuickPlay.getText() == "Terug") {
             btnQuickPlay.setLayoutX(64);
         } else {
-            btnQuickPlay.setLayoutX(windowWidth - windowWidth / 8 - 64);
+            btnQuickPlay.setLayoutX(windowWidth - btnQuickPlay.getWidth() - 64);
         }
-        btnQuickPlay.setLayoutY(windowHeight-128);
-        btnQuickPlay.setPrefWidth(windowWidth/8);
 
     }
 
