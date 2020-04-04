@@ -334,21 +334,16 @@ public class MasterView extends View {
                         JOptionPane.showConfirmDialog(null, "Deze naam is niet lang genoeg", "Waarschuwing", JOptionPane.CLOSED_OPTION);
                     }
                 } else {
-//                    int dialogResult = JOptionPane.showConfirmDialog (null, "Om uw naam te wijzigen moet u eerst de lobby verlaten. Wilt u de lobby nu verlaten?","Waarschuwing",JOptionPane.YES_NO_OPTION);
-//                    if(dialogResult == JOptionPane.YES_OPTION){
-                        // Saving code here
-                        controller.logout();
-                        usernameEdit.setDisable(false);
-                        bgUsernameUse.setImage(bgUsernameEdit);
-                        controller.setLoginName(null);
-                        controller.setRivalName(null);
-                        players.clear();
-                        //playersOnline.setText("Voer rechtsboven een naam in");
-                        enableChallengeOptions(false);
-                        btnChangeName.setGraphic(imgUsernameLogin);
-                        // Update state of online buttons
-                        selectGameModeScreenOnlineButtons(true);
-//                    }
+                    controller.logout();
+                    usernameEdit.setDisable(false);
+                    bgUsernameUse.setImage(bgUsernameEdit);
+                    controller.setLoginName(null);
+                    controller.setRivalName(null);
+                    players.clear();
+                    enableChallengeOptions(false);
+                    btnChangeName.setGraphic(imgUsernameLogin);
+                    // Update state of online buttons
+                    selectGameModeScreenOnlineButtons(true);
                 }
             }
         });
@@ -373,23 +368,6 @@ public class MasterView extends View {
                 setQuickPlayPosition();
             }
         });
-
-        //        OUDE TEST CODE
-//        int dialogResult = JOptionPane.showConfirmDialog (null, "Druk op Yes voor reversi. Druk op No voor tic-tac-toe","Tijdelijke popup",JOptionPane.YES_NO_OPTION);
-//        if(dialogResult == JOptionPane.YES_OPTION){
-//            playersOnline.setText("Subscribed to Reversi");
-//            controller.subscribe(GameName.REVERSI);
-//        }
-//        if(dialogResult == JOptionPane.NO_OPTION){
-//            playersOnline.setText("Subscribed to Tic-tac-toe");
-//            controller.subscribe(GameName.TICTACTOE);
-//        }
-//
-//        // If any selected disable challenging
-//        if (dialogResult == JOptionPane.YES_OPTION || dialogResult == JOptionPane.NO_OPTION) {
-//            headPlayersOptions.setVisible(false);
-//            playersOnline.setVisible(true);
-//        }
 
         // P1 VS P2 -- online
         btnP1Online.setOnAction(new EventHandler<ActionEvent>() {
@@ -447,26 +425,9 @@ public class MasterView extends View {
                     }
                     selectGameModeScreenOfflineButtons(false);
                 }
-//                try {
-//                    if (controller.getLoginName() == null) {
-//                        headPlayersOptions.setVisible(true);
-//                        headPlayersOptions.setText("Je moet ingelogt zijn om iemand uit te dagen");
-//                        lstPlayersOptions.setVisible(false);
-//                        return;
-//                    }
-//                    // Check if playername is valid
-//                    if (playerList.getSelectionModel().getSelectedItem() == null){
-//                        return;
-//                    }
-//                    headPlayersOptions.setVisible(true);
-//                    controller.setRivalName(playerList.getSelectionModel().getSelectedItem());
-//                    headPlayersOptions.setText(playerList.getSelectionModel().getSelectedItem() + " uitdagen voor een potje");
-//                    lstPlayersOptions.setVisible(true);
-//                } catch(Exception e) {
-//                    System.out.println("playerList:empty");
-//                }
             }
         });
+
     }
 
 
@@ -687,29 +648,6 @@ public class MasterView extends View {
         btnAIvsAIOffline.setVisible(state);
         lstGameSelectOptions.setVisible(state);
 
-
-//        OUDE TEST CODE
-//        int dialogResult = JOptionPane.showConfirmDialog (null, "Druk op Yes voor reversi. Druk op No voor tic-tac-toe","Tijdelijke popup",JOptionPane.YES_NO_OPTION);
-//        if(dialogResult == JOptionPane.YES_OPTION){
-//            playersOnline.setText("Subscribed to Reversi");
-//            controller.subscribe(GameName.REVERSI);
-//        }
-//        if(dialogResult == JOptionPane.NO_OPTION){
-//            playersOnline.setText("Subscribed to Tic-tac-toe");
-//            controller.subscribe(GameName.TICTACTOE);
-//        }
-//
-//        // If any selected disable challenging
-//        if (dialogResult == JOptionPane.YES_OPTION || dialogResult == JOptionPane.NO_OPTION) {
-//            headPlayersOptions.setVisible(false);
-//            playersOnline.setVisible(true);
-//        }
     }
 
-
-//    public void update() {
-//        Platform.runLater(() -> {
-//
-//        });
-//    }
 }
