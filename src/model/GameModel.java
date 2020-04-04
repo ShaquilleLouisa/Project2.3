@@ -19,4 +19,7 @@ public abstract class GameModel extends Model {
 
     abstract public void setDoubleAi(boolean ai);
     abstract public boolean isDoubleAi();
+
+    abstract public int getUserMove();
+    abstract public void setUserMove(int move);
 }

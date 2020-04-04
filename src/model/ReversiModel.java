@@ -366,6 +366,17 @@ public class ReversiModel extends GameModel {
     }
 
     @Override
+    public int getUserMove() {
+        //todo fix usermoves for reversi
+        return 0;
+    }
+
+    @Override
+    public void setUserMove(int move) {
+        //todo fix usermoves for reversi
+    }
+
+    @Override
     public void setAiUse(boolean useAi) {
         this.useAi = useAi;
     }

@@ -15,17 +15,24 @@ public class Reversi extends Game {
     private ReversiModel model;
     private ReversiController controller;
     private AI ai;
-    private boolean useAi = false;
-    private boolean doubleai = false;
-    private boolean online = false;
+    private boolean useAi;
+    private boolean doubleai;
+    private boolean online;
     public static boolean isFirstMove = true;
 
-    public Reversi() {
+    public Reversi(boolean online, boolean useAi, boolean doubleai) {
         controller = new ReversiController();
         view = new ReversiView(controller);
         model = new ReversiModel(view);
         controller.addModel(model);
         controller.addView(view);
+        this.doubleai = doubleai;
+        this.useAi = useAi;
+        this.online = online;
+
+        model.setOnlineUse(online);
+        model.setAiUse(useAi);
+        model.setDoubleAi(doubleai);
     }
 
     public ReversiModel getModel() {
@@ -41,17 +48,6 @@ public class Reversi extends Game {
     public GameController getController() {
         return controller;
     }
-
-    @Override
-    public void setGameSettings(boolean online, boolean ai, boolean doubleai) {
-        model.setAiUse(ai);
-        model.setDoubleAi(doubleai);
-        model.setOnlineUse(online);
-        this.online = online;
-        this.useAi = ai;
-        this.doubleai = doubleai;
-    }
-
 
     public int getNextMove() {
         return ai.calculateNextMove();

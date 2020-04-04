@@ -17,13 +17,11 @@ public class TicTacToeModel extends GameModel {
     private boolean useAi;
     private boolean online;
     private boolean doubleAi;
-
+    private int userMove;
     public TicTacToeModel(TicTacToeView view) {
         this.view = view;
         turns = 0;
         board = new Board(FieldSize, FieldSize, new TicTacToeFieldStatus());
-        useAi = false;
-        online = false;
     }
 
     public void setFieldStatus(int move, FieldStatus fieldStatus) throws MoveException {
@@ -157,5 +155,13 @@ public class TicTacToeModel extends GameModel {
     @Override
     public void setDoubleAi(boolean doubleAi) {
         this.doubleAi = doubleAi;
+    }
+
+    public void setUserMove(int userMove) {
+        this.userMove = userMove;
+    }
+
+    public int getUserMove() {
+        return userMove;
     }
 }

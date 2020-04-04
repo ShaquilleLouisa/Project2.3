@@ -56,6 +56,12 @@ public class ReversiController extends GameController {
         setDone(true);
     }
 
+    //OFFLINE START GAME
+    @Override
+    public void nextTurn() {
+
+    }
+
     @Override
     public void addView(View view) {
         this.view = (ReversiView) view;

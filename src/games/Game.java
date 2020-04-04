@@ -15,5 +15,4 @@ public abstract class Game {
     abstract public GameModel getModel();
     abstract public GameView getView();
     abstract public GameController getController();
-    abstract public void setGameSettings(boolean online, boolean ai, boolean doubleai);
 }

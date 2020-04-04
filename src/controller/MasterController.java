@@ -65,18 +65,14 @@ public class MasterController extends Controller {
 
         Thread handleThread = new Thread(() -> {
             while (true) {
-                try {
-                    handleInput();
-                } catch (MoveException e) {
-                    e.printStackTrace();
-                }
+                handleInput();
             }
         });
         handleThread.start();
 
     }
 
-    private void handleInput() throws MoveException {
+    private void handleInput() {
         String originalInput = null;
         try {
             originalInput = serverCommunication.read();
@@ -116,22 +112,43 @@ public class MasterController extends Controller {
                                     break;
                                 case "yourturn":
                                     System.out.println("Your turn");
-                                    int ourMove = model.getGame().getNextMove();
-                                    //TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
-                                    //fieldStatus.setCircle();
-                                    //model.getGame().getModel().setFieldStatus(ourMove, fieldStatus);
-                                    model.getGame().setMove(ourMove, false);
-                                    serverCommunication.move(ourMove);
+                                    int ourMove;
+                                    if(model.getGame().getModel().isUseAi()) {
+                                        ourMove = model.getGame().getNextMove();
+                                        //TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
+                                        //fieldStatus.setCircle();
+                                        //model.getGame().getModel().setFieldStatus(ourMove, fieldStatus);
+                                        model.getGame().setMove(ourMove, false);
+                                        serverCommunication.move(ourMove);
+                                    } else {
+                                        Timer timer = new Timer();
+                                        timer.schedule(new TimerTask() {
+                                            int userMove = model.getGame().getModel().getUserMove();
+
+                                            @Override
+                                            public void run() {
+                                                int move = model.getGame().getModel().getUserMove();
+                                                if(userMove != move) {
+                                                    serverCommunication.move(move);
+                                                    userMove = move;
+                                                }
+                                            }
+                                        }, 0, 100);
+                                    }
+
                                     break;
                                 case "loss":
                                     System.out.println("You lost");
+                                    model.getGame().getView().updateNotification("I'm sorry you lost");
                                     break;
                                 case "win":
                                     System.out.println("You won");
+                                    model.getGame().getView().updateNotification("Congrats you won");
                                     break;
                                 case "draw":
                                     // DRAW
                                     System.out.println("Draw");
+                                    model.getGame().getView().updateNotification("Its a draw :|");
                                     break;
                                 case "move":
                                     System.out.println("inputLowerCase " + words[4]);
@@ -139,9 +156,9 @@ public class MasterController extends Controller {
                                             + "name: " + getRivalName());
                                     if (words[4].contains(getRivalName())) {
 
-                                        System.out.println(words[6].substring(1, words[6].length() -2));
+                                        System.out.println(words[6].substring(1, words[6].length() - 2));
 
-                                        int opponentMove = Integer.parseInt(words[6].substring(1, words[6].length() -2));//Integer.parseInt(words[6]);
+                                        int opponentMove = Integer.parseInt(words[6].substring(1, words[6].length() - 2));//Integer.parseInt(words[6]);
                                         //TicTacToeFieldStatus fieldStatusCross = new TicTacToeFieldStatus();
                                         //fieldStatusCross.setCross();
                                         //model.getGame().getModel().setFieldStatus(opponentMove, fieldStatusCross);
@@ -231,24 +248,35 @@ public class MasterController extends Controller {
     public void subscribe(GameName gameName) {
         Game game = null;
         try {
-            game = (Game) Class.forName("games." + gameName.label).getConstructor().newInstance();
+            game = (Game) Class.forName("games." + gameName.className).getConstructor(boolean.class, boolean.class, boolean.class).newInstance(model.isOnlineGame(), model.isUseAi(), model.isDoubleAi());
         } catch (Exception e) {
             System.out.println("Game not found");
         }
         if (game != null) {
-            System.out.println(model.isOnlineGame() + " online ff");
-            game.setGameSettings(model.isOnlineGame(), model.isUseAi(), model.isDoubleAi());
+            GameController gameController = game.getController();
             model.setGame(game);
             GameView gameView = model.getGame().getView();
             stage.setScene(gameView.getScene());
-            serverCommunication.subscribe(gameName);
-            GameController gameController = game.getController();
+            Timer timerOffline = new Timer();
+
+            if (model.isOnlineGame()) {
+                serverCommunication.subscribe(gameName);
+                System.out.println("Subscribed to " + gameName.label);
+            } else {
+                timerOffline.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        gameController.nextTurn();
+                    }
+                }, 0, 1000);
+            }
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     if (gameController.isDone()) {
                         Platform.runLater(() -> {
+                            timerOffline.cancel();
                             gameController.setDone(false);
                             stage.setScene(view.getScene());
                         });
@@ -257,6 +285,7 @@ public class MasterController extends Controller {
             }, 0, 100);
         }
     }
+
 
     public void challengeRival(String rivalName, String gameName) {
         serverCommunication.challengeRival(rivalName, gameName);
@@ -278,16 +307,6 @@ public class MasterController extends Controller {
         model.setLoginName(loginName);
     }
 
-    public void createGame(GameName gameName) {
-        if (gameName == GameName.TICTACTOE) {
-            TicTacToe ticTacToe = new TicTacToe();
-            try {
-                ticTacToe.setAI(new TicTacToeAI(ticTacToe.getModel()));
-            } catch (WrongAIException e) {
-                System.out.println("WRONG AI");
-            }
-        }
-    }
 
     public String getRivalName() {
         return model.getRivalName();

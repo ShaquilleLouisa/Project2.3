@@ -74,4 +74,9 @@ public class ReversiView extends GameView{
             button.setText(value);
         });
     }
+
+    @Override
+    public void updateNotification(String notification) {
+        //TODO add notification to view
+    }
 }
