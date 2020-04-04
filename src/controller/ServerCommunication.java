@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class ServerCommunication {
+    MasterController masterController;
+
     Socket socket;
     BufferedReader reader;
     BufferedWriter writer;
@@ -112,7 +114,7 @@ public class ServerCommunication {
         }
     }
 
-    public void challengeAccept(String challengeNmr) {
+    public void challengeAccept(int challengeNmr) {
         try {
             write("challenge accept " + challengeNmr);
         } catch (IOException e) {

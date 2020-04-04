@@ -75,6 +75,8 @@ public class MasterView extends View {
     ObservableList<String> datPlayersOptions = FXCollections.observableArrayList ("");
     Text headPlayersOptions = new Text("ERROR");
 
+    ListView<String> lstChallengeOptions = new ListView<String>(FXCollections.observableArrayList ("Accepteren", "Negeren"));
+
     // Quick play
     Button btnQuickPlay = new Button("Nu spelen!");
 
@@ -153,7 +155,15 @@ public class MasterView extends View {
         lstPlayersOptions.setVisible(false);
         lstPlayersOptions.setLayoutY(80+48);
         lstPlayersOptions.setPrefHeight(48*2+1);
-        lstPlayersOptions.setPrefWidth(200);
+        lstPlayersOptions.setPrefWidth(320);
+
+        // Leaderboard - Challenge options
+        pnLauncher.getChildren().add(lstChallengeOptions);
+        lstChallengeOptions.setStyle("-fx-font-size:24.0;");
+        lstChallengeOptions.setVisible(false);
+        lstChallengeOptions.setLayoutY(80+48+128);
+        lstChallengeOptions.setPrefHeight(48*2+1);
+        lstChallengeOptions.setPrefWidth(200);
 
         // Leaderboard - Challenge Head
         pnLauncher.getChildren().add(headPlayersOptions);
@@ -231,9 +241,6 @@ public class MasterView extends View {
         lstGameSelectOptions.setLayoutX(64);
         lstGameSelectOptions.setPrefWidth(256);
 
-        // Add games to gamelist
-        updatePlayerboardChallenges(FXCollections.observableArrayList("Reversi", "Tic-tac-toe"));
-
         // Application - Window settings
         players.clear();
         scene = new Scene(pnLauncher, windowWidth, windowHeight);
@@ -301,7 +308,24 @@ public class MasterView extends View {
                     headPlayersOptions.setVisible(true);
                     //controller.setRivalName(playerList.getSelectionModel().getSelectedItem());
                     playerList.setId(playerList.getSelectionModel().getSelectedItem());
-                    headPlayersOptions.setText(playerList.getSelectionModel().getSelectedItem() + " uitdagen voor een potje");
+
+                    // Check if invite is available
+                    if (controller.checkChallenger(playerList.getId())){
+                        String gameTitle = controller.checkChallengerGametype(playerList.getId());
+                        System.out.println("gameTitle"+gameTitle);
+                        headPlayersOptions.setText(playerList.getId() + " wil " + gameTitle + " spelen");
+                        if (gameTitle.equals(GameName.REVERSI.label)){
+                            updatePlayerboardChallenges(FXCollections.observableArrayList("Reversi | Accepteren", "Tic-tac-toe"));
+                        } else {
+                            updatePlayerboardChallenges(FXCollections.observableArrayList("Reversi", "Tic-tac-toe | Accepteren"));
+                        }
+//                        lstChallengeOptions.setVisible(true);
+                    } else {
+                        // Add normal games to gamelist
+                        updatePlayerboardChallenges(FXCollections.observableArrayList("Reversi", "Tic-tac-toe"));
+                        lstChallengeOptions.setVisible(false);
+                        headPlayersOptions.setText(playerList.getSelectionModel().getSelectedItem() + " uitdagen voor:");
+                    }
                     lstPlayersOptions.setVisible(true);
                 } catch(Exception e) {
                     System.out.println("playerList:empty");
@@ -318,8 +342,14 @@ public class MasterView extends View {
                     return;
                 }
 
+                if (lstPlayersOptions.getSelectionModel().getSelectedItem().length()>10) {
+                    if (lstPlayersOptions.getSelectionModel().getSelectedItem().substring(lstPlayersOptions.getSelectionModel().getSelectedItem().length() - 10).equals("Accepteren")) {
+                        challengeAccept(playerList.getId());
+                    }
+                }
+
                 // Challenge rival
-                headPlayersOptions.setText(playerList.getSelectionModel().getSelectedItem() + " is uitgedaagd voor een potje " + lstPlayersOptions.getSelectionModel().getSelectedItem());
+                headPlayersOptions.setText(playerList.getSelectionModel().getSelectedItem() + " is uitgedaagd voor " + lstPlayersOptions.getSelectionModel().getSelectedItem());
                 controller.setRivalName(playerList.getSelectionModel().getSelectedItem());
                 updatePlayerboardImages();
                 controller.challengeRival(controller.getRivalName(), lstPlayersOptions.getSelectionModel().getSelectedItem());
@@ -358,6 +388,7 @@ public class MasterView extends View {
                     btnChangeName.setGraphic(imgUsernameLogin);
                     // Update state of online buttons
                     selectGameModeScreenOnlineButtons(true);
+                    lstChallengeOptions.setVisible(false);
                 }
                 // Update visuals
                 NoConnection(false);
@@ -370,6 +401,7 @@ public class MasterView extends View {
             public void handle(ActionEvent event) {
 
                 if (btnQuickPlay.getText() == "Nu spelen!") {
+                    updatePlayerboardChallenges(FXCollections.observableArrayList("Reversi", "Tic-tac-toe"));
                     lstGameSelectOptions.getSelectionModel().select(-1);
                     selectGameModeScreen(true);
                     btnQuickPlay.setText("Terug");
@@ -725,6 +757,11 @@ public class MasterView extends View {
         }
         // Set button availability in correct state
         btnChangeName.setDisable(state);
+        //lstChallengeOptions.setVisible(state);
+    }
+
+    public void challengeAccept(String challengeName){
+        controller.challengeAccept(controller.getChallengeNumber(challengeName));
     }
 
 }

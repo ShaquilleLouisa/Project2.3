@@ -355,8 +355,20 @@ public class MasterController extends Controller {
         return model.checkChallenger(challengerName);
     }
 
+    public String checkChallengerGametype(String challengerName) {
+        return model.checkChallengerGametype(challengerName);
+    }
+
+    public int getChallengeNumber(String challengerName) {
+        return model.getChallengeNumber(challengerName);
+    }
+
     public void challengeRival(String rivalName, String gameName) {
         serverCommunication.challengeRival(rivalName, gameName);
+    }
+
+    public void challengeAccept(int challengeNmr) {
+        serverCommunication.challengeAccept(challengeNmr);
     }
 
     public void getGameList() {

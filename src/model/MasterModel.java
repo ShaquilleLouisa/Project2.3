@@ -46,6 +46,25 @@ public class MasterModel extends Model {
         return false;
     }
 
+    public String checkChallengerGametype(String challengerName) {
+        for (int i=0; i<challengesReceived.size(); i++){
+            if (challengerName.equals(challengesReceived.get(i)[0])){
+                return challengesReceived.get(i)[2];
+            }
+        }
+        return "niks";
+    }
+
+    public int getChallengeNumber(String challengerName) {
+        for (int i=0; i<challengesReceived.size(); i++){
+            if (challengerName.equals(challengesReceived.get(i)[0])){
+                return Integer.parseInt(challengesReceived.get(i)[1]);
+            }
+        }
+        System.out.println("FATAL ERROR");
+        return -1;
+    }
+
     public Game getGame() {
         return game;
     }
