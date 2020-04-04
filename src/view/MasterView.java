@@ -16,7 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -456,6 +455,7 @@ public class MasterView extends View {
             players.clear();
             players.addAll(newPlayerlist);
             playersOnline.setText(players.size() + " andere spelers online");
+            NoConnection(false);
         });
     }
 
@@ -663,6 +663,25 @@ public class MasterView extends View {
         btnAIvsAIOffline.setVisible(state);
         lstGameSelectOptions.setVisible(state);
 
+    }
+
+    public void NoConnection(boolean state){
+        // Make background correct color
+        if (state == true) {
+            bgUsernameLine.setFill(Color.rgb(183, 64, 31));
+            bgUsernameUse.setImage(bgUsernameError);
+        } else {
+            if (controller.getLoginName() == null) {
+                bgUsernameLine.setFill(Color.rgb(187, 168, 47));
+                bgUsernameUse.setImage(bgUsernameEdit);
+            } else {
+                bgUsernameLine.setFill(Color.rgb(69, 149, 35));
+                bgUsernameUse.setImage(bgUsernameOk);
+            }
+        }
+        // Set button availability in correct state
+        btnChangeName.setDisable(state);
+        usernameEdit.setDisable(state);
     }
 
 }
