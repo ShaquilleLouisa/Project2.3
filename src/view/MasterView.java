@@ -325,7 +325,7 @@ public class MasterView extends View {
                     String loginStatus = controller.login((usernameEdit.getCharacters().toString()));
                     if (loginStatus == "ok") {
                         usernameEdit.setDisable(true);
-                        bgUsernameUse.setImage(bgUsernameOk);
+//                        bgUsernameUse.setImage(bgUsernameOk);
                         controller.setLoginName(usernameEdit.getCharacters().toString());
                         controller.getPlayerList();
                         enableChallengeOptions(false);
@@ -337,12 +337,12 @@ public class MasterView extends View {
                             }
                         }
                     } else if (loginStatus == "short") {
-                        JOptionPane.showConfirmDialog(null, "Deze naam is niet lang genoeg", "Waarschuwing", JOptionPane.CLOSED_OPTION);
+                        //JOptionPane.showConfirmDialog(null, "Deze naam is niet lang genoeg", "Waarschuwing", JOptionPane.CLOSED_OPTION);
                     }
                 } else {
                     controller.logout();
                     usernameEdit.setDisable(false);
-                    bgUsernameUse.setImage(bgUsernameEdit);
+//                    bgUsernameUse.setImage(bgUsernameEdit);
                     controller.setLoginName(null);
                     controller.setRivalName(null);
                     enableChallengeOptions(false);
@@ -350,6 +350,8 @@ public class MasterView extends View {
                     // Update state of online buttons
                     selectGameModeScreenOnlineButtons(true);
                 }
+                // Update visuals
+                NoConnection(false);
             }
         });
 
@@ -444,9 +446,7 @@ public class MasterView extends View {
 
     // Executed when client has connected
     public void connected(Boolean isConnected){
-        if (isConnected == true){
-
-        }
+        NoConnection(!isConnected);
     }
 
     // Update leaderboard
