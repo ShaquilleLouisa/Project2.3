@@ -681,14 +681,15 @@ public class MasterView extends View {
             if (controller.getLoginName() == null) {
                 bgUsernameLine.setFill(Color.rgb(187, 168, 47));
                 bgUsernameUse.setImage(bgUsernameEdit);
+                usernameEdit.setDisable(false);
             } else {
                 bgUsernameLine.setFill(Color.rgb(69, 149, 35));
                 bgUsernameUse.setImage(bgUsernameOk);
+                usernameEdit.setDisable(true);
             }
         }
         // Set button availability in correct state
         btnChangeName.setDisable(state);
-        usernameEdit.setDisable(state);
     }
 
 }
