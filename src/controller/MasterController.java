@@ -236,6 +236,8 @@ public class MasterController extends Controller {
             System.out.println("Game not found");
         }
         if (game != null) {
+            System.out.println(model.isOnlineGame() + " online ff");
+            game.setGameSettings(model.isOnlineGame(), model.isUseAi(), model.isDoubleAi());
             model.setGame(game);
             GameView gameView = model.getGame().getView();
             stage.setScene(gameView.getScene());
@@ -308,5 +310,10 @@ public class MasterController extends Controller {
 
     public void resetStage() {
         stage.setScene(view.getScene());
+    }
+
+    public void setGameSettings(boolean online, boolean ai, boolean doubleAi) {
+        model.setOnlineGame(online);
+        model.setUseAi(ai, doubleAi);
     }
 }

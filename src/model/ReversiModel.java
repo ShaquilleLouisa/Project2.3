@@ -13,10 +13,15 @@ public class ReversiModel extends GameModel {
     private ReversiView view;
     private int boardSize = 8;
     private boolean[][] validMoves;
+    private boolean useAi;
+    private boolean online;
+    private boolean doubleAi;
 
     public ReversiModel(ReversiView view) {
         this.view = view;
         turns = 0;
+        useAi = false;
+        online = false;
         board = new Board(boardSize, boardSize, new ReversiFieldStatus());
         System.out.println("setFirstMoves");
         setFirstMoves();
@@ -71,7 +76,6 @@ public class ReversiModel extends GameModel {
     }
 
     private boolean[][] setValidMoves() {
-
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
         fieldStatus.setEmpty();
         int counter = 0;
@@ -335,5 +339,34 @@ public class ReversiModel extends GameModel {
     @Override
     public Board getBoard() {
         return board;
+    }
+
+    public boolean isUseAi() {
+        return useAi;
+    }
+
+    @Override
+    public void setOnlineUse(boolean online) {
+        this.online = online;
+    }
+
+    @Override
+    public boolean isOnline() {
+        return online;
+    }
+
+    @Override
+    public void setDoubleAi(boolean ai) {
+        this.doubleAi = ai;
+    }
+
+    @Override
+    public boolean isDoubleAi() {
+        return doubleAi;
+    }
+
+    @Override
+    public void setAiUse(boolean useAi) {
+        this.useAi = useAi;
     }
 }

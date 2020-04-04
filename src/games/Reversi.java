@@ -1,9 +1,6 @@
 package games;
 
-import ai.AI;
-import ai.DefaultReversiAI;
-import ai.OurReversiAI;
-import ai.ReversiAI;
+import ai.*;
 import controller.GameController;
 import controller.ReversiController;
 import exceptions.MoveException;
@@ -18,13 +15,15 @@ public class Reversi extends Game {
     private ReversiModel model;
     private ReversiController controller;
     private AI ai;
+    private boolean useAi = false;
+    private boolean doubleai = false;
+    private boolean online = false;
     public static boolean isFirstMove = true;
 
     public Reversi() {
         controller = new ReversiController();
         view = new ReversiView(controller);
         model = new ReversiModel(view);
-        ai = new OurReversiAI(model);
         controller.addModel(model);
         controller.addView(view);
     }
@@ -42,6 +41,17 @@ public class Reversi extends Game {
     public GameController getController() {
         return controller;
     }
+
+    @Override
+    public void setGameSettings(boolean online, boolean ai, boolean doubleai) {
+        model.setAiUse(ai);
+        model.setDoubleAi(doubleai);
+        model.setOnlineUse(online);
+        this.online = online;
+        this.useAi = ai;
+        this.doubleai = doubleai;
+    }
+
 
     public int getNextMove() {
         return ai.calculateNextMove();
@@ -72,10 +82,22 @@ public class Reversi extends Game {
 
     @Override
     public void setAI(AI ai) throws WrongAIException {
-        if (ai instanceof ReversiAI) {
-            this.ai = ai;
+        if(useAi) {
+            if (ai instanceof TicTacToeAI) {
+                this.ai = ai;
+            } else {
+                throw new WrongAIException("Tic-tac-toe AI required");
+            }
         } else {
-            throw new WrongAIException("Reversi AI required");
+            throw new WrongAIException("No AI chosen on startup");
         }
+    }
+
+    public void setOnline(boolean online) {
+        this.online = online;
+    }
+
+    public boolean isOnline() {
+        return online;
     }
 }

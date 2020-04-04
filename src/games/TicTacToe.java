@@ -17,13 +17,19 @@ public class TicTacToe extends Game {
     private TicTacToeModel model;
     private TicTacToeController controller;
 
+    private boolean useAi;
+    private boolean doubleai;
+    private boolean online;
+
     public TicTacToe() {
         controller = new TicTacToeController();
         view = new TicTacToeView(controller);
         model = new TicTacToeModel(view);
         controller.addModel(model);
         controller.addView(view);
-
+        doubleai = false;
+        useAi = false;
+        online = false;
     }
 
     @Override
@@ -33,10 +39,14 @@ public class TicTacToe extends Game {
 
     @Override
     public void setAI(AI ai) throws WrongAIException {
-        if (ai instanceof TicTacToeAI) {
-            this.ai = ai;
+        if(useAi) {
+            if (ai instanceof TicTacToeAI) {
+                this.ai = ai;
+            } else {
+                throw new WrongAIException("Tic-tac-toe AI required");
+            }
         } else {
-            throw new WrongAIException("Tic-tac-toe AI required");
+            throw new WrongAIException("No AI chosen on startup");
         }
     }
 
@@ -71,6 +81,16 @@ public class TicTacToe extends Game {
         return controller;
     }
 
+    @Override
+    public void setGameSettings(boolean online, boolean ai, boolean doubleai) {
+        model.setAiUse(ai);
+        model.setDoubleAi(doubleai);
+        model.setOnlineUse(online);
+        this.online = online;
+        this.useAi = ai;
+        this.doubleai = doubleai;
+    }
+
 
     // public FieldStatus getFieldStatus(int move) {
     // return model.getFieldStatus(move);
@@ -84,4 +104,17 @@ public class TicTacToe extends Game {
     // throw (e);
     // }
     // }
+
+
+    public boolean isUseAi() {
+        return useAi;
+    }
+
+    public boolean isOnline() {
+        return online;
+    }
+
+    public boolean isDoubleai() {
+        return doubleai;
+    }
 }
