@@ -45,14 +45,15 @@ public class MasterController extends Controller {
         // Create control panel
         this.stage = stage;
         view.start(stage);
-
-        serverCommunication.connect();
-        view.connected(true);
+        boolean isConnected = serverCommunication.connect();
+        view.connected(isConnected);
         // First read should be empty because garbage 2 lines
-        try {
-            serverCommunication.read();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(isConnected) {
+            try {
+                serverCommunication.read();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         Timer timer = new Timer();
@@ -78,6 +79,9 @@ public class MasterController extends Controller {
             originalInput = serverCommunication.read();
         } catch (IOException e) {
             System.out.println("No connecting with server:handleInput");
+            try {
+                Thread.sleep(500);
+            } catch (Exception es) {}
         }
         if (originalInput != null) {
             String inputLowerCase = originalInput.toLowerCase();
