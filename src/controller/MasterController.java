@@ -107,8 +107,10 @@ public class MasterController extends Controller {
                             break;
                         case "game":
                             System.out.println("Game message");
+                            System.out.println(" ");
                             switch (words[2]) {
                                 case "match":
+                                    System.out.println(" ");
                                     System.out.println("Match message: " + inputLowerCase.substring(totalLetters));
                                     // Get rival name using regex
                                     Pattern p = Pattern.compile("OPPONENT: \"([^\"]*)\"");
@@ -119,6 +121,7 @@ public class MasterController extends Controller {
                                     }
                                     break;
                                 case "yourturn":
+                                    System.out.println(" ");
                                     System.out.println("Your turn");
                                     int ourMove;
                                     if (model.getGame().getModel().isUseAi()) {
@@ -159,12 +162,13 @@ public class MasterController extends Controller {
                                     model.getGame().getView().updateNotification("Its a draw :|");
                                     break;
                                 case "move":
-                                    System.out.println("inputLowerCase " + words[4]);
-                                    System.out.println("Move has been done: " + inputLowerCase.substring(totalLetters)
+                                    System.out.println(" ");
+                                    //System.out.println("inputLowerCase " + words[4]);
+                                    System.out.println("Move has been done by opponent: " + inputLowerCase.substring(totalLetters)
                                             + "name: " + getRivalName());
                                     if (words[4].contains(getRivalName())) {
 
-                                        System.out.println(words[6].substring(1, words[6].length() - 2));
+                                        System.out.println("Waar is deze print ??????"+words[6].substring(1, words[6].length() -2));
 
                                         int opponentMove = Integer.parseInt(words[6].substring(1, words[6].length() - 2));//Integer.parseInt(words[6]);
                                         //TicTacToeFieldStatus fieldStatusCross = new TicTacToeFieldStatus();
@@ -172,6 +176,7 @@ public class MasterController extends Controller {
                                         //model.getGame().getModel().setFieldStatus(opponentMove, fieldStatusCross);
                                         System.out.println("opponentMove: " + opponentMove);
                                         model.getGame().setMove(opponentMove, true);
+                                        System.out.println("Opponent move has been set");
 
                                     }
                                     break;
