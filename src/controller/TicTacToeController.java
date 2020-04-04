@@ -49,11 +49,11 @@ public class TicTacToeController extends GameController {
     }
 
     public void doMove(int move) throws MoveException {
+        TicTacToeFieldStatus ticTacToeFieldStatus = new TicTacToeFieldStatus();
         if (!model.isDoubleAi()) {
             if (!model.isOnline() && !model.isUseAi()) {
                 System.out.println("no ai");
                 if (model.checkEnd(model.getBoard()) == -1) {
-                    TicTacToeFieldStatus ticTacToeFieldStatus = new TicTacToeFieldStatus();
                     if (model.getPlayer() == 1) {
                         ticTacToeFieldStatus.setCross();
                     } else {
@@ -75,10 +75,12 @@ public class TicTacToeController extends GameController {
                     }
                 }
             } else if(model.isOnline()) {
-                TicTacToeFieldStatus ticTacToeFieldStatus = new TicTacToeFieldStatus();
                 ticTacToeFieldStatus.setCircle();
                 doMove(move, ticTacToeFieldStatus);
                 model.setUserMove(move);
+            } else if(!model.isOnline() && model.isUseAi()) {
+                ticTacToeFieldStatus.setCircle();
+                doMove(move, ticTacToeFieldStatus);
             }
         }
     }

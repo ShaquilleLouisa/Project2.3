@@ -60,6 +60,8 @@ public class TicTacToeView extends GameView {
                     controller.doMove(Integer.parseInt(button.getText()));
                 } catch (MoveException e) {
                     System.out.println("Move not available please try again.");
+                } catch (NumberFormatException nfe) {
+                    updateNotification("Cant do move!");
                 }
             }
         };

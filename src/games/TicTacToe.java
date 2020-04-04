@@ -34,7 +34,7 @@ public class TicTacToe extends Game {
         model.setOnlineUse(online);
         model.setAiUse(useAi);
         model.setDoubleAi(doubleai);
-        if(online && useAi && !doubleai) {
+        if(useAi && !doubleai) {
             TicTacToeFieldStatus ticTacToeFieldStatus = new TicTacToeFieldStatus();
             ticTacToeFieldStatus.setCircle();
             ai = new TicTacToeAI(model, ticTacToeFieldStatus);

@@ -26,15 +26,17 @@ public class TicTacToeModel extends GameModel {
 
     public void setFieldStatus(int move, FieldStatus fieldStatus) throws MoveException {
         ArrayList<Integer> xAndY = board.getMove(move);
-        int x = xAndY.get(0);
-        int y = xAndY.get(1);
-
         try {
+            int x = xAndY.get(0);
+            int y = xAndY.get(1);
             board.setFieldStatus(x, y, fieldStatus);
-        } catch (MoveException e) {
-            throw e;
+            view.update(move, fieldStatus);
+        } catch (NullPointerException e) {
+            System.out.println("cant do move");
+        } catch (MoveException me) {
+            throw me;
         }
-        view.update(move, fieldStatus);
+
     }
 
     public FieldStatus getFieldStatus(int move) {

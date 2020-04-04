@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.MultipleSelectionModel;
 import model.MasterModel;
 import model.Model;
+import model.TicTacToeModel;
 import model.gameitems.*;
 import view.*;
 import javafx.collections.FXCollections;
@@ -48,7 +49,7 @@ public class MasterController extends Controller {
         boolean isConnected = serverCommunication.connect();
         view.connected(isConnected);
         // First read should be empty because garbage 2 lines
-        if(isConnected) {
+        if (isConnected) {
             try {
                 serverCommunication.read();
             } catch (IOException e) {
@@ -81,7 +82,8 @@ public class MasterController extends Controller {
             System.out.println("No connecting with server:handleInput");
             try {
                 Thread.sleep(500);
-            } catch (Exception es) {}
+            } catch (Exception es) {
+            }
         }
         if (originalInput != null) {
             String inputLowerCase = originalInput.toLowerCase();
@@ -117,7 +119,7 @@ public class MasterController extends Controller {
                                 case "yourturn":
                                     System.out.println("Your turn");
                                     int ourMove;
-                                    if(model.getGame().getModel().isUseAi()) {
+                                    if (model.getGame().getModel().isUseAi()) {
                                         ourMove = model.getGame().getNextMove();
                                         //TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
                                         //fieldStatus.setCircle();
@@ -132,7 +134,7 @@ public class MasterController extends Controller {
                                             @Override
                                             public void run() {
                                                 int move = model.getGame().getModel().getUserMove();
-                                                if(userMove != move) {
+                                                if (userMove != move) {
                                                     serverCommunication.move(move);
                                                     userMove = move;
                                                 }
@@ -263,17 +265,45 @@ public class MasterController extends Controller {
             stage.setScene(gameView.getScene());
             Timer timerOffline = new Timer();
 
-            if (model.isOnlineGame()) {
+            if (model.isOnlineGame() && !model.isDoubleAi()) {
                 serverCommunication.subscribe(gameName);
                 System.out.println("Subscribed to " + gameName.label);
-            } else {
+            } else if (!model.isOnlineGame() && model.isDoubleAi()) {
                 timerOffline.schedule(new TimerTask() {
                     @Override
                     public void run() {
                         gameController.nextTurn();
                     }
                 }, 0, 1000);
+            } else if (!model.isOnlineGame() && model.isUseAi() && !model.isDoubleAi()) {
+                TicTacToeFieldStatus ticTacToeFieldStatus = new TicTacToeFieldStatus();
+                ticTacToeFieldStatus.setCross();
+                TicTacToeAI ticTacToeAi = new TicTacToeAI((TicTacToeModel) model.getGame().getModel(), ticTacToeFieldStatus);
+                try {
+                    game.setAI(ticTacToeAi);
+                } catch (Exception e) {
+                    game.getView().updateNotification("AI ERROR");
+                }
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    int userMove = model.getGame().getModel().getUserMove();
+
+                    @Override
+                    public void run() {
+                        if(model.getGame().getModel().getPlayer() == 1) {
+                            int move = model.getGame().getModel().getUserMove();
+                            if (userMove != move) {
+                                serverCommunication.move(move);
+                                userMove = move;
+                            }
+                        } else {
+                            model.getGame().setMove(model.getGame().getNextMove(), true);
+                            model.getGame().getModel().switchPlayer();
+                        }
+                    }
+                }, 0, 1000);
             }
+
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
