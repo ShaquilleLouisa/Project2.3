@@ -140,8 +140,15 @@ public class MasterController extends Controller {
                                     p = Pattern.compile("OPPONENT: \"([^\"]*)\"");
                                     m = p.matcher(originalInput);
                                     while (m.find()) {
-                                        System.out.println("Rivalname received:" + m.group(1));
+                                        System.out.println("Match rivalname received:" + m.group(1));
                                         model.setRivalName(m.group(1));
+                                    }
+                                    // Get rival gametype using regex
+                                    p = Pattern.compile("GAMETYPE: \"([^\"]*)\"");
+                                    m = p.matcher(originalInput);
+                                    while (m.find()) {
+                                        System.out.println("Match gametype received:" + m.group(1));
+                                        // Change scene using m.group(1)
                                     }
                                     break;
                                 case "yourturn":
