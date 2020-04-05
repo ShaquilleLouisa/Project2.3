@@ -26,14 +26,18 @@ public class MasterView extends View {
     MasterController controller;
 
     Scene scene;
-    public MasterView() {
-
-    }
-
     public MasterView(MasterController controller) {
         this.controller = controller;
     }
 
+    /** Application settings **/
+    // Application - window settings
+    int windowWidth = 1280; // Default screen size
+    int windowHeight = 720;
+    Pane pnLauncher = new Pane(); // Main pane
+
+
+    /** Topbar username **/
     // Username - buttons
     Button btnChangeName = new Button("");
 
@@ -44,11 +48,6 @@ public class MasterView extends View {
     ImageView imgUsernameEdit = new ImageView("File:assets/launcher/nameEdit.png");
     ImageView imgUsernameLogin = new ImageView("File:assets/launcher/nameLogin.png");
 
-    // Application - window settings
-    int windowWidth = 1280; // Default screen size
-    int windowHeight = 720;
-    Pane pnLauncher = new Pane(); // Main pane
-
     // Username backgrounds
     Image bgUsernameOk = new Image("File:assets/launcher/bgUsernameOk.png");
     Image bgUsernameEdit = new Image("File:assets/launcher/bgUsernameEdit.png");
@@ -56,33 +55,40 @@ public class MasterView extends View {
     ImageView bgUsernameUse = new ImageView("File:assets/launcher/bgUsernameError.png");
     Rectangle bgUsernameLine = new Rectangle(0, 0,   windowWidth,   12);
 
-    // Inivitation icon
-    Image icoInvitation = new Image("File:assets/launcher/iconInvitation.png");
+
+    /** Playerboard **/
+    // Playerboard - Invitation icon
+    Image icoInvitationRecv = new Image("File:assets/launcher/iconInvitationRecv.png");
     Image icoInvitationSend = new Image("File:assets/launcher/iconInvitationSend.png");
 
-
-    // Leaderboard - Textfields
-    Text playersOnline = new Text("Server niet gevonden"); // Lange versie Er kan geen verbinding worden gemaakt met de server
-
-    // Leaderboard - playerlist
-    ListView<String> playerList = new ListView<String>();
+    // Playerboard - listview playerlist (LEFT)
+    Text headPlayersOnline = new Text("Server niet gevonden");
+    ListView<String> lstPlayerList = new ListView<String>();
     ObservableList<String> players = FXCollections.observableArrayList ("");
-    // Leaderboard - player options list
+
+
+    /** Playerboard challenges/options **/
+    // Playerboard challenges/options (RIGHT)
+    Text headPlayersOptions = new Text("");
     ListView<String> lstPlayersOptions = new ListView<String>();
     ObservableList<String> datPlayersOptions = FXCollections.observableArrayList ("");
-    Text headPlayersOptions = new Text("ERROR");
 
-    ListView<String> lstChallengeOptions = new ListView<String>(FXCollections.observableArrayList ("Accepteren", "Negeren"));
 
+    /** Quick play **/
     // Quick play
     Button btnQuickPlay = new Button("Nu spelen!");
 
-    // Gamemode selection screen - Online
-    Text txtOnline = new Text("Online spelen");
 
-    // Gamemode selection screen - Online
+    /** Gamemode selection screen **/
+    // Gamemode selection screen - Headers
+    Text txtOnline = new Text("Online spelen");
+    Text txtOffline = new Text("Offline spelen");
     Text txtSpellen = new Text("Spellen");
 
+    // Gamemode selection screen - Game options
+    ListView<String> lstGameSelectOptions = new ListView<String>();
+
+    /** Gamemode selection screen -- Mode buttons **/
     // P1 VS P2 - online
     Button btnP1Online = new Button("");
     ImageView imgP1Online = new ImageView("File:assets/launcherStart/modeP1Online.png");
@@ -91,25 +97,23 @@ public class MasterView extends View {
     Button btnAIOnline = new Button("");
     ImageView imgAIOnline = new ImageView("File:assets/launcherStart/modeAIOnline.png");
 
-    // Gamemode selection screen - Offline
-    Text txtOffline = new Text("Offline spelen");
-
     // P1 VS P2 - offline
     Button btnP1vsP2Offline = new Button("");
     ImageView imgP1vsP2Offline = new ImageView("File:assets/launcherStart/modeP1vsP2Offline.png");
 
-    // P1 VS COM - offline
+    // P1 VS AI - offline
     Button btnP1vsAIOffline = new Button("");
     ImageView imgP1vsAIOffline = new ImageView("File:assets/launcherStart/modeP1vsAIOffline.png");
 
-    // COM VS COM - offline
+    // AI VS AI - offline
     Button btnAIvsAIOffline = new Button("");
     ImageView imgAIvsAIOffline = new ImageView("File:assets/launcherStart/modeAIvsAIOffline.png");
 
-    ListView<String> lstGameSelectOptions = new ListView<String>();
 
     public void start(Stage masterStage) {
-        buttonActions();
+        // Put triggers on buttons
+        buttonWatchdogs();
+
         // Pane - background color
         pnLauncher.setStyle("-fx-background-color: #262626;"); // Default background color
 
@@ -131,21 +135,21 @@ public class MasterView extends View {
         btnChangeName.setStyle("-fx-background-color: #262626;");
         btnChangeName.setGraphic(imgUsernameLogin);
 
-        // Leaderboard - players online
-        pnLauncher.getChildren().add(playersOnline);
-        playersOnline.setFill(Color.WHITE);
-        playersOnline.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        playersOnline.setLayoutX(32);
-        playersOnline.setLayoutY(64);
+        // Playerboard - players online
+        pnLauncher.getChildren().add(headPlayersOnline);
+        headPlayersOnline.setFill(Color.WHITE);
+        headPlayersOnline.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        headPlayersOnline.setLayoutX(32);
+        headPlayersOnline.setLayoutY(64);
 
-        // Leaderboard - Playerslist
-        pnLauncher.getChildren().add(playerList);
-        playerList.setItems(players);
-        playerList.setStyle("-fx-font-size:24.0;");
-        playerList.setLayoutX(32);
-        playerList.setLayoutY(80);
+        // Playerboard - Playerslist
+        pnLauncher.getChildren().add(lstPlayerList);
+        lstPlayerList.setItems(players);
+        lstPlayerList.setStyle("-fx-font-size:24.0;");
+        lstPlayerList.setLayoutX(32);
+        lstPlayerList.setLayoutY(80);
 
-        // Leaderboard - Challenge
+        // Playerboard - Challenge
         pnLauncher.getChildren().add(lstPlayersOptions);
         lstPlayersOptions.setItems(datPlayersOptions);
         lstPlayersOptions.setStyle("-fx-font-size:24.0;");
@@ -154,15 +158,7 @@ public class MasterView extends View {
         lstPlayersOptions.setPrefHeight(48*2+1);
         lstPlayersOptions.setPrefWidth(320);
 
-        // Leaderboard - Challenge options
-        pnLauncher.getChildren().add(lstChallengeOptions);
-        lstChallengeOptions.setStyle("-fx-font-size:24.0;");
-        lstChallengeOptions.setVisible(false);
-        lstChallengeOptions.setLayoutY(80+48+128);
-        lstChallengeOptions.setPrefHeight(48*2+1);
-        lstChallengeOptions.setPrefWidth(200);
-
-        // Leaderboard - Challenge Head
+        // Playerboard - Challenge Head
         pnLauncher.getChildren().add(headPlayersOptions);
         headPlayersOptions.setFill(Color.WHITE);
         headPlayersOptions.setFont(Font.font("Arial", FontWeight.BOLD, 24));
@@ -184,7 +180,7 @@ public class MasterView extends View {
         txtOnline.setLayoutX(128);
         txtOnline.setLayoutY(96);
 
-        // Text spellen - Online
+        // Game mode selection screen - Game options header
         pnLauncher.getChildren().add(txtSpellen);
         txtSpellen.setVisible(false);
         txtSpellen.setFill(Color.WHITE);
@@ -192,19 +188,21 @@ public class MasterView extends View {
         txtSpellen.setLayoutX(64);
         txtSpellen.setLayoutY(96);
 
+        // Game mode selection screen - P1 vs Online
         pnLauncher.getChildren().add(btnP1Online);
         btnP1Online.setVisible(false);
         btnP1Online.setLayoutY(128);
         btnP1Online.setGraphic(imgP1Online);
         btnP1Online.setId("btnP1Online");
 
+        // Game mode selection screen - AI vs Online
         pnLauncher.getChildren().add(btnAIOnline);
         btnAIOnline.setVisible(false);
         btnAIOnline.setLayoutY(128);
         btnAIOnline.setGraphic(imgAIOnline);
         btnAIOnline.setId("btnP1Online");
 
-        // Gamemode selection screen - Offline
+        // Gamemode selection screen - Game options header Offline
         pnLauncher.getChildren().add(txtOffline);
         txtOffline.setVisible(false);
         txtOffline.setFill(Color.WHITE);
@@ -286,9 +284,9 @@ public class MasterView extends View {
         return scene;
     }
 
-    private void buttonActions(){
+    private void buttonWatchdogs(){
         // Player name clicked
-        playerList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        lstPlayerList.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 try {
@@ -299,33 +297,31 @@ public class MasterView extends View {
                         return;
                     }
                     // Check if playername is valid
-                    if (playerList.getSelectionModel().getSelectedItem() == null){
+                    if (lstPlayerList.getSelectionModel().getSelectedItem() == null){
                         return;
                     }
                     headPlayersOptions.setVisible(true);
-                    //controller.setRivalName(playerList.getSelectionModel().getSelectedItem());
-                    playerList.setId(playerList.getSelectionModel().getSelectedItem());
+                    //controller.setRivalName(lstPlayerList.getSelectionModel().getSelectedItem());
+                    lstPlayerList.setId(lstPlayerList.getSelectionModel().getSelectedItem());
 
                     // Check if invite is available
-                    if (controller.checkChallenger(playerList.getId())){
-                        String gameTitle = controller.checkChallengerGametype(playerList.getId());
+                    if (controller.checkChallenger(lstPlayerList.getId())){
+                        String gameTitle = controller.checkChallengerGametype(lstPlayerList.getId());
                         System.out.println("gameTitle"+gameTitle);
-                        headPlayersOptions.setText(playerList.getId() + " wil " + gameTitle + " spelen");
+                        headPlayersOptions.setText(lstPlayerList.getId() + " wil " + gameTitle + " spelen");
                         if (gameTitle.equals(GameName.REVERSI.label)){
                             updatePlayerboardChallenges(FXCollections.observableArrayList("Reversi | Accepteren", "Tic-tac-toe"));
                         } else {
                             updatePlayerboardChallenges(FXCollections.observableArrayList("Reversi", "Tic-tac-toe | Accepteren"));
                         }
-//                        lstChallengeOptions.setVisible(true);
                     } else {
                         // Add normal games to gamelist
                         updatePlayerboardChallenges(FXCollections.observableArrayList("Reversi", "Tic-tac-toe"));
-                        lstChallengeOptions.setVisible(false);
-                        headPlayersOptions.setText(playerList.getSelectionModel().getSelectedItem() + " uitdagen voor:");
+                        headPlayersOptions.setText(lstPlayerList.getSelectionModel().getSelectedItem() + " uitdagen voor:");
                     }
                     lstPlayersOptions.setVisible(true);
                 } catch(Exception e) {
-                    System.out.println("playerList:empty");
+                    System.out.println("lstPlayerList:empty");
                 }
             }
         });
@@ -341,13 +337,13 @@ public class MasterView extends View {
 
                 if (lstPlayersOptions.getSelectionModel().getSelectedItem().length()>10) {
                     if (lstPlayersOptions.getSelectionModel().getSelectedItem().substring(lstPlayersOptions.getSelectionModel().getSelectedItem().length() - 10).equals("Accepteren")) {
-                        challengeAccept(playerList.getId());
+                        challengeAccept(lstPlayerList.getId());
                     }
                 }
 
                 // Challenge rival
-                headPlayersOptions.setText(playerList.getSelectionModel().getSelectedItem() + " is uitgedaagd voor " + lstPlayersOptions.getSelectionModel().getSelectedItem());
-                controller.setRivalName(playerList.getSelectionModel().getSelectedItem());
+                headPlayersOptions.setText(lstPlayerList.getSelectionModel().getSelectedItem() + " is uitgedaagd voor " + lstPlayersOptions.getSelectionModel().getSelectedItem());
+                controller.setRivalName(lstPlayerList.getSelectionModel().getSelectedItem());
                 updatePlayerboardImages();
                 controller.challengeRival(controller.getRivalName(), lstPlayersOptions.getSelectionModel().getSelectedItem());
             }
@@ -385,7 +381,6 @@ public class MasterView extends View {
                     btnChangeName.setGraphic(imgUsernameLogin);
                     // Update state of online buttons
                     selectGameModeScreenOnlineButtons(true);
-                    lstChallengeOptions.setVisible(false);
                 }
                 // Update visuals
                 NoConnection(false);
@@ -488,11 +483,11 @@ public class MasterView extends View {
     }
 
     // Update leaderboard
-    public void updatePlayerboard(ObservableList<String> newPlayerlist){
+    public void updatePlayerboard(ObservableList<String> newlstPlayerList){
         Platform.runLater(() -> {
             players.clear();
-            players.addAll(newPlayerlist);
-            playersOnline.setText(players.size() + " andere spelers online");
+            players.addAll(newlstPlayerList);
+            headPlayersOnline.setText(players.size() + " andere spelers online");
             NoConnection(false);
 
             // Update images
@@ -502,7 +497,7 @@ public class MasterView extends View {
 
     private void updatePlayerboardImages() {
         // Add invitation image
-        playerList.setCellFactory(param -> new ListCell<String>() {
+        lstPlayerList.setCellFactory(param -> new ListCell<String>() {
             private ImageView imageView = new ImageView();
             @Override
             public void updateItem(String name, boolean empty) {
@@ -512,7 +507,7 @@ public class MasterView extends View {
                     setGraphic(null);
                 } else {
                     if(controller.checkChallenger(name)) {
-                        imageView.setImage(icoInvitation);
+                        imageView.setImage(icoInvitationRecv);
                     } else if(name.equals(controller.getRivalName())) {
                         imageView.setImage(icoInvitationSend);
                     }
@@ -528,7 +523,7 @@ public class MasterView extends View {
         Platform.runLater(() -> {
             datPlayersOptions.clear();
             datPlayersOptions.addAll(newGamelist);
-            //playersOnline.setText(players.size() + "DEBUG: Gamelist");
+            //headPlayersOnline.setText(players.size() + "DEBUG: Gamelist");
         });
     }
 
@@ -559,18 +554,18 @@ public class MasterView extends View {
     }
 
     private void setLeaderboardPosition(){
-        int playerListWidth = windowWidth/3;
-        if (playerListWidth < 320) {
-            playerListWidth = 320;
+        int lstPlayerListWidth = windowWidth/3;
+        if (lstPlayerListWidth < 320) {
+            lstPlayerListWidth = 320;
         }
 
-        // Leaderboard - playerList
-        playerList.setPrefHeight(windowHeight-(80+64));
-        playerList.setPrefWidth(playerListWidth);
+        // Leaderboard - lstPlayerList
+        lstPlayerList.setPrefHeight(windowHeight-(80+64));
+        lstPlayerList.setPrefWidth(lstPlayerListWidth);
 
         // Leaderboard - Challenge
-        lstPlayersOptions.setLayoutX(playerListWidth+64);
-        headPlayersOptions.setLayoutX(playerListWidth+64);
+        lstPlayersOptions.setLayoutX(lstPlayerListWidth+64);
+        headPlayersOptions.setLayoutX(lstPlayerListWidth+64);
     }
 
     private void setQuickPlayPosition(){
@@ -647,33 +642,33 @@ public class MasterView extends View {
     }
 
     public int getNameSelected() {
-        return playerList.getSelectionModel().getSelectedIndex();
+        return lstPlayerList.getSelectionModel().getSelectedIndex();
     }
 
     public void setNameSelected(int sel) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                playerList.getSelectionModel().select(sel);
+                lstPlayerList.getSelectionModel().select(sel);
 
                 // Check if rivalname is set
                 if (controller.getRivalName() == null) {
-                    playerList.setId("");
+                    lstPlayerList.setId("");
                     return;
                 }
 
                 // Check if rivalname is at same position in the list
-                if (playerList.getId().equals( playerList.getSelectionModel().getSelectedItem() ) == false) {
+                if (lstPlayerList.getId().equals( lstPlayerList.getSelectionModel().getSelectedItem() ) == false) {
                     for (int i=0; i<players.size(); i++) {
-                        playerList.getSelectionModel().select(i);
-                        if (playerList.getSelectionModel().getSelectedItem().equals(controller.getRivalName())) {
+                        lstPlayerList.getSelectionModel().select(i);
+                        if (lstPlayerList.getSelectionModel().getSelectedItem().equals(controller.getRivalName())) {
                             return;
                         }
                     }
                     // Rivalname has left the game
                     controller.setRivalName(null);
-                    playerList.setId("");
-                    playerList.getSelectionModel().select(null);
+                    lstPlayerList.setId("");
+                    lstPlayerList.getSelectionModel().select(null);
                     enableChallengeOptions(false);
                 }
 
@@ -709,15 +704,15 @@ public class MasterView extends View {
     private void selectGameModeScreen(boolean state){
         // Clear rival name
         controller.setRivalName(null);
-        playerList.getSelectionModel().select(-1);
+        lstPlayerList.getSelectionModel().select(-1);
 
         if (state) {
             enableChallengeOptions(!state);
         }
 
         // Hide all unrelated items
-        playerList.setVisible(!state);
-        playersOnline.setVisible(!state);
+        lstPlayerList.setVisible(!state);
+        headPlayersOnline.setVisible(!state);
 
         txtSpellen.setVisible(state);
 
@@ -754,7 +749,6 @@ public class MasterView extends View {
         }
         // Set button availability in correct state
         btnChangeName.setDisable(state);
-        //lstChallengeOptions.setVisible(state);
     }
 
     public void challengeAccept(String challengeName){
