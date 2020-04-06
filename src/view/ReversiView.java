@@ -7,9 +7,12 @@
         import javafx.geometry.Pos;
         import javafx.scene.Scene;
         import javafx.scene.control.Button;
+        import javafx.scene.control.Label;
+        import javafx.scene.image.Image;
         import javafx.scene.image.ImageView;
-        import javafx.scene.layout.BorderPane;
-        import javafx.scene.layout.GridPane;
+        import javafx.scene.layout.*;
+        import javafx.scene.text.Font;
+        import javafx.scene.text.TextAlignment;
         import javafx.stage.Stage;
 
         import java.util.ArrayList;
@@ -25,7 +28,7 @@ public class ReversiView extends GameView{
     ReversiController controller;
     ImageView whiteStone = new ImageView("File:assets/boards/white.png");
     ImageView blackStone = new ImageView("File:assets/boards/black.png");
-    ImageView bg = new ImageView("File:assets/boards/wood.jpg");
+    Image bg = new Image("File:assets/boards/wood2.jpg");
 
     public ReversiView(Controller controller) {
         this.controller = (ReversiController) controller;
@@ -34,10 +37,45 @@ public class ReversiView extends GameView{
     public Scene getScene() {
         BorderPane rootPane = new BorderPane();
         GridPane pane = new GridPane();
+        FlowPane reversi = new FlowPane();
+        HBox player1Box = new HBox();
+        HBox player2Box = new HBox();
+
+        Label reversiName = new Label("");
+        reversiName.setStyle("-fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-font-size: 30");
+        reversi.setAlignment(Pos.TOP_CENTER);
+        reversi.getChildren().add(reversiName);
+
+        Label player1;
+        Label player2;
+
+        pane.setMaxWidth(600);
+        pane.setMaxHeight(600);
         pane.setAlignment(Pos.CENTER);
-        pane.setStyle("-fx-background-color: #262626;"); // Default background color
+        //pane.setStyle("-fx-background-color: #262626;"); // Default background color
+        pane.setBackground(new Background(new BackgroundImage(bg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+
         buttonLocation = new HashMap<>();
+
         Button backButton = new Button("Back");
+        backButton.setTranslateX(10);
+        backButton.setTranslateY(-10);
+        backButton.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-font-size: 30; -fx-border-color: #FFFFFF");
+
+        player1 = new Label("Player 1");
+        player1.setMinWidth(120);
+        player1.setTextAlignment(TextAlignment.RIGHT);
+        player1.setTranslateX(65);
+        player1.setTranslateY(10);
+        player1.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-padding: 10,10,10,10; -fx-font-size: 30");
+
+        player2 = new Label("Player 2");
+        player2.setMinWidth(120);
+        player2.setTextAlignment(TextAlignment.RIGHT);
+        player2.setTranslateX(-65);
+        player2.setTranslateY(10);
+        player2.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF; -fx-font-weight: bold;  -fx-padding: 10,10,10,10; -fx-font-size: 30");
+
         int counter = 0;
 
         EventHandler<ActionEvent> backHandler = new EventHandler<ActionEvent>() {
@@ -52,11 +90,13 @@ public class ReversiView extends GameView{
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Button button = new Button(""+counter);
-                button.setMinWidth(80);
-                button.setMinHeight(80);
+                button.setMinWidth(70);
+                button.setMaxWidth(70);
+                button.setMinHeight(70);
+                button.setMaxHeight(70);
                 button.setWrapText(true);
                 //button.setStyle("-fx-background-color: transparant;");
-                button.setStyle(String.format("-fx-font-size: %dpx; -fx-background-color: #056005; -fx-border-color: #000000; -fx-background-radius: 0;", (int) (0.35 * 80)));
+                button.setStyle(String.format("-fx-font-size: %dpx; -fx-background-color: transparant; -fx-border-color: #FFFFFF; -fx-background-radius: 0;", (int) (0.35 * 80)));
                 ArrayList<Integer> location = new ArrayList<>();
                 location.add(i);
                 location.add(j);
@@ -65,8 +105,14 @@ public class ReversiView extends GameView{
                 counter++;
             }
         }
-        rootPane.setTop(backButton);
-        backButton.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF;");
+        player1Box.getChildren().add(player1);
+        player2Box.getChildren().addAll(player2);
+
+        rootPane.setStyle("-fx-background-color: #262626");
+        rootPane.setBottom(backButton);
+        rootPane.setLeft(player1Box);
+        rootPane.setRight(player2Box);
+        rootPane.setTop(reversi);
         rootPane.setCenter(pane);
         return new Scene(rootPane, 400, 400);
     }
@@ -80,21 +126,16 @@ public class ReversiView extends GameView{
             String value = reversiFieldStatus.getValue();
             if(reversiFieldStatus.getValue() == "B"){
                 ImageView blackStone = new ImageView("File:assets/boards/black.png");
-                button.setPrefWidth(80);
-                button.setPrefHeight(80);
                 button.setText("");
                 button.setGraphic(blackStone);
             }else if(reversiFieldStatus.getValue() == "W"){
                 ImageView whiteStone = new ImageView("File:assets/boards/white.png");
-                button.setPrefWidth(80);
-                button.setPrefHeight(80);
                 button.setText("");
                 button.setGraphic(whiteStone);
             }else if(reversiFieldStatus.getValue() == "*"){
-                button.setStyle("-fx-background-color: #28AF28;");
-                button.setPrefWidth(80);
-                button.setPrefHeight(80);
+                ImageView playable = new ImageView("File:assets/boards/playable.png");
                 button.setText("");
+                button.setGraphic(playable);
             }
 
         });

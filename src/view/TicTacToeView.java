@@ -7,8 +7,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -18,7 +19,6 @@ import model.TicTacToeModel;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.lang.reflect.Field;
@@ -30,6 +30,7 @@ public class TicTacToeView extends GameView {
     Text notification;
 
     TicTacToeController controller;
+    Image tictactoe = new Image("File:assets/boards/tictactoe.png");
 
     public TicTacToeView() {
 
@@ -43,7 +44,8 @@ public class TicTacToeView extends GameView {
         BorderPane rootPane = new BorderPane();
         GridPane pane = new GridPane();
         pane.setAlignment(Pos.CENTER);
-        pane.setStyle("-fx-background-color: #262626;"); // Default background color
+        pane.setBackground(new Background(new BackgroundImage(tictactoe, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+        //pane.setStyle("-fx-background-color: #262626;"); // Default background color
         buttonLocation = new HashMap<>();
         Button backButton = new Button("Back");
         int counter = 0;
@@ -73,9 +75,11 @@ public class TicTacToeView extends GameView {
             for (int i = 0; i < 3; i++) {
                 Button button = new Button(""+counter);
                 button.setMinWidth(100);
+                button.setMaxWidth(100);
                 button.setMinHeight(100);
+                button.setMaxHeight(100);
                 button.setWrapText(true);
-                button.setStyle(String.format("-fx-font-size: %dpx;", (int) (0.45 * 100)));
+                button.setStyle(String.format("-fx-font-size: %dpx; -fx-background-color: transparant", (int) (0.45 * 100)));
                 button.setOnAction(buttonHandler);
                 buttonLocation.put(counter, button);
                 pane.add(button, i, j);
@@ -104,14 +108,10 @@ public class TicTacToeView extends GameView {
             Button button = buttonLocation.get(move);
             if(ticTacToeFieldStatus.getValue() == "X"){
                 ImageView x = new ImageView("File:assets/boards/x.png");
-                button.setPrefWidth(80);
-                button.setPrefHeight(80);
                 button.setText("");
                 button.setGraphic(x);
             }else if(ticTacToeFieldStatus.getValue() == "O"){
                 ImageView o = new ImageView("File:assets/boards/o.png");
-                button.setPrefWidth(80);
-                button.setPrefHeight(80);
                 button.setText("");
                 button.setGraphic(o);
             }
