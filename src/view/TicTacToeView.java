@@ -43,11 +43,16 @@ public class TicTacToeView extends GameView {
     public Scene getScene() {
         BorderPane rootPane = new BorderPane();
         GridPane pane = new GridPane();
+        Button backButton = new Button();
         pane.setAlignment(Pos.CENTER);
         pane.setBackground(new Background(new BackgroundImage(tictactoe, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
-        //pane.setStyle("-fx-background-color: #262626;"); // Default background color
         buttonLocation = new HashMap<>();
-        Button backButton = new Button("Back");
+
+
+        backButton.setText("Back");
+        backButton.setTranslateX(10);
+        backButton.setTranslateY(-10);
+        backButton.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-font-size: 30; -fx-border-color: #FFFFFF");
         int counter = 0;
 
         EventHandler<ActionEvent> backHandler = new EventHandler<ActionEvent>() {
@@ -88,6 +93,8 @@ public class TicTacToeView extends GameView {
         }
         notification = new Text();
         notification.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+
+        rootPane.setStyle("-fx-background-color: #262626");
         rootPane.setTop(backButton);
         rootPane.setCenter(pane);
         rootPane.setBottom(notification);
