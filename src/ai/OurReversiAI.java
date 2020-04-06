@@ -37,7 +37,7 @@ public class OurReversiAI extends AI implements ReversiAI {
             }
             if (validMovesArray.size() == 0) {
                 validMoves = aiModel.getAnotherOne();
-                System.out.print("NOOO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                System.out.print("Handled skipped turn");
             } else {
                 done = true;
             }
