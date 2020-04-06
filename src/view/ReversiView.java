@@ -1,28 +1,30 @@
-package view;
 
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
+        package view;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+        import javafx.application.Platform;
+        import javafx.event.ActionEvent;
+        import javafx.event.EventHandler;
+        import javafx.scene.Scene;
+        import javafx.scene.control.Button;
+        import javafx.scene.image.ImageView;
+        import javafx.scene.layout.BorderPane;
+        import javafx.scene.layout.GridPane;
+        import javafx.stage.Stage;
 
-import controller.Controller;
-import controller.ReversiController;
-import model.gameitems.FieldStatus;
-import model.gameitems.ReversiFieldStatus;
+        import java.util.ArrayList;
+        import java.util.HashMap;
+
+        import controller.Controller;
+        import controller.ReversiController;
+        import model.gameitems.FieldStatus;
+        import model.gameitems.ReversiFieldStatus;
 
 public class ReversiView extends GameView{
     HashMap<Integer, Button> buttonLocation;
     ReversiController controller;
-    public ReversiView() {
-
-    }
+    ImageView whiteStone = new ImageView("File:assets/boards/white.png");
+    ImageView blackStone = new ImageView("File:assets/boards/black.png");
+    ImageView bg = new ImageView("File:assets/boards/wood.jpg");
 
     public ReversiView(Controller controller) {
         this.controller = (ReversiController) controller;
@@ -51,7 +53,8 @@ public class ReversiView extends GameView{
                 button.setMinWidth(80);
                 button.setMinHeight(80);
                 button.setWrapText(true);
-                button.setStyle(String.format("-fx-font-size: %dpx;", (int) (0.35 * 80)));
+                //button.setStyle("-fx-background-color: transparant;");
+                button.setStyle(String.format("-fx-font-size: %dpx; -fx-background-color: #056005; -fx-border-color: #000000; -fx-background-radius: 0;", (int) (0.35 * 80)));
                 ArrayList<Integer> location = new ArrayList<>();
                 location.add(i);
                 location.add(j);
@@ -61,6 +64,7 @@ public class ReversiView extends GameView{
             }
         }
         rootPane.setTop(backButton);
+        backButton.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF;");
         rootPane.setCenter(pane);
         return new Scene(rootPane, 400, 400);
     }
@@ -68,20 +72,29 @@ public class ReversiView extends GameView{
     @Override
     public void update(int move, FieldStatus fieldStatus) {
         ReversiFieldStatus reversiFieldStatus = (ReversiFieldStatus)fieldStatus;
-
         Platform.runLater(() -> {
-            String bgcolor = "grey";
-            int fieldId = fieldStatus.getID();
-            if(fieldId == 1) {
-                bgcolor = "white";
-            } else if(fieldId == 2) {
-                bgcolor = "black";
-            }
             //System.out.println("" + move + fieldStatus.getValue());
             Button button = buttonLocation.get(move);
             String value = reversiFieldStatus.getValue();
-            button.setText(value);
-            button.setStyle(String.format("-fx-font-size: %dpx;", (int) (0.35 * 80))+"-fx-base: "+bgcolor+";");
+            if(reversiFieldStatus.getValue() == "B"){
+                ImageView blackStone = new ImageView("File:assets/boards/black.png");
+                button.setPrefWidth(80);
+                button.setPrefHeight(80);
+                button.setText("");
+                button.setGraphic(blackStone);
+            }else if(reversiFieldStatus.getValue() == "W"){
+                ImageView whiteStone = new ImageView("File:assets/boards/white.png");
+                button.setPrefWidth(80);
+                button.setPrefHeight(80);
+                button.setText("");
+                button.setGraphic(whiteStone);
+            }else if(reversiFieldStatus.getValue() == "*"){
+                button.setStyle("-fx-background-color: #28AF28;");
+                button.setPrefWidth(80);
+                button.setPrefHeight(80);
+                button.setText("");
+            }
+
         });
     }
 
