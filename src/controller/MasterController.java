@@ -154,8 +154,14 @@ public class MasterController extends Controller {
                                 case "yourturn":
                                     System.out.println(" ");
                                     System.out.println("Your turn");
+
                                     int ourMove;
                                     if (model.getGame().getModel().isUseAi()) {
+//                                        try{
+//                                            Thread.sleep(2000);
+//                                        } catch (InterruptedException e){
+//                                            e.printStackTrace();
+//                                        }
                                         ourMove = model.getGame().getNextMove();
                                         //TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
                                         //fieldStatus.setCircle();

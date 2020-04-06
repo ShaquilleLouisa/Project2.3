@@ -82,7 +82,7 @@ public class ReversiModel extends GameModel {
                     try {
                         if (validMoves[x][y] && board.getFieldStatus(x, y).getID() == ReversiFieldStatus.PLAYABLE) {
                             board.setFieldStatus(x, y, fieldStatus);
-                            System.out.println("Emptied " + x+ "  " +y);
+                            //System.out.println("Emptied " + x+ "  " +y);
                             //view.update(8*x+y, fieldStatus);
                         }
                     } catch (MoveException e) {
@@ -191,7 +191,7 @@ public class ReversiModel extends GameModel {
         if (isCurrentPlayer(r, c)) {
             return true;
         }
-        if (board.getFieldStatus(r, c).getID() == 0 || board.getFieldStatus(r, c).getID() != -1) {
+        if (board.getFieldStatus(r, c).getID() == 0 || board.getFieldStatus(r, c).getID() == -1) {
             return false;
         }
 

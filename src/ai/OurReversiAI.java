@@ -38,6 +38,11 @@ public class OurReversiAI extends AI implements ReversiAI {
         for(Integer moves:validMovesArray) {
             System.out.println(moves);
         }
+        try{
+            Thread.sleep(5000);
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
         return validMovesArray.get(rnd);
     }
 }
