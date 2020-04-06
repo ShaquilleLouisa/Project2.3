@@ -6,6 +6,7 @@ import exceptions.MoveException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -99,7 +100,21 @@ public class TicTacToeView extends GameView {
         Platform.runLater(() -> {
             System.out.println("" + move + status.toString());
             Button button = buttonLocation.get(move);
-            button.setText(ticTacToeFieldStatus.getValue());
+            if(ticTacToeFieldStatus.getValue() == "X"){
+                ImageView x = new ImageView("File:assets/boards/x.png");
+                button.setPrefWidth(80);
+                button.setPrefHeight(80);
+                button.setText("");
+                button.setGraphic(x);
+            }else if(ticTacToeFieldStatus.getValue() == "O"){
+                ImageView o = new ImageView("File:assets/boards/o.png");
+                button.setPrefWidth(80);
+                button.setPrefHeight(80);
+                button.setText("");
+                button.setGraphic(o);
+
+            }
+
         });
     }
 }
