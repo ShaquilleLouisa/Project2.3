@@ -17,6 +17,16 @@ public class MasterModel extends Model {
     private boolean useAi;
     private boolean doubleAi;
     ArrayList<String[]> challengesReceived = new ArrayList<String[]>();
+    private String serverIP = "localhost";
+    private int serverPort = 7789;
+
+    public String getServerIP() {
+        return serverIP;
+    }
+
+    public int getServerPort() {
+        return serverPort;
+    }
 
     public MasterModel(MasterView view) {
         this.view = view;

@@ -358,6 +358,14 @@ public class MasterController extends Controller {
         }
     }
 
+    public String getServerIP() {
+        return model.getServerIP();
+    }
+
+    public int getServerPort() {
+        return model.getServerPort();
+    }
+
     public boolean checkChallenger(String challengerName) {
         return model.checkChallenger(challengerName);
     }
