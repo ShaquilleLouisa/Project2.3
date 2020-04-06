@@ -18,7 +18,6 @@ public class Reversi extends Game {
     private boolean useAi;
     private boolean doubleai;
     private boolean online;
-    public static boolean isFirstMove = true;
 
     public Reversi(boolean online, boolean useAi, boolean doubleai) {
         controller = new ReversiController();
@@ -59,31 +58,18 @@ public class Reversi extends Game {
 
     public void setMove(int move, boolean isOponent) {
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
-//        if(isFirstMove && isOponent){
-//            model.switchPlayer();
-//        }
-//      if(isOponent){
-//          model.flipBoard(move, fieldStatus);
-//          model.setFieldStatus(move, fieldStatus);
-//      }
-
-        if (isFirstMove) {
+        if(model.getPlayer() == ReversiFieldStatus.WHITE) {
             fieldStatus.setWhite();
-        } else if (model.getPlayer()== 2) {
+        } else {
             fieldStatus.setBlack();
-        }else {
-            fieldStatus.setWhite();
         }
-        try{
-// De correcte stenen worden geflipt op het bord
-        model.flipBoard(move, fieldStatus);
-        model.switchPlayer();
-// De zet wordt gedaan op het model
-        model.setFieldStatus(move, fieldStatus);
-// Het model wordt geswitched van speler
+
+        try {
+            controller.doMove(move ,fieldStatus);
         } catch (MoveException e) {
-                }
-        isFirstMove = false;
+            e.printStackTrace();
+        }
+
     }
 
     @Override

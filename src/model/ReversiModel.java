@@ -82,7 +82,8 @@ public class ReversiModel extends GameModel {
                     try {
                         if (validMoves[x][y] && board.getFieldStatus(x, y).getID() == ReversiFieldStatus.PLAYABLE) {
                             board.setFieldStatus(x, y, fieldStatus);
-                            // view.update(8*x+y, fieldStatus);
+                            System.out.println("Emptied " + x+ "  " +y);
+                            view.update(8*x+y, fieldStatus);
                         }
                     } catch (MoveException e) {
                         continue;
@@ -154,7 +155,7 @@ public class ReversiModel extends GameModel {
                     if (playableMoves[x][y]) {
 
                         board.setFieldStatus(x, y, fieldStatus);
-                        // view.update((8*x+y, fieldStatus);
+                        view.update((8*x+y), fieldStatus);
                     }
                 } catch (MoveException e) {
                     continue;
@@ -274,45 +275,45 @@ public class ReversiModel extends GameModel {
         boolean se = flipLineCheck(1, 1, r, c, fieldstatus, move);
 
         if (nw) {
-            System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
-                    + fieldstatus.getValue() + " in de richting NW");
+            //System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
+//                    + fieldstatus.getValue() + " in de richting NW");
             flipLine(-1, -1, r, c, fieldstatus, move);
         }
         if (nn) {
-            System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
-                    + fieldstatus.getValue() + " in de richting NN");
+            //System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
+//                    + fieldstatus.getValue() + " in de richting NN");
             flipLine(-1, 0, r, c, fieldstatus, move);
         }
         if (ne) {
-            System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
-                    + fieldstatus.getValue() + " in de richting NE");
+            //System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
+//                    + fieldstatus.getValue() + " in de richting NE");
             flipLine(-1, 1, r, c, fieldstatus, move);
         }
 
         if (ww) {
-            System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
-                    + fieldstatus.getValue() + " in de richting WW");
+            //System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
+//                    + fieldstatus.getValue() + " in de richting WW");
             flipLine(0, -1, r, c, fieldstatus, move);
         }
         if (ee) {
-            System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
-                    + fieldstatus.getValue() + " in de richting EE");
+            //System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
+//                    + fieldstatus.getValue() + " in de richting EE");
             flipLine(0, 1, r, c, fieldstatus, move);
         }
 
         if (sw) {
-            System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
-                    + fieldstatus.getValue() + " in de richting SW");
+            //System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
+//                    + fieldstatus.getValue() + " in de richting SW");
             flipLine(1, -1, r, c, fieldstatus, move);
         }
         if (ss) {
-            System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
-                    + fieldstatus.getValue() + " in de richting SS");
+            //System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
+//                    + fieldstatus.getValue() + " in de richting SS");
             flipLine(1, 0, r, c, fieldstatus, move);
         }
         if (se) {
-            System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
-                    + fieldstatus.getValue() + " in de richting SE");
+//            System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
+//                    + fieldstatus.getValue() + " in de richting SE");
             flipLine(1, 1, r, c, fieldstatus, move);
         }
 

@@ -156,6 +156,11 @@ public class MasterController extends Controller {
                                     System.out.println("Your turn");
                                     int ourMove;
                                     if (model.getGame().getModel().isUseAi()) {
+                                        try {
+                                            Thread.sleep(5000);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
                                         ourMove = model.getGame().getNextMove();
                                         //TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
                                         //fieldStatus.setCircle();
@@ -175,7 +180,7 @@ public class MasterController extends Controller {
                                                     userMove = move;
                                                 }
                                             }
-                                        }, 0, 100);
+                                        }, 0, 1000);
                                     }
 
                                     break;
@@ -312,7 +317,7 @@ public class MasterController extends Controller {
                     public void run() {
                         gameController.nextTurn();
                     }
-                }, 0, 1000);
+                }, 0, 5000);
             } else if (!model.isOnlineGame() && model.isUseAi() && !model.isDoubleAi()) {
                 TicTacToeFieldStatus ticTacToeFieldStatus = new TicTacToeFieldStatus();
                 ticTacToeFieldStatus.setCross();

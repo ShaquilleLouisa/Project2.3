@@ -68,11 +68,20 @@ public class ReversiView extends GameView{
     @Override
     public void update(int move, FieldStatus fieldStatus) {
         ReversiFieldStatus reversiFieldStatus = (ReversiFieldStatus)fieldStatus;
+
         Platform.runLater(() -> {
+            String bgcolor = "grey";
+            int fieldId = fieldStatus.getID();
+            if(fieldId == 1) {
+                bgcolor = "white";
+            } else if(fieldId == 2) {
+                bgcolor = "black";
+            }
             //System.out.println("" + move + fieldStatus.getValue());
             Button button = buttonLocation.get(move);
             String value = reversiFieldStatus.getValue();
             button.setText(value);
+            button.setStyle(String.format("-fx-font-size: %dpx;", (int) (0.35 * 80))+"-fx-base: "+bgcolor+";");
         });
     }
 
