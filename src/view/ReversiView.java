@@ -4,6 +4,7 @@
         import javafx.application.Platform;
         import javafx.event.ActionEvent;
         import javafx.event.EventHandler;
+        import javafx.geometry.Pos;
         import javafx.scene.Scene;
         import javafx.scene.control.Button;
         import javafx.scene.image.ImageView;
@@ -33,6 +34,7 @@ public class ReversiView extends GameView{
     public Scene getScene() {
         BorderPane rootPane = new BorderPane();
         GridPane pane = new GridPane();
+        pane.setAlignment(Pos.CENTER);
         pane.setStyle("-fx-background-color: #262626;"); // Default background color
         buttonLocation = new HashMap<>();
         Button backButton = new Button("Back");

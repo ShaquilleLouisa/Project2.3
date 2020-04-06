@@ -5,6 +5,7 @@ import controller.TicTacToeController;
 import exceptions.MoveException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -41,6 +42,7 @@ public class TicTacToeView extends GameView {
     public Scene getScene() {
         BorderPane rootPane = new BorderPane();
         GridPane pane = new GridPane();
+        pane.setAlignment(Pos.CENTER);
         pane.setStyle("-fx-background-color: #262626;"); // Default background color
         buttonLocation = new HashMap<>();
         Button backButton = new Button("Back");
@@ -112,9 +114,7 @@ public class TicTacToeView extends GameView {
                 button.setPrefHeight(80);
                 button.setText("");
                 button.setGraphic(o);
-
             }
-
         });
     }
 }
