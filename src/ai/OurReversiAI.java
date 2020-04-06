@@ -20,7 +20,7 @@ public class OurReversiAI extends AI implements ReversiAI {
     public int calculateNextMove() {
         boolean[][] validMoves = aiModel.getValidMoves();
         ArrayList<Integer> validMovesArray = new ArrayList<>();
-        System.out.println("number of valid moves: " + validMovesArray.size());
+        //System.out.println("number of valid moves: " + validMovesArray.size());
         if (validMoves != null) {
 
             for (int x = 0; x < 8; x++) {
@@ -34,7 +34,7 @@ public class OurReversiAI extends AI implements ReversiAI {
             }
         }
         int rnd = new Random().nextInt(validMovesArray.size());
-        System.out.println("The " + rnd + "th valid move is used, number of valid moves: " + validMovesArray.size());
+        //System.out.println("The " + rnd + "th valid move is used, number of valid moves: " + validMovesArray.size());
         return validMovesArray.get(rnd);
     }
 }
