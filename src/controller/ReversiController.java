@@ -87,7 +87,10 @@ public class ReversiController extends GameController {
         if (model.getPlayer() != ReversiFieldStatus.WHITE) {
             try {
                 reversiFieldStatus.setWhite();
-                doMove(ai.calculateNextMove(), reversiFieldStatus);
+                int nextMove = ai.calculateNextMove();
+                if(nextMove >= 0) {
+                    doMove(nextMove, reversiFieldStatus);
+                }
             } catch (MoveException e) {
                 e.printStackTrace();
             }

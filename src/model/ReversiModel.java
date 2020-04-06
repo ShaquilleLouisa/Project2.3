@@ -71,23 +71,22 @@ public class ReversiModel extends GameModel {
     }
 
     private boolean[][] setValidMoves() {
-        System.out.println("Starting setting valid moves for: " + getPlayer());
+//        System.out.println("Starting setting valid moves for: " + getPlayer());
 
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
         fieldStatus.setEmpty();
 
-        if (validMoves != null) {
-            for (int x = 0; x < 8; x++) {
-                for (int y = 0; y < 8; y++) {
-                    try {
-                        if (validMoves[x][y] && board.getFieldStatus(x, y).getID() == ReversiFieldStatus.PLAYABLE) {
-                            board.setFieldStatus(x, y, fieldStatus);
-                            System.out.println("Emptied " + x+ "  " +y);
-                            //view.update(8*x+y, fieldStatus);
-                        }
-                    } catch (MoveException e) {
-                        continue;
+
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                try {
+                    if (board.getFieldStatus(x, y).getID() == ReversiFieldStatus.PLAYABLE) {
+                        board.setFieldStatus(x, y, fieldStatus);
+//                            System.out.println("Emptied " + x+ "  " +y);
+                        //view.update(8*x+y, fieldStatus);
                     }
+                } catch (MoveException e) {
+                    continue;
                 }
             }
         }
@@ -110,39 +109,39 @@ public class ReversiModel extends GameModel {
                     boolean se = validMove(1, 1, x, y);
 
                     if (nw) {
-                        System.out.println("This position is playable in the line of NW : " + (8 * x + y));
+//                        System.out.println("This position is playable in the line of NW : " + (8 * x + y));
                         playableMoves[x][y] = true;
                     }
                     if (nn) {
-                        System.out.println("This position is playable in the line of NN : " + (8 * x + y));
+//                        System.out.println("This position is playable in the line of NN : " + (8 * x + y));
                         playableMoves[x][y] = true;
                     }
                     if (ne) {
-                        System.out.println("This position is playable in the line of NE : " + (8 * x + y));
+//                        System.out.println("This position is playable in the line of NE : " + (8 * x + y));
                         playableMoves[x][y] = true;
 
                     }
                     if (ww) {
-                        System.out.println("This position is playable in the line of WW : " + (8 * x + y));
+//                        System.out.println("This position is playable in the line of WW : " + (8 * x + y));
                         playableMoves[x][y] = true;
 
                     }
                     if (ee) {
-                        System.out.println("This position is playable in the line of EE : " + (8 * x + y));
+//                        System.out.println("This position is playable in the line of EE : " + (8 * x + y));
                         playableMoves[x][y] = true;
                     }
                     if (sw) {
-                        System.out.println("This position is playable in the line of SW : " + (8 * x + y));
+//                        System.out.println("This position is playable in the line of SW : " + (8 * x + y));
                         playableMoves[x][y] = true;
 
                     }
                     if (ss) {
-                        System.out.println("This position is playable in the line of SS : " + (8 * x + y));
+//                        System.out.println("This position is playable in the line of SS : " + (8 * x + y));
                         playableMoves[x][y] = true;
 
                     }
                     if (se) {
-                        System.out.println("This position is playable in the line of SE : " + (8 * x + y));
+//                        System.out.println("This position is playable in the line of SE : " + (8 * x + y));
                         playableMoves[x][y] = true;
                     }
 
@@ -153,7 +152,6 @@ public class ReversiModel extends GameModel {
             for (int y = 0; y < 8; y++) {
                 try {
                     if (playableMoves[x][y]) {
-
                         board.setFieldStatus(x, y, fieldStatus);
                         //view.update((8*x+y), fieldStatus);
                     }
@@ -162,7 +160,6 @@ public class ReversiModel extends GameModel {
                 }
             }
         }
-        validMoves = playableMoves;
         return playableMoves;
 
     }
@@ -206,7 +203,7 @@ public class ReversiModel extends GameModel {
         c += dc;
         int check = r * 8 + c;
         //System.out.println("Check value before loop: " + check + " The ID of the checked spot: "
-                //+ board.getFieldStatus(r, c).getID());
+        //+ board.getFieldStatus(r, c).getID());
         while (!isCurrentPlayer(r, c) && board.getFieldStatus(r, c).getID() != 0
                 && board.getFieldStatus(r, c).getID() != -1) {
             // System.out.println("Check value inside loop: " + check);
@@ -214,7 +211,7 @@ public class ReversiModel extends GameModel {
                 board.setFieldStatus(r, c, fieldstatus);
                 int count = r * 8 + c;
                 view.update(count, fieldstatus);
-                System.out.println("flipped position: " + r + ", " + c + " position on Board: " + count);
+//                System.out.println("flipped position: " + r + ", " + c + " position on Board: " + count);
                 r += dr;
                 c += dc;
             } catch (MoveException e) {
