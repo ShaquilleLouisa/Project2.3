@@ -31,6 +31,7 @@ public class ReversiView extends GameView{
     public Scene getScene() {
         BorderPane rootPane = new BorderPane();
         GridPane pane = new GridPane();
+        pane.setStyle("-fx-background-color: #262626;"); // Default background color
         buttonLocation = new HashMap<>();
         Button backButton = new Button("Back");
         int counter = 0;
@@ -73,5 +74,10 @@ public class ReversiView extends GameView{
             String value = reversiFieldStatus.getValue();
             button.setText(value);
         });
+    }
+
+    @Override
+    public void updateNotification(String notification) {
+        //TODO add notification to view
     }
 }

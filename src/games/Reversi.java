@@ -1,9 +1,6 @@
 package games;
 
-import ai.AI;
-import ai.DefaultReversiAI;
-import ai.OurReversiAI;
-import ai.ReversiAI;
+import ai.*;
 import controller.GameController;
 import controller.ReversiController;
 import exceptions.MoveException;
@@ -18,15 +15,28 @@ public class Reversi extends Game {
     private ReversiModel model;
     private ReversiController controller;
     private AI ai;
+    private boolean useAi;
+    private boolean doubleai;
+    private boolean online;
     public static boolean isFirstMove = true;
 
-    public Reversi() {
+    public Reversi(boolean online, boolean useAi, boolean doubleai) {
         controller = new ReversiController();
         view = new ReversiView(controller);
         model = new ReversiModel(view);
-        ai = new OurReversiAI(model);
         controller.addModel(model);
         controller.addView(view);
+        this.doubleai = doubleai;
+        this.useAi = useAi;
+        this.online = online;
+
+        model.setOnlineUse(online);
+        model.setAiUse(useAi);
+        model.setDoubleAi(doubleai);
+
+        if(useAi) {
+            ai = new OurReversiAI(model);
+        }
     }
 
     public ReversiModel getModel() {
@@ -83,10 +93,22 @@ public class Reversi extends Game {
 
     @Override
     public void setAI(AI ai) throws WrongAIException {
-        if (ai instanceof ReversiAI) {
-            this.ai = ai;
+        if(useAi) {
+            if (ai instanceof TicTacToeAI) {
+                this.ai = ai;
+            } else {
+                throw new WrongAIException("Tic-tac-toe AI required");
+            }
         } else {
-            throw new WrongAIException("Reversi AI required");
+            throw new WrongAIException("No AI chosen on startup");
         }
+    }
+
+    public void setOnline(boolean online) {
+        this.online = online;
+    }
+
+    public boolean isOnline() {
+        return online;
     }
 }

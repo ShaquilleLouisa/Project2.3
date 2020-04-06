@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class ServerCommunication {
+    MasterController masterController;
+
     Socket socket;
     BufferedReader reader;
     BufferedWriter writer;
@@ -19,40 +21,44 @@ public class ServerCommunication {
 
     }
 
-    public void connect() {
+    public boolean connect() {
         socket = null;
         reader = null;
         writer = null;
 
-        while (!connected) {
-            try {
-                socket = new Socket("localhost", 7789);
-                reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                connected = true;
-            } catch (IOException e) {
-                System.out.println("Could not connect with server");
-                System.out.println("Trying again in 5 seconds");
-                try {
-                    TimeUnit.SECONDS.sleep(5);
-                } catch (Exception sleepException) {
-                    System.out.println("Sleep exception");
-                }
-            }
+
+        try {
+            socket = new Socket("localhost", 7789);
+            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            connected = true;
+            return true;
+        } catch (IOException e) {
+            System.out.println("Could not connect with server");
+            return false;
         }
+
     }
 
     public String login(String name) {
         // Check if name is longer than 0 characters
         if (name.length() > 0) {
-            try {
-                write("login " + name);
+            if (!connected) {
+                connect();
+            }
+
+            if(connected) {
+                try {
+                    write("login " + name);
                 } catch (IOException e) {
                     System.out.println("No connecting with server:login");
                 }
                 System.out.println("Logged in");
                 return "ok"; // Valid name
+            } else {
+                return "connection";
             }
+        }
         return "short"; // Invalid name -- To short
         //return "inUse"; // Invalid name -- Already in use
 
@@ -108,7 +114,7 @@ public class ServerCommunication {
         }
     }
 
-    public void challengeAccept(String challengeNmr) {
+    public void challengeAccept(int challengeNmr) {
         try {
             write("challenge accept " + challengeNmr);
         } catch (IOException e) {
@@ -190,7 +196,7 @@ public class ServerCommunication {
                 writer.newLine();
                 writer.flush();
             } catch (IOException e) {
-                System.out.println("Could not read from server:ServerCommunication:write()");
+                System.out.println("Could not read from server -> ServerCommunication:write()");
                 System.out.println(e);
             }
         } else {

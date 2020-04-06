@@ -1,5 +1,6 @@
 package controller;
 
+import ai.OurReversiAI;
 import exceptions.MoveException;
 import model.Model;
 import model.gameitems.*;
@@ -54,6 +55,30 @@ public class ReversiController extends GameController {
     @Override
     public void notifyDone() {
         setDone(true);
+    }
+
+    //OFFLINE START GAME
+    @Override
+    public void nextTurn() {
+        ReversiFieldStatus reversiFieldStatus = new ReversiFieldStatus();
+
+        OurReversiAI ai = new OurReversiAI(model);
+        if (model.getPlayer() != ReversiFieldStatus.WHITE) {
+            try {
+                reversiFieldStatus.setWhite();
+                doMove(ai.calculateNextMove(), reversiFieldStatus);
+            } catch (MoveException e) {
+                e.printStackTrace();
+            }
+        } else {
+            reversiFieldStatus.setBlack();
+            try {
+                reversiFieldStatus.setBlack();
+                doMove(ai.calculateNextMove(), reversiFieldStatus);
+            } catch (MoveException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

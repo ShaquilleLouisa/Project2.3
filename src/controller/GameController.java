@@ -10,4 +10,5 @@ public abstract class GameController extends Controller {
     abstract public boolean isDone();
     abstract public void setDone(boolean done);
     abstract public void notifyDone();
+    abstract public void nextTurn();
 }

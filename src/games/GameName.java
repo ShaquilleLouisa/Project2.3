@@ -1,12 +1,14 @@
 package games;
 
 public enum GameName {
-    REVERSI("Reversi"),
-    TICTACTOE("TicTacToe");
+    REVERSI("Reversi", "Reversi"),
+    TICTACTOE("Tic-tac-toe", "TicTacToe");
 
     public final String label;
+    public final String className;
 
-    private GameName(String label) {
+    private GameName(String label, String className) {
         this.label = label;
+        this.className = className;
     }
 }
