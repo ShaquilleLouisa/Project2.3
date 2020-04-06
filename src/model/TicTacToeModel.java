@@ -65,6 +65,11 @@ public class TicTacToeModel extends GameModel {
         }
     }
 
+    @Override
+    public boolean[][] calculateValidMoves() {
+        return new boolean[0][];
+    }
+
     public int getTurns() {
         return turns;
     }

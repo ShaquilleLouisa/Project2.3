@@ -43,7 +43,7 @@ public class ReversiModel extends GameModel {
             System.out.println(e);
             return;
         }
-        validMoves = setValidMoves();
+        validMoves = calculateValidMoves();
 
     }
 
@@ -65,12 +65,12 @@ public class ReversiModel extends GameModel {
                 throw e;
             }
 
-            validMoves = setValidMoves();
+            validMoves = calculateValidMoves();
         }
         view.update(move, status);
     }
 
-    private boolean[][] setValidMoves() {
+    public boolean[][] calculateValidMoves() {
         System.out.println("Starting setting valid moves for: " + getPlayer());
 
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();

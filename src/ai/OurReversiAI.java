@@ -37,6 +37,8 @@ public class OurReversiAI extends AI implements ReversiAI {
             }
             if (validMovesArray.size() == 0) {
                 validMoves = aiModel.getAnotherOne();
+                System.out.print("NOOO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            } else {
                 done = true;
             }
         }
