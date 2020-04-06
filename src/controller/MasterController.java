@@ -94,6 +94,7 @@ public class MasterController extends Controller {
             if (words.length > 2) {
                 totalLetters = words[0].length() + words[1].length() + words[2].length() + 3;
             }
+            System.out.println(inputLowerCase);
             switch (words[0]) {
                 case "ok":
                     break;

@@ -212,7 +212,7 @@ public class ReversiModel extends GameModel {
             // System.out.println("Check value inside loop: " + check);
             try {
                 board.setFieldStatus(r, c, fieldstatus);
-                int count = r * 8 + c;
+                int count = (r * 8) + c;
                 view.update(count, fieldstatus);
                 System.out.println("flipped position: " + r + ", " + c + " position on Board: " + count);
                 r += dr;
@@ -254,10 +254,9 @@ public class ReversiModel extends GameModel {
             return false;
         }
 
-        if (IsOutOfBounds(r + dr + dr, c + dc + dc))
-            return false;
 
-        return flipLineCheckMatch(dr, dc, r + dr + dr, c + dc + dc);
+
+        return flipLineCheckMatch(dr, dc, r + dr, c + dc);
     }
 
     public void flipBoard(int move, FieldStatus fieldstatus) {
