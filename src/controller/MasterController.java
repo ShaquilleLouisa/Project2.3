@@ -319,7 +319,7 @@ public class MasterController extends Controller {
                     public void run() {
                         gameController.nextTurn();
                     }
-                }, 0, 5000);
+                }, 0, 100);
             } else if (!model.isOnlineGame() && model.isUseAi() && !model.isDoubleAi()) {
                 TicTacToeFieldStatus ticTacToeFieldStatus = new TicTacToeFieldStatus();
                 ticTacToeFieldStatus.setCross();
