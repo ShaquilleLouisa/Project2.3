@@ -44,7 +44,6 @@ public class ReversiModel extends GameModel {
             return;
         }
         validMoves = setValidMoves();
-
     }
 
     public void setFieldStatus(int move, FieldStatus status) throws MoveException {
@@ -93,19 +92,28 @@ public class ReversiModel extends GameModel {
 
         boolean[][] playableMoves = new boolean[8][8];
         fieldStatus.setPlayable();
+        int counter = 0;
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 if (board.getFieldStatus(x, y).getID() == 0) {
 
                     boolean nw = validMove(-1, -1, x, y);
                     boolean nn = validMove(-1, 0, x, y);
+
+
                     boolean ne = validMove(-1, 1, x, y);
 
                     boolean ww = validMove(0, -1, x, y);
                     boolean ee = validMove(0, 1, x, y);
 
                     boolean sw = validMove(1, -1, x, y);
-                    boolean ss = validMove(1, 0, x, y);
+
+                    boolean ss;
+                    if(counter == 11) {
+                        ss = validMoveCheck(1, 0, x, y);
+                    } else {
+                        ss = validMove(1,0,x,y);
+                    }
                     boolean se = validMove(1, 1, x, y);
 
                     if (nw) {
@@ -146,6 +154,7 @@ public class ReversiModel extends GameModel {
                     }
 
                 }
+                counter++;
             }
         }
         for (int x = 0; x < 8; x++) {
@@ -161,7 +170,31 @@ public class ReversiModel extends GameModel {
             }
         }
         return playableMoves;
+    }
 
+    private boolean validMoveCheck(int dr, int dc, int r, int c) {
+        System.out.println("drdcrc " + dr+ " " + dc + " " + r + " " + c);
+        if (IsOutOfBounds(r + dr, c + dc)) {
+            System.out.println("Out of bounds 1");
+            return false;
+        }
+
+        if (board.getFieldStatus(r + dr, c + dc).getID() == 0 || board.getFieldStatus(r + dr, c + dc).getID() == -1) {
+            System.out.println("Leeg vakje gevonden op " + (r+dr) + " " + (c+dc));
+            return false;
+        }
+
+        if (isCurrentPlayer(r + dr, c + dc)) {
+            System.out.println("Jezelf gevonden");
+            return false;
+        }
+
+        if (IsOutOfBounds(r + dr + dr, c + dc + dc)) {
+            System.out.println("Out of bounds 2");
+            return false;
+        }
+
+        return checkLineMatchCheck(dr, dc, r + dr + dr, c + dc + dc);
     }
 
     private boolean validMove(int dr, int dc, int r, int c) {
@@ -188,7 +221,7 @@ public class ReversiModel extends GameModel {
         if (isCurrentPlayer(r, c)) {
             return true;
         }
-        if (board.getFieldStatus(r, c).getID() == 0 || board.getFieldStatus(r, c).getID() != -1) {
+        if (board.getFieldStatus(r, c).getID() == 0 || board.getFieldStatus(r, c).getID() == -1) {
             return false;
         }
 
@@ -196,6 +229,24 @@ public class ReversiModel extends GameModel {
             return false;
         }
         return checkLineMatch(dr, dc, r + dr, c + dc);
+    }
+
+    private boolean checkLineMatchCheck(int dr, int dc, int r, int c) {
+        System.out.println("drdcrc 2" + dr+ " " + dc + " " + r + " " + c);
+        if (isCurrentPlayer(r, c)) {
+            System.out.println("Jezelf gevonden 2 | DIT IS GOED");
+            return true;
+        }
+        if (board.getFieldStatus(r, c).getID() == 0 || board.getFieldStatus(r, c).getID() == -1) {
+            System.out.println("Leeg gevonded 2");
+            return false;
+        }
+
+        if (IsOutOfBounds(r + dr, c + dc)) {
+            System.out.println("Out of bounds 3");
+            return false;
+        }
+        return checkLineMatchCheck(dr, dc, r + dr, c + dc);
     }
 
     private void flipLine(int dr, int dc, int r, int c, FieldStatus fieldstatus, int move) {
@@ -351,8 +402,6 @@ public class ReversiModel extends GameModel {
     }
 
     public void switchPlayer() {
-        // System.out.println("switchPlayer");
-
         if (player == 1) {
             player = 2;
         } else {

@@ -8,12 +8,14 @@ import view.ReversiView;
 import view.View;
 import model.ReversiModel;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ReversiController extends GameController {
     private ReversiModel model;
     private ReversiView view;
     private boolean done = false;
+    boolean pauze = false;
     public static boolean isFirstMove = true;
 
     public ReversiController() {
@@ -46,12 +48,12 @@ public class ReversiController extends GameController {
 
         if (isFirstMove) {
             fieldStatus.setWhite();
-        } else if (model.getPlayer()== 2) {
+        } else if (model.getPlayer() == 2) {
             fieldStatus.setBlack();
-        }else {
+        } else {
             fieldStatus.setWhite();
         }
-        try{
+        try {
 // De correcte stenen worden geflipt op het bord
             model.flipBoard(move, fieldStatus);
             model.switchPlayer();
@@ -81,26 +83,44 @@ public class ReversiController extends GameController {
     //OFFLINE START GAME
     @Override
     public void nextTurn() {
-        ReversiFieldStatus reversiFieldStatus = new ReversiFieldStatus();
+        model.getValidMoves();
+        ArrayList<Integer> validMovesArray = new ArrayList<>();
+        boolean[][] validmoves = model.getValidMoves();
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
 
-        OurReversiAI ai = new OurReversiAI(model);
-        if (model.getPlayer() != ReversiFieldStatus.WHITE) {
-            try {
-                reversiFieldStatus.setWhite();
-                int nextMove = ai.calculateNextMove();
-                if(nextMove >= 0) {
-                    doMove(nextMove, reversiFieldStatus);
+                if (validmoves[x][y]) {
+                    int validMove = 8 * x + y;
+                    validMovesArray.add(validMove);
                 }
-            } catch (MoveException e) {
-                e.printStackTrace();
             }
-        } else {
-            reversiFieldStatus.setBlack();
-            try {
+        }
+        System.out.println("Size: " + validMovesArray.size());
+        System.out.println("Valid moves: ");
+        for (int validMove : validMovesArray) {
+            System.out.print(validMove + " ");
+        }
+        if (!pauze) {
+            ReversiFieldStatus reversiFieldStatus = new ReversiFieldStatus();
+            OurReversiAI ai = new OurReversiAI(model);
+            if (model.getPlayer() != ReversiFieldStatus.WHITE) {
+                try {
+                    reversiFieldStatus.setWhite();
+                    int nextMove = ai.calculateNextMove();
+                    if (nextMove >= 0) {
+                        doMove(nextMove, reversiFieldStatus);
+                    }
+                } catch (MoveException e) {
+                    e.printStackTrace();
+                }
+            } else {
                 reversiFieldStatus.setBlack();
-                doMove(ai.calculateNextMove(), reversiFieldStatus);
-            } catch (MoveException e) {
-                e.printStackTrace();
+                try {
+                    reversiFieldStatus.setBlack();
+                    doMove(ai.calculateNextMove(), reversiFieldStatus);
+                } catch (MoveException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -113,5 +133,13 @@ public class ReversiController extends GameController {
     @Override
     public void addModel(Model model) {
         this.model = (ReversiModel) model;
+    }
+
+    public void pauze() {
+        if (!pauze) {
+            pauze = true;
+        } else {
+            pauze = false;
+        }
     }
 }

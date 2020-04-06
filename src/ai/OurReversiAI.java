@@ -35,9 +35,6 @@ public class OurReversiAI extends AI implements ReversiAI {
         }
         int rnd = new Random().nextInt(validMovesArray.size());
         System.out.println("Did " + validMovesArray.get(rnd));
-        for(Integer moves:validMovesArray) {
-            System.out.println(moves);
-        }
         return validMovesArray.get(rnd);
     }
 }
