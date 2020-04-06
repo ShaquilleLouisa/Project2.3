@@ -156,11 +156,6 @@ public class MasterController extends Controller {
                                     System.out.println("Your turn");
                                     int ourMove;
                                     if (model.getGame().getModel().isUseAi()) {
-                                        try {
-                                            Thread.sleep(5000);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
                                         ourMove = model.getGame().getNextMove();
                                         //TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
                                         //fieldStatus.setCircle();
