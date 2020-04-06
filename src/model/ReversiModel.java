@@ -200,10 +200,10 @@ public class ReversiModel extends GameModel {
         c += dc;
         int check = r * 8 + c;
         //System.out.println("Check value before loop: " + check + " The ID of the checked spot: "
-                + board.getFieldStatus(r, c).getID());
+                //+ board.getFieldStatus(r, c).getID());
         while (!isCurrentPlayer(r, c) && board.getFieldStatus(r, c).getID() != 0
                 && board.getFieldStatus(r, c).getID() != -1) {
-            //System.out.println("Check value inside loop: " + check);
+            // System.out.println("Check value inside loop: " + check);
             try {
                 board.setFieldStatus(r, c, fieldstatus);
                 int count = r * 8 + c;
@@ -348,7 +348,7 @@ public class ReversiModel extends GameModel {
     }
 
     public void switchPlayer() {
-        //System.out.println("switchPlayer");
+        // System.out.println("switchPlayer");
 
         if (player == 1) {
             player = 2;
