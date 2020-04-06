@@ -155,7 +155,6 @@ public class ReversiModel extends GameModel {
                     if (playableMoves[x][y]) {
                         System.out.println("This position is playable: " + counter);
                         board.setFieldStatus(x, y, fieldStatus);
-
                         view.update(counter, fieldStatus);
                     }
                 } catch (MoveException e) {

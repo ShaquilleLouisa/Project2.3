@@ -33,6 +33,10 @@ public class Reversi extends Game {
         model.setOnlineUse(online);
         model.setAiUse(useAi);
         model.setDoubleAi(doubleai);
+
+        if(useAi) {
+            ai = new OurReversiAI(model);
+        }
     }
 
     public ReversiModel getModel() {

@@ -47,6 +47,7 @@ public class OurReversiAI extends AI implements ReversiAI {
 //            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //            return 44;
 //        }
+        System.out.println(counter);
         return counter;
     }
 }
