@@ -52,6 +52,8 @@ public class TicTacToeView extends GameView {
                 System.out.println("BACK HAS BEEN PRESSED");
             }
         };
+
+
         backButton.setOnAction(backHandler);
         EventHandler<ActionEvent> buttonHandler = new EventHandler<ActionEvent>() {
             @Override

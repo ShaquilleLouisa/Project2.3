@@ -94,12 +94,15 @@ public class ReversiModel extends GameModel {
 
         boolean[][] playableMoves = new boolean[8][8];
         fieldStatus.setPlayable();
+        int counter = 0;
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 if (board.getFieldStatus(x, y).getID() == 0) {
 
                     boolean nw = validMove(-1, -1, x, y);
                     boolean nn = validMove(-1, 0, x, y);
+
+
                     boolean ne = validMove(-1, 1, x, y);
 
                     boolean ww = validMove(0, -1, x, y);
@@ -147,13 +150,13 @@ public class ReversiModel extends GameModel {
                     }
 
                 }
+                counter++;
             }
         }
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 try {
                     if (playableMoves[x][y]) {
-
                         board.setFieldStatus(x, y, fieldStatus);
                         //view.update((8*x+y), fieldStatus);
                     }
@@ -206,7 +209,7 @@ public class ReversiModel extends GameModel {
         c += dc;
         int check = r * 8 + c;
         //System.out.println("Check value before loop: " + check + " The ID of the checked spot: "
-                //+ board.getFieldStatus(r, c).getID());
+        //+ board.getFieldStatus(r, c).getID());
         while (!isCurrentPlayer(r, c) && board.getFieldStatus(r, c).getID() != 0
                 && board.getFieldStatus(r, c).getID() != -1) {
             // System.out.println("Check value inside loop: " + check);
@@ -353,8 +356,6 @@ public class ReversiModel extends GameModel {
     }
 
     public void switchPlayer() {
-        // System.out.println("switchPlayer");
-
         if (player == 1) {
             player = 2;
         } else {

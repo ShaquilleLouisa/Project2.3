@@ -321,14 +321,6 @@ public class MasterController extends Controller {
                     }
                 }, 0, 100);
             } else if (!model.isOnlineGame() && model.isUseAi() && !model.isDoubleAi()) {
-                TicTacToeFieldStatus ticTacToeFieldStatus = new TicTacToeFieldStatus();
-                ticTacToeFieldStatus.setCross();
-                TicTacToeAI ticTacToeAi = new TicTacToeAI((TicTacToeModel) model.getGame().getModel(), ticTacToeFieldStatus);
-                try {
-                    game.setAI(ticTacToeAi);
-                } catch (Exception e) {
-                    game.getView().updateNotification("AI ERROR");
-                }
                 Timer timer = new Timer();
                 timer.schedule(new TimerTask() {
                     int userMove = model.getGame().getModel().getUserMove();

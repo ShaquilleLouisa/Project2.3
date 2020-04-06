@@ -34,7 +34,16 @@ public class ReversiView extends GameView{
         pane.setStyle("-fx-background-color: #262626;"); // Default background color
         buttonLocation = new HashMap<>();
         Button backButton = new Button("Back");
+        Button pauseButton = new Button("Pause");
         int counter = 0;
+
+        EventHandler<ActionEvent> pauseHandler = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                controller.pauze();
+                System.out.println("Pauze HAS BEEN PRESSED");
+            }
+        };
 
         EventHandler<ActionEvent> backHandler = new EventHandler<ActionEvent>() {
             @Override
@@ -44,7 +53,9 @@ public class ReversiView extends GameView{
             }
         };
         backButton.setOnAction(backHandler);
+        pauseButton.setOnAction(pauseHandler);
 
+        GridPane gridPane = new GridPane();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Button button = new Button(""+counter);
@@ -60,7 +71,9 @@ public class ReversiView extends GameView{
                 counter++;
             }
         }
-        rootPane.setTop(backButton);
+        gridPane.add(backButton,0,0);
+        gridPane.add(pauseButton,0,1);
+        rootPane.setTop(gridPane);
         rootPane.setCenter(pane);
         return new Scene(rootPane, 400, 400);
     }
