@@ -198,13 +198,31 @@ public class MasterController extends Controller {
                                     break;
                                 case "loss":
                                     System.out.println("You lost");
+                                    Platform.runLater(() -> {
+                                        model.getGame().getController().setDone(false);
+                                        serverCommunication.forfeit();
+                                        model.setGame(null);
+                                        stage.setScene(view.getScene());
+                                    });
                                     //model.getGame().getView().updateNotification("I'm sorry you lost");
                                     break;
                                 case "win":
                                     System.out.println("You won");
+                                    Platform.runLater(() -> {
+                                        model.getGame().getController().setDone(false);
+                                        serverCommunication.forfeit();
+                                        model.setGame(null);
+                                        stage.setScene(view.getScene());
+                                    });
                                     //model.getGame().getView().updateNotification("Congrats you won");
                                     break;
                                 case "draw":
+                                    Platform.runLater(() -> {
+                                        model.getGame().getController().setDone(false);
+                                        serverCommunication.forfeit();
+                                        model.setGame(null);
+                                        stage.setScene(view.getScene());
+                                    });
                                     // DRAW
                                     System.out.println("Draw");
                                     //model.getGame().getView().updateNotification("Its a draw :|");
