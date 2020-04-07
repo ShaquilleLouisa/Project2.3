@@ -47,11 +47,11 @@ public class ReversiController extends GameController {
 //      }
 
         if (isFirstMove) {
-            fieldStatus.setWhite();
+            fieldStatus.setBLACK();
         } else if (model.getPlayer() == 2) {
-            fieldStatus.setBlack();
+            fieldStatus.setWHITE();
         } else {
-            fieldStatus.setWhite();
+            fieldStatus.setBLACK();
         }
         try {
 // De correcte stenen worden geflipt op het bord
@@ -103,9 +103,9 @@ public class ReversiController extends GameController {
         if (!pauze) {
             ReversiFieldStatus reversiFieldStatus = new ReversiFieldStatus();
             OurReversiAI ai = new OurReversiAI(model);
-            if (model.getPlayer() != ReversiFieldStatus.WHITE) {
+            if (model.getPlayer() != ReversiFieldStatus.BLACK) {
                 try {
-                    reversiFieldStatus.setWhite();
+                    reversiFieldStatus.setBLACK();
                     int nextMove = ai.calculateNextMove();
                     if (nextMove >= 0) {
                         doMove(nextMove, reversiFieldStatus);
@@ -114,9 +114,9 @@ public class ReversiController extends GameController {
                     e.printStackTrace();
                 }
             } else {
-                reversiFieldStatus.setBlack();
+                reversiFieldStatus.setWHITE();
                 try {
-                    reversiFieldStatus.setBlack();
+                    reversiFieldStatus.setWHITE();
                     doMove(ai.calculateNextMove(), reversiFieldStatus);
                 } catch (MoveException e) {
                     e.printStackTrace();

@@ -58,10 +58,10 @@ public class Reversi extends Game {
 
     public void setMove(int move, boolean isOponent) {
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
-        if(model.getPlayer() == ReversiFieldStatus.WHITE) {
-            fieldStatus.setWhite();
+        if(model.getPlayer() == ReversiFieldStatus.BLACK) {
+            fieldStatus.setBLACK();
         } else {
-            fieldStatus.setBlack();
+            fieldStatus.setWHITE();
         }
 
         try {

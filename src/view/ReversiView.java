@@ -86,9 +86,9 @@ public class ReversiView extends GameView{
             String bgcolor = "grey";
             int fieldId = fieldStatus.getID();
             if(fieldId == 1) {
-                bgcolor = "white";
+                bgcolor = "BLACK";
             } else if(fieldId == 2) {
-                bgcolor = "black";
+                bgcolor = "WHITE";
             }
             //System.out.println("" + move + fieldStatus.getValue());
             Button button = buttonLocation.get(move);
