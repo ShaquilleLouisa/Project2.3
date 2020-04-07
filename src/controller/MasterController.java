@@ -202,12 +202,12 @@ public class MasterController extends Controller {
                                     break;
                                 case "win":
                                     System.out.println("You won");
-                                    model.getGame().getView().updateNotification("Congrats you won");
+                                    //model.getGame().getView().updateNotification("Congrats you won");
                                     break;
                                 case "draw":
                                     // DRAW
                                     System.out.println("Draw");
-                                    model.getGame().getView().updateNotification("Its a draw :|");
+                                    //model.getGame().getView().updateNotification("Its a draw :|");
                                     break;
                                 case "move":
                                     System.out.println(" ");
