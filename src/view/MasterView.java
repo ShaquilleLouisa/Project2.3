@@ -425,7 +425,9 @@ public class MasterView extends View {
             public void handle(ActionEvent event) {
                 System.out.println("Button pressed -> AI VS Online");
                 controller.setGameSettings(true, true,false);
+                controller.subscribeServer(getSelectedGameName().label);
                 controller.subscribe(getSelectedGameName().label);
+
         }
         });
 

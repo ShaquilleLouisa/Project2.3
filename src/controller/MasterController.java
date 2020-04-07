@@ -340,7 +340,7 @@ public class MasterController extends Controller {
             Timer timerOffline = new Timer();
 
             if (model.isOnlineGame() && !model.isDoubleAi()) {
-                serverCommunication.subscribe(gameName);
+                //serverCommunication.subscribe(gameName);
                 System.out.println("Subscribed to " + gameName);
             } else if (!model.isOnlineGame() && model.isDoubleAi()) {
                 timerOffline.schedule(new TimerTask() {
@@ -450,5 +450,9 @@ public class MasterController extends Controller {
     public void setGameSettings(boolean online, boolean ai, boolean doubleAi) {
         model.setOnlineGame(online);
         model.setUseAi(ai, doubleAi);
+    }
+
+    public void subscribeServer(String gameName) {
+        serverCommunication.subscribe(gameName);
     }
 }
