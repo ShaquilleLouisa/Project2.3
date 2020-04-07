@@ -320,9 +320,17 @@ public class MasterController extends Controller {
 
     public void subscribe(String gameName) {
         Game game = null;
+        if(gameName.contains("-")) {
+            gameName = gameName.replace("-", "");
+            gameName = gameName.toUpperCase();
+            gameName = "games." +GameName.valueOf(gameName).className;
+        } else {
+            gameName = "games." +gameName;
+        }
         try {
-            game = (Game) Class.forName("games." + gameName).getConstructor(boolean.class, boolean.class, boolean.class).newInstance(model.isOnlineGame(), model.isUseAi(), model.isDoubleAi());
+            game = (Game) Class.forName(gameName).getConstructor(boolean.class, boolean.class, boolean.class).newInstance(model.isOnlineGame(), model.isUseAi(), model.isDoubleAi());
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Game not found");
         }
         if (game != null) {
