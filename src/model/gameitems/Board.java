@@ -5,7 +5,7 @@ import exceptions.MoveException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Board {
+public class Board implements Cloneable {
     public ArrayList<Field> fields;
     private HashMap<Integer, ArrayList<Integer>> moves;
     private int fieldSize;
@@ -63,5 +63,9 @@ public class Board {
             return fieldSize;
         }
         return 0;
+    }
+
+    public Board clone()throws CloneNotSupportedException{
+        return (Board)super.clone();
     }
 }

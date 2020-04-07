@@ -94,7 +94,6 @@ public class MasterController extends Controller {
             if (words.length > 2) {
                 totalLetters = words[0].length() + words[1].length() + words[2].length() + 3;
             }
-            System.out.println(inputLowerCase);
             switch (words[0]) {
                 case "ok":
                     break;
@@ -199,23 +198,23 @@ public class MasterController extends Controller {
                                 case "loss":
                                     System.out.println("You lost");
                                     Platform.runLater(() -> {
-                                        model.setGame(null);
-                                        stage.setScene(view.getScene());
+                                        //model.setGame(null);
+                                        //stage.setScene(view.getScene());
                                     });
                                     //model.getGame().getView().updateNotification("I'm sorry you lost");
                                     break;
                                 case "win":
                                     System.out.println("You won");
                                     Platform.runLater(() -> {
-                                        model.setGame(null);
-                                        stage.setScene(view.getScene());
+//                                        model.setGame(null);
+//                                        stage.setScene(view.getScene());
                                     });
                                     //model.getGame().getView().updateNotification("Congrats you won");
                                     break;
                                 case "draw":
                                     Platform.runLater(() -> {
-                                        model.setGame(null);
-                                        stage.setScene(view.getScene());
+//                                        model.setGame(null);
+//                                        stage.setScene(view.getScene());
                                     });
                                     // DRAW
                                     System.out.println("Draw");

@@ -6,7 +6,7 @@ import view.ReversiView;
 
 import java.util.ArrayList;
 
-public class ReversiModel extends GameModel {
+public class ReversiModel extends GameModel implements Cloneable {
     private Board board;
     private int turns;
     private int player = ReversiFieldStatus.BLACK;
@@ -381,6 +381,8 @@ public class ReversiModel extends GameModel {
         return board;
     }
 
+    public void setBoard(Board board) {this.board = board;}
+
     public boolean isUseAi() {
         return useAi;
     }
@@ -419,5 +421,10 @@ public class ReversiModel extends GameModel {
     @Override
     public void setAiUse(boolean useAi) {
         this.useAi = useAi;
+    }
+
+    @Override
+    public ReversiModel clone() throws CloneNotSupportedException {
+        return (ReversiModel)super.clone();
     }
 }

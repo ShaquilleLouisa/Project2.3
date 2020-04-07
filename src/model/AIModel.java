@@ -1,6 +1,7 @@
 package model;
 
 import exceptions.MoveException;
+import games.Game;
 import model.gameitems.*;
 
 import java.lang.reflect.Field;
@@ -37,5 +38,13 @@ public class AIModel extends Model {
     public boolean[][] getAnotherOne() {
         gameModel.switchPlayer();
         return gameModel.calculateValidMoves();
+    }
+
+    public int getPlayer() {
+        return gameModel.getPlayer();
+    }
+
+    public GameModel getGameModel() {
+        return gameModel;
     }
 }
