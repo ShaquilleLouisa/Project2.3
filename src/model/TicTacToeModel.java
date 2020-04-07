@@ -70,6 +70,11 @@ public class TicTacToeModel extends GameModel {
         return new boolean[0][];
     }
 
+    @Override
+    public void setFirstMoves() {
+
+    }
+
     public int getTurns() {
         return turns;
     }

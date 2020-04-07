@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class ReversiModel extends GameModel {
     private Board board;
     private int turns;
-    private int player = ReversiFieldStatus.WHITE;
+    private int player = ReversiFieldStatus.BLACK;
     private ReversiView view;
     private int boardSize = 8;
     private boolean[][] validMoves;
@@ -28,18 +28,18 @@ public class ReversiModel extends GameModel {
 
     public void setFirstMoves() {
         // Random Color
-        ReversiFieldStatus black = new ReversiFieldStatus();
-        black.setBlack();
-        ReversiFieldStatus white = new ReversiFieldStatus();
-        white.setWhite();
+        ReversiFieldStatus WHITE = new ReversiFieldStatus();
+        WHITE.setWHITE();
+        ReversiFieldStatus BLACK = new ReversiFieldStatus();
+        BLACK.setBLACK();
 
         try {
-            setFieldStatus(27, black);
-            setFieldStatus(28, white);
-            setFieldStatus(36, black);
-            setFieldStatus(35, white);
+            setFieldStatus(27, WHITE);
+            setFieldStatus(28, BLACK);
+            setFieldStatus(36, WHITE);
+            setFieldStatus(35, BLACK);
             System.out.println("Board starting positions done!");
-        } catch (MoveException e) {
+        } catch (Exception e) {
             System.out.println(e);
             return;
         }

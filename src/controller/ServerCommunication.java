@@ -28,7 +28,7 @@ public class ServerCommunication {
 
 
         try {
-            socket = new Socket("145.33.225.170", 7789);
+            socket = new Socket("localhost", 7789);
             //socket = new Socket("localhost", 7789);
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -131,9 +131,9 @@ public class ServerCommunication {
         }
     }
 
-    public void subscribe(GameName game) {
+    public void subscribe(String gameName) {
         try {
-            write("subscribe " + game.label);
+            write("subscribe " + gameName);
         } catch (IOException e) {
             System.out.println("No connecting with server:subscribe");
         }

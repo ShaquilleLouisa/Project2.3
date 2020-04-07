@@ -415,7 +415,7 @@ public class MasterView extends View {
             public void handle(ActionEvent event) {
                 System.out.println("Button pressed -> P1 VS Online");
                 controller.setGameSettings(true, false,false);
-                controller.subscribe(getSelectedGameName());
+                controller.subscribe(getSelectedGameName().label);
             }
         });
 
@@ -425,8 +425,8 @@ public class MasterView extends View {
             public void handle(ActionEvent event) {
                 System.out.println("Button pressed -> AI VS Online");
                 controller.setGameSettings(true, true,false);
-                controller.subscribe(getSelectedGameName());
-            }
+                controller.subscribe(getSelectedGameName().label);
+        }
         });
 
         // P1 VS P2 -- offline
@@ -435,7 +435,7 @@ public class MasterView extends View {
             public void handle(ActionEvent event) {
                 System.out.println("Button pressed -> P1 VS P2");
                 controller.setGameSettings(false, false,false);
-                controller.subscribe(getSelectedGameName());
+                controller.subscribe(getSelectedGameName().label);
             }
         });
 
@@ -445,7 +445,7 @@ public class MasterView extends View {
             public void handle(ActionEvent event) {
                 System.out.println("Button pressed -> P1 VS AI");
                 controller.setGameSettings(false, true, false);
-                controller.subscribe(getSelectedGameName());
+                controller.subscribe(getSelectedGameName().label);
 
             }
         });
@@ -456,7 +456,7 @@ public class MasterView extends View {
             public void handle(ActionEvent event) {
                 System.out.println("Button pressed -> AI VS AI");
                 controller.setGameSettings(false, true, true);
-                controller.subscribe(getSelectedGameName());
+                controller.subscribe(getSelectedGameName().label);
             }
         });
 

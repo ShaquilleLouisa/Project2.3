@@ -27,4 +27,6 @@ public abstract class GameModel extends Model {
     abstract public void switchPlayer();
 
     abstract public boolean[][] calculateValidMoves();
+
+    abstract public void setFirstMoves();
 }

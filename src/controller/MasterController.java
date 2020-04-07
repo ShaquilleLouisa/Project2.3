@@ -150,8 +150,15 @@ public class MasterController extends Controller {
                                     while (m.find()) {
                                         System.out.println("Match gametype received:" + m.group(1));
                                         // Change scene using m.group(1)
+                                        if(model.getGame() == null) {
+                                            setGameSettings(true, true,false);
+                                            System.out.println(m.group(1));
+                                            subscribe(m.group(1));
+                                        }
                                     }
+
                                     break;
+
                                 case "yourturn":
                                     System.out.println(" ");
                                     System.out.println("Your turn");
@@ -188,7 +195,7 @@ public class MasterController extends Controller {
                                     break;
                                 case "loss":
                                     System.out.println("You lost");
-                                    model.getGame().getView().updateNotification("I'm sorry you lost");
+                                    //model.getGame().getView().updateNotification("I'm sorry you lost");
                                     break;
                                 case "win":
                                     System.out.println("You won");
@@ -296,23 +303,30 @@ public class MasterController extends Controller {
         return res;
     }
 
-    public void subscribe(GameName gameName) {
+    public void subscribe(String gameName) {
         Game game = null;
         try {
-            game = (Game) Class.forName("games." + gameName.className).getConstructor(boolean.class, boolean.class, boolean.class).newInstance(model.isOnlineGame(), model.isUseAi(), model.isDoubleAi());
+            game = (Game) Class.forName("games." + gameName).getConstructor(boolean.class, boolean.class, boolean.class).newInstance(model.isOnlineGame(), model.isUseAi(), model.isDoubleAi());
         } catch (Exception e) {
             System.out.println("Game not found");
         }
         if (game != null) {
             GameController gameController = game.getController();
             model.setGame(game);
-            GameView gameView = model.getGame().getView();
-            stage.setScene(gameView.getScene());
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    stage.setScene(model.getGame().getView().getScene());
+                    model.getGame().getModel().setFirstMoves();
+                }
+            });
+
+            System.out.println("blah blah blah");
             Timer timerOffline = new Timer();
 
             if (model.isOnlineGame() && !model.isDoubleAi()) {
                 serverCommunication.subscribe(gameName);
-                System.out.println("Subscribed to " + gameName.label);
+                System.out.println("Subscribed to " + gameName);
             } else if (!model.isOnlineGame() && model.isDoubleAi()) {
                 timerOffline.schedule(new TimerTask() {
                     @Override
@@ -324,7 +338,6 @@ public class MasterController extends Controller {
                 Timer timer = new Timer();
                 timer.schedule(new TimerTask() {
                     int userMove = model.getGame().getModel().getUserMove();
-
                     @Override
                     public void run() {
                         if(model.getGame().getModel().getPlayer() == 1) {
@@ -349,6 +362,8 @@ public class MasterController extends Controller {
                         Platform.runLater(() -> {
                             timerOffline.cancel();
                             gameController.setDone(false);
+                            serverCommunication.forfeit();
+                            model.setGame(null);
                             stage.setScene(view.getScene());
                         });
                     }
