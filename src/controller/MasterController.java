@@ -170,12 +170,15 @@ public class MasterController extends Controller {
 //                                        } catch (InterruptedException e){
 //                                            e.printStackTrace();
 //                                        }
+
                                         ourMove = model.getGame().getNextMove();
-                                        //TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
-                                        //fieldStatus.setCircle();
-                                        //model.getGame().getModel().setFieldStatus(ourMove, fieldStatus);
-                                        model.getGame().setMove(ourMove, false);
-                                        serverCommunication.move(ourMove);
+                                        if(ourMove != -1) {
+                                            //TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
+                                            //fieldStatus.setCircle();
+                                            //model.getGame().getModel().setFieldStatus(ourMove, fieldStatus);
+                                            model.getGame().setMove(ourMove, false);
+                                            serverCommunication.move(ourMove);
+                                        }
                                     } else {
                                         Timer timer = new Timer();
                                         timer.schedule(new TimerTask() {

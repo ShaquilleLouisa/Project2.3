@@ -6,6 +6,7 @@ import model.GameModel;
 import model.ReversiModel;
 import model.gameitems.Board;
 import model.gameitems.FieldStatus;
+
 import java.util.Random;
 
 import java.util.ArrayList;
@@ -20,11 +21,12 @@ public class OurReversiAI extends AI implements ReversiAI {
     public int calculateNextMove() {
         boolean[][] validMoves = aiModel.getValidMoves();
         boolean done = false;
+        boolean skipped = false;
+        int skippedCount = 0;
         ArrayList<Integer> validMovesArray = new ArrayList<>();
         //System.out.println("number of valid moves: " + validMovesArray.size());
-        while(!done) {
+        while (!done) {
             if (validMoves != null) {
-
                 for (int x = 0; x < 8; x++) {
                     for (int y = 0; y < 8; y++) {
 
@@ -36,22 +38,30 @@ public class OurReversiAI extends AI implements ReversiAI {
                 }
             }
             if (validMovesArray.size() == 0) {
-                validMoves = aiModel.getAnotherOne();
-                System.out.print("Handled skipped turn");
+                if (!skipped) {
+                    validMoves = aiModel.getAnotherOne();
+                    System.out.print("Handled skipped turn");
+                    skipped = true;
+                } else {
+                    //No more turns left because end of game
+                    return -1;
+                }
             } else {
                 done = true;
             }
+
         }
         int rnd = new Random().nextInt(validMovesArray.size());
         System.out.println("Did " + validMovesArray.get(rnd));
-        for(Integer moves:validMovesArray) {
+        for (Integer moves : validMovesArray) {
             System.out.println(moves);
         }
-        try{
+        try {
             Thread.sleep(100);
-        } catch (InterruptedException e){
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         return validMovesArray.get(rnd);
+
     }
 }
