@@ -199,8 +199,6 @@ public class MasterController extends Controller {
                                 case "loss":
                                     System.out.println("You lost");
                                     Platform.runLater(() -> {
-                                        model.getGame().getController().setDone(false);
-                                        serverCommunication.forfeit();
                                         model.setGame(null);
                                         stage.setScene(view.getScene());
                                     });
@@ -209,8 +207,6 @@ public class MasterController extends Controller {
                                 case "win":
                                     System.out.println("You won");
                                     Platform.runLater(() -> {
-                                        model.getGame().getController().setDone(false);
-                                        serverCommunication.forfeit();
                                         model.setGame(null);
                                         stage.setScene(view.getScene());
                                     });
@@ -218,8 +214,6 @@ public class MasterController extends Controller {
                                     break;
                                 case "draw":
                                     Platform.runLater(() -> {
-                                        model.getGame().getController().setDone(false);
-                                        serverCommunication.forfeit();
                                         model.setGame(null);
                                         stage.setScene(view.getScene());
                                     });
