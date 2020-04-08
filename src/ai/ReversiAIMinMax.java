@@ -201,36 +201,37 @@ public class ReversiAIMinMax extends AI implements ReversiAI {
                 int fieldStatus = boardCopy.getFieldStatus(i,j).getID();
                 if(fieldStatus != -1 && fieldStatus != 0) {
                     if(boardCopy.getFieldStatus(i,j).getID() == aiModel.getPlayer()) {
+                        points += 1;
                         if (i == 0 && j == 0) {
-                            points += 10;
+                            points += 5;
                         }
 
                         if (i == boardCopy.getFieldSize() - 1 && j == 0) {
-                            points += 10;
+                            points += 5;
                         }
 
                         if (i == 0 && j == boardCopy.getFieldSize() - 1) {
-                            points += 10;
+                            points += 5;
                         }
 
                         if (i == boardCopy.getFieldSize() - 1 && j == boardCopy.getFieldSize() - 1) {
-                            points += 10;
+                            points += 5;
                         }
 
                         if (i == 2 && j == 2) {
-                            points += 5;
+                            points += 3;
                         }
 
                         if (i == boardCopy.getFieldSize() - 3 && j == 2) {
-                            points += 5;
+                            points += 3;
                         }
 
                         if (i == 2 && j == boardCopy.getFieldSize() - 3) {
-                            points += 5;
+                            points += 3;
                         }
 
                         if (i == boardCopy.getFieldSize() - 3 && j == boardCopy.getFieldSize() - 3) {
-                            points += 5;
+                            points += 3;
                         }
 
                         if (i == 0) {
@@ -249,53 +250,54 @@ public class ReversiAIMinMax extends AI implements ReversiAI {
                             points += 2;
                         }
 
-                        if (i <= 1 && j <= 1 && !(i == 0 && j == 0)) {
-                            points -= 20;
+                        if (i <= 1 && j <= 1 && !(i == 0 && j == 0) && (boardCopy.getFieldStatus(0,0).getID() != 0)) {
+                            points -= 5;
                         }
 
-                        if (i >= boardCopy.getFieldSize() - 2 && j <= 1 && !(i == boardCopy.getFieldSize() - 1 && j == 0)) {
-                            points -= 20;
+                        if (i >= boardCopy.getFieldSize() - 2 && j <= 1 && (!(i == boardCopy.getFieldSize() - 1 && j == 0)  && (boardCopy.getFieldStatus(7,0).getID() != 0))) {
+                            points -= 5;
                         }
 
-                        if (i <= 1 && j >= boardCopy.getFieldSize() - 2 && !(i == 0 && j == boardCopy.getFieldSize() - 1)) {
-                            points -= 20;
+                        if (i <= 1 && j >= boardCopy.getFieldSize() - 2 && (!(i == 0 && j == boardCopy.getFieldSize() - 1) && (boardCopy.getFieldStatus(0,7).getID() != 0))) {
+                            points -= 5;
                         }
 
-                        if (i >= boardCopy.getFieldSize() - 2 && j >= boardCopy.getFieldSize() - 2 && !(i == boardCopy.getFieldSize() - 1 && j == boardCopy.getFieldSize() - 1)) {
-                            points -= 20;
+                        if (i >= boardCopy.getFieldSize() - 2 && j >= boardCopy.getFieldSize() - 2 && (!(i == boardCopy.getFieldSize() - 1 && j == boardCopy.getFieldSize() - 1)  && (boardCopy.getFieldStatus(7,7).getID() != 0))) {
+                            points -= 5;
                         }
                     } else {
                         if(boardCopy.getFieldStatus(i,j).getID() != aiModel.getPlayer()) {
+                            points -= 1;
                             if (i == 0 && j == 0) {
-                                points -= 10;
+                                points -= 5;
                             }
 
                             if (i == boardCopy.getFieldSize() - 1 && j == 0) {
-                                points -= 10;
+                                points -= 5;
                             }
 
                             if (i == 0 && j == boardCopy.getFieldSize() - 1) {
-                                points -= 10;
+                                points -= 5;
                             }
 
                             if (i == boardCopy.getFieldSize() - 1 && j == boardCopy.getFieldSize() - 1) {
-                                points -= 10;
+                                points -= 5;
                             }
 
                             if (i == 2 && j == 2) {
-                                points -= 5;
+                                points -= 3;
                             }
 
                             if (i == boardCopy.getFieldSize() - 3 && j == 2) {
-                                points -= 5;
+                                points -= 3;
                             }
 
                             if (i == 2 && j == boardCopy.getFieldSize() - 3) {
-                                points -= 5;
+                                points -= 3;
                             }
 
                             if (i == boardCopy.getFieldSize() - 3 && j == boardCopy.getFieldSize() - 3) {
-                                points -= 5;
+                                points -= 3;
                             }
 
                             if (i == 0) {
@@ -314,20 +316,20 @@ public class ReversiAIMinMax extends AI implements ReversiAI {
                                 points -= 2;
                             }
 
-                            if (i <= 1 && j <= 1 && !(i == 0 && j == 0)) {
-                                points += 20;
+                            if (i <= 1 && j <= 1 && !(i == 0 && j == 0) && (boardCopy.getFieldStatus(0,0).getID() != 0)) {
+                                points += 5;
                             }
 
-                            if (i >= boardCopy.getFieldSize() - 2 && j <= 1 && !(i == boardCopy.getFieldSize() - 1 && j == 0)) {
-                                points += 20;
+                            if (i >= boardCopy.getFieldSize() + 2 && j <= 1 && (!(i == boardCopy.getFieldSize() + 1 && j == 0)  && (boardCopy.getFieldStatus(7,0).getID() != 0))) {
+                                points += 5;
                             }
 
-                            if (i <= 1 && j >= boardCopy.getFieldSize() - 2 && !(i == 0 && j == boardCopy.getFieldSize() - 1)) {
-                                points += 20;
+                            if (i <= 1 && j >= boardCopy.getFieldSize() + 2 && (!(i == 0 && j == boardCopy.getFieldSize() + 1) && (boardCopy.getFieldStatus(0,7).getID() != 0))) {
+                                points += 5;
                             }
 
-                            if (i >= boardCopy.getFieldSize() - 2 && j >= boardCopy.getFieldSize() - 2 && !(i == boardCopy.getFieldSize() - 1 && j == boardCopy.getFieldSize() - 1)) {
-                                points += 20;
+                            if (i >= boardCopy.getFieldSize() + 2 && j >= boardCopy.getFieldSize() + 2 && (!(i == boardCopy.getFieldSize() + 1 && j == boardCopy.getFieldSize() + 1)  && (boardCopy.getFieldStatus(7,7).getID() != 0))) {
+                                points += 5;
                             }
                         }
                     }

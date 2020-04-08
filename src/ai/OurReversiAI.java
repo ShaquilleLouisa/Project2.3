@@ -19,7 +19,7 @@ public class OurReversiAI extends AI implements ReversiAI {
 
     @Override
     public int calculateNextMove() {
-        boolean[][] validMoves = aiModel.getValidMoves();
+        boolean[][] validMoves = aiModel.getGameModel().calculateValidMoves();
         boolean done = false;
         boolean skipped = false;
         int skippedCount = 0;

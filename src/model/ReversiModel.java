@@ -80,9 +80,10 @@ public class ReversiModel extends GameModel implements Cloneable {
             for (int x = 0; x < 8; x++) {
                 for (int y = 0; y < 8; y++) {
                     try {
-                        if (validMoves[x][y] && board.getFieldStatus(x, y).getID() == ReversiFieldStatus.PLAYABLE) {
+                        if (board.getFieldStatus(x, y).getID() == ReversiFieldStatus.PLAYABLE) {
                             board.setFieldStatus(x, y, fieldStatus);
-                            //System.out.println("Emptied " + x+ "  " +y);
+
+                            System.out.println("Emptied " + x+ "  " +y + " With status " +fieldStatus.getID());
                             //view.update(8*x+y, fieldStatus);
                         }
                     } catch (MoveException e) {

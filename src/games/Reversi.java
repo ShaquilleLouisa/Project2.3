@@ -34,7 +34,7 @@ public class Reversi extends Game {
         model.setDoubleAi(doubleai);
 
         if(useAi) {
-            ai = new ReversiAIBoardScore(model);
+            ai = new OurReversiAI(model);
         }
     }
 

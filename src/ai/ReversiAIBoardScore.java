@@ -17,7 +17,7 @@ public class ReversiAIBoardScore extends AI implements ReversiAI {
 
     @Override
     public int calculateNextMove() {
-        boolean[][] validMoves = aiModel.getValidMoves();
+        boolean[][] validMoves = aiModel.getGameModel().calculateValidMoves();
         Board boardCopy = aiModel.getBoard();
         HashMap<Integer, Integer> points = new HashMap<>();
         ArrayList<Integer> indexes = new ArrayList<>();
@@ -25,7 +25,7 @@ public class ReversiAIBoardScore extends AI implements ReversiAI {
         for(int i = 0; i < boardCopy.getFieldSize(); i++) {
             for(int j = 0; j < boardCopy.getFieldSize(); j++) {
                 if(validMoves[i][j]) {
-                    System.out.println((i*8) + j);
+                    System.out.println("VALID MOVE GEVONDEN!!!!");
                     int singlePoint = 1;
                     if (i == 0 && j == 0) {
                         singlePoint += 5;
@@ -96,6 +96,7 @@ public class ReversiAIBoardScore extends AI implements ReversiAI {
                 counter++;
             }
         }
+        System.out.println("hier ben ik");
         int size = -1000;
         int key = -1;
         for(int index:indexes) {
@@ -105,10 +106,21 @@ public class ReversiAIBoardScore extends AI implements ReversiAI {
             }
         }
 
-
         if(key == -1) {
             System.out.println("GEEN MOVES GEVONDEN");
+            boolean[][] moreValidMove = aiModel.getAnotherOne();
+            int counterM = 0;
+            for (int i = 0; i < boardCopy.getFieldSize(); i++) {
+                for (int j = 0; j < boardCopy.getFieldSize(); j++) {
+                    if (moreValidMove[i][j]) {
+                        return counterM;
+                    } else {
+                        counterM++;
+                    }
+                }
+            }
         }
+
         return key;
     }
 }
