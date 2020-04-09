@@ -24,10 +24,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.sql.Time;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,6 +34,7 @@ public class MasterController extends Controller {
     MasterModel model;
     MasterView view;
     Stage stage;
+    int currentPlayer = 0;
     private ServerCommunication serverCommunication;
 
     public MasterController() {
@@ -160,9 +159,18 @@ public class MasterController extends Controller {
                                     break;
 
                                 case "yourturn":
+                                    if(currentPlayer == 0) {
+                                        currentPlayer = 1;
+                                    }
+                                    try {
+                                        Thread.sleep(1000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Date time = new Date();
+                                    System.out.println("Your turn time: " + time.getTime());
                                     System.out.println(" ");
                                     System.out.println("Your turn");
-
                                     int ourMove;
                                     if (model.getGame().getModel().isUseAi()) {
 //                                        try{
@@ -170,13 +178,12 @@ public class MasterController extends Controller {
 //                                        } catch (InterruptedException e){
 //                                            e.printStackTrace();
 //                                        }
-
-                                        ourMove = model.getGame().getNextMove();
+                                        ourMove = model.getGame().getNextMove(currentPlayer);
                                         if(ourMove != -1) {
                                             //TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
                                             //fieldStatus.setCircle();
                                             //model.getGame().getModel().setFieldStatus(ourMove, fieldStatus);
-                                            model.getGame().setMove(ourMove, false);
+                                            model.getGame().setMove(ourMove, false, currentPlayer);
                                             serverCommunication.move(ourMove);
                                         }
                                     } else {
@@ -199,45 +206,55 @@ public class MasterController extends Controller {
                                 case "loss":
                                     System.out.println("You lost");
                                     Platform.runLater(() -> {
-                                        model.setGame(null);
-                                        stage.setScene(view.getScene());
+//                                        model.setGame(null);
+//                                        stage.setScene(view.getScene());
                                     });
                                     //model.getGame().getView().updateNotification("I'm sorry you lost");
                                     break;
                                 case "win":
                                     System.out.println("You won");
                                     Platform.runLater(() -> {
-                                        model.setGame(null);
-                                        stage.setScene(view.getScene());
+//                                        model.setGame(null);
+//                                        stage.setScene(view.getScene());
                                     });
                                     //model.getGame().getView().updateNotification("Congrats you won");
                                     break;
                                 case "draw":
                                     Platform.runLater(() -> {
-                                        model.setGame(null);
-                                        stage.setScene(view.getScene());
+//                                        model.setGame(null);
+//                                        stage.setScene(view.getScene());
                                     });
                                     // DRAW
                                     System.out.println("Draw");
                                     //model.getGame().getView().updateNotification("Its a draw :|");
                                     break;
                                 case "move":
+
                                     System.out.println(" ");
                                     //System.out.println("inputLowerCase " + words[4]);
                                     System.out.println("Move has been done by opponent: " + inputLowerCase.substring(totalLetters)
                                             + "name: " + getRivalName());
                                     if (words[4].contains(getRivalName().toLowerCase())) {
-
+                                        if(currentPlayer == 0) {
+                                            currentPlayer = 2;
+                                        }
+                                        int enemy;
+                                        if(currentPlayer == 1) {
+                                            enemy = 2;
+                                        } else {
+                                            enemy = 1;
+                                        }
+                                        Date time2 = new Date();
                                         System.out.println("Waar is deze print ??????"+words[6].substring(1, words[6].length() -2));
-
                                         int opponentMove = Integer.parseInt(words[6].substring(1, words[6].length() - 2));//Integer.parseInt(words[6]);
+
                                         //TicTacToeFieldStatus fieldStatusCross = new TicTacToeFieldStatus();
                                         //fieldStatusCross.setCross();
                                         //model.getGame().getModel().setFieldStatus(opponentMove, fieldStatusCross);
                                         System.out.println("opponentMove: " + opponentMove);
-                                        model.getGame().setMove(opponentMove, true);
-                                        System.out.println("Opponent move has been set");
-
+                                        System.out.println("Opponnent turn time: " + time2.getTime());
+                                        model.getGame().setMove(opponentMove, true, enemy);
+                                        System.out.println("Opponent move has been set: " + time2.getTime());
                                     }
                                     break;
                             }
@@ -340,7 +357,8 @@ public class MasterController extends Controller {
                 @Override
                 public void run() {
                     stage.setScene(model.getGame().getView().getScene());
-                    model.getGame().getModel().setFirstMoves();
+                    //model.getGame().getModel().setFirstMoves();
+                    System.out.println("Platform run later first move!");
                 }
             });
 

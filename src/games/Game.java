@@ -11,8 +11,10 @@ public abstract class Game {
     abstract public GameName getId();
     abstract public void setAI(AI ai) throws WrongAIException;
     abstract public int getNextMove();
+    abstract public int getNextMove(int player);
     abstract public void setMove(int move, boolean isOponent);
     abstract public GameModel getModel();
     abstract public GameView getView();
     abstract public GameController getController();
+    abstract public void setMove(int move, boolean isOponent, int player);
 }

@@ -4,6 +4,7 @@ import model.GameModel;
 
 public abstract class AI {
     public AIModel aiModel;
+    abstract public int calculateNextMove(int player);
     abstract public int calculateNextMove();
 
     public AI(GameModel gameModel) {

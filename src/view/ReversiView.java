@@ -118,6 +118,15 @@ public class ReversiView extends GameView{
         rootPane.setRight(player2Box);
         rootPane.setTop(reversi);
         rootPane.setCenter(pane);
+        ReversiFieldStatus WHITE = new ReversiFieldStatus();
+        WHITE.setWHITE();
+        ReversiFieldStatus BLACK = new ReversiFieldStatus();
+        BLACK.setBLACK();
+
+        update(27, WHITE);
+        update(28, BLACK);
+        update(36, WHITE);
+        update(35, BLACK);
         return new Scene(rootPane, 400, 400);
     }
 

@@ -36,6 +36,8 @@ public class AIModel extends Model {
 
     public boolean[][] getAnotherOne() {
         gameModel.switchPlayer();
-        return gameModel.calculateValidMoves();
+        return gameModel.calculateValidMoves(gameModel.getPlayer());
     }
+
+    public boolean[][] calculateValidMove(int player) {return gameModel.calculateValidMoves(player);}
 }

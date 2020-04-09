@@ -26,7 +26,7 @@ public abstract class GameModel extends Model {
     abstract public int getPlayer();
     abstract public void switchPlayer();
 
-    abstract public boolean[][] calculateValidMoves();
+    abstract public boolean[][] calculateValidMoves(int player);
 
     abstract public void setFirstMoves();
 }

@@ -43,8 +43,6 @@ public class ReversiModel extends GameModel {
             System.out.println(e);
             return;
         }
-        validMoves = calculateValidMoves();
-
     }
 
     public void setFieldStatus(int move, FieldStatus status) throws MoveException {
@@ -64,13 +62,11 @@ public class ReversiModel extends GameModel {
             } catch (MoveException e) {
                 throw e;
             }
-
-            validMoves = calculateValidMoves();
         }
         view.update(move, status);
     }
 
-    public boolean[][] calculateValidMoves() {
+    public boolean[][] calculateValidMoves(int player) {
         System.out.println("Starting setting valid moves for: " + getPlayer());
 
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
@@ -98,19 +94,19 @@ public class ReversiModel extends GameModel {
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 if (board.getFieldStatus(x, y).getID() == 0) {
+                    System.out.println((x*8)  + y);
+                    boolean nw = validMove(-1, -1, x, y, player);
+                    boolean nn = validMove(-1, 0, x, y, player);
 
-                    boolean nw = validMove(-1, -1, x, y);
-                    boolean nn = validMove(-1, 0, x, y);
 
+                    boolean ne = validMove(-1, 1, x, y, player);
 
-                    boolean ne = validMove(-1, 1, x, y);
+                    boolean ww = validMove(0, -1, x, y, player);
+                    boolean ee = validMove(0, 1, x, y, player);
 
-                    boolean ww = validMove(0, -1, x, y);
-                    boolean ee = validMove(0, 1, x, y);
-
-                    boolean sw = validMove(1, -1, x, y);
-                    boolean ss = validMove(1, 0, x, y);
-                    boolean se = validMove(1, 1, x, y);
+                    boolean sw = validMove(1, -1, x, y, player);
+                    boolean ss = validMove(1, 0, x, y, player);
+                    boolean se = validMove(1, 1, x, y, player);
 
                     if (nw) {
                         System.out.println("This position is playable in the line of NW : " + (8 * x + y));
@@ -170,7 +166,7 @@ public class ReversiModel extends GameModel {
 
     }
 
-    private boolean validMove(int dr, int dc, int r, int c) {
+    private boolean validMove(int dr, int dc, int r, int c, int player) {
 
         if (IsOutOfBounds(r + dr, c + dc)) {
             return false;
@@ -180,18 +176,18 @@ public class ReversiModel extends GameModel {
             return false;
         }
 
-        if (isCurrentPlayer(r + dr, c + dc)) {
+        if (isCurrentPlayer(r + dr, c + dc, player)) {
             return false;
         }
 
         if (IsOutOfBounds(r + dr + dr, c + dc + dc))
             return false;
 
-        return checkLineMatch(dr, dc, r + dr + dr, c + dc + dc);
+        return checkLineMatch(dr, dc, r + dr + dr, c + dc + dc, player);
     }
 
-    private boolean checkLineMatch(int dr, int dc, int r, int c) {
-        if (isCurrentPlayer(r, c)) {
+    private boolean checkLineMatch(int dr, int dc, int r, int c, int player) {
+        if (isCurrentPlayer(r, c, player)) {
             return true;
         }
         if (board.getFieldStatus(r, c).getID() == 0 || board.getFieldStatus(r, c).getID() == -1) {
@@ -201,16 +197,16 @@ public class ReversiModel extends GameModel {
         if (IsOutOfBounds(r + dr, c + dc)) {
             return false;
         }
-        return checkLineMatch(dr, dc, r + dr, c + dc);
+        return checkLineMatch(dr, dc, r + dr, c + dc, player);
     }
 
-    private void flipLine(int dr, int dc, int r, int c, FieldStatus fieldstatus, int move) {
+    private void flipLine(int dr, int dc, int r, int c, FieldStatus fieldstatus, int move, int player) {
         r += dr;
         c += dc;
         int check = r * 8 + c;
         //System.out.println("Check value before loop: " + check + " The ID of the checked spot: "
         //+ board.getFieldStatus(r, c).getID());
-        while (!isCurrentPlayer(r, c) && board.getFieldStatus(r, c).getID() != 0
+        while (!isCurrentPlayer(r, c, player) && board.getFieldStatus(r, c).getID() != 0
                 && board.getFieldStatus(r, c).getID() != -1) {
             // System.out.println("Check value inside loop: " + check);
             try {
@@ -225,8 +221,8 @@ public class ReversiModel extends GameModel {
         }
     }
 
-    private boolean flipLineCheckMatch(int dr, int dc, int r, int c) {
-        if (isCurrentPlayer(r, c)) {
+    private boolean flipLineCheckMatch(int dr, int dc, int r, int c, int player) {
+        if (isCurrentPlayer(r, c, player)) {
             return true;
         }
         if (IsOutOfBounds(r + dr, c + dc)) {
@@ -238,10 +234,10 @@ public class ReversiModel extends GameModel {
         if (board.getFieldStatus(r + dr, c + dc).getID() == -1) {
             return false;
         }
-        return flipLineCheckMatch(dr, dc, r + dr, c + dc);
+        return flipLineCheckMatch(dr, dc, r + dr, c + dc , player);
     }
 
-    private boolean flipLineCheck(int dr, int dc, int r, int c, FieldStatus fieldstatus, int move) {
+    private boolean flipLineCheck(int dr, int dc, int r, int c, FieldStatus fieldstatus, int move, int player) {
         if (IsOutOfBounds(r + dr, c + dc)) {
             return false;
         }
@@ -253,70 +249,70 @@ public class ReversiModel extends GameModel {
             return false;
         }
 
-        if (isCurrentPlayer(r + dr, c + dc)) {
+        if (isCurrentPlayer(r + dr, c + dc, player)) {
             return false;
         }
 
 
 
-        return flipLineCheckMatch(dr, dc, r + dr, c + dc);
+        return flipLineCheckMatch(dr, dc, r + dr, c + dc, player);
     }
 
-    public void flipBoard(int move, FieldStatus fieldstatus) {
+    public void flipBoard(int move, FieldStatus fieldstatus, int player) {
         int r = move / 8;
         int c = move % 8;
-        boolean nw = flipLineCheck(-1, -1, r, c, fieldstatus, move);
-        boolean nn = flipLineCheck(-1, 0, r, c, fieldstatus, move);
-        boolean ne = flipLineCheck(-1, 1, r, c, fieldstatus, move);
+        boolean nw = flipLineCheck(-1, -1, r, c, fieldstatus, move, player);
+        boolean nn = flipLineCheck(-1, 0, r, c, fieldstatus, move, player);
+        boolean ne = flipLineCheck(-1, 1, r, c, fieldstatus, move, player);
 
-        boolean ww = flipLineCheck(0, -1, r, c, fieldstatus, move);
-        boolean ee = flipLineCheck(0, 1, r, c, fieldstatus, move);
+        boolean ww = flipLineCheck(0, -1, r, c, fieldstatus, move, player);
+        boolean ee = flipLineCheck(0, 1, r, c, fieldstatus, move, player);
 
-        boolean sw = flipLineCheck(1, -1, r, c, fieldstatus, move);
-        boolean ss = flipLineCheck(1, 0, r, c, fieldstatus, move);
-        boolean se = flipLineCheck(1, 1, r, c, fieldstatus, move);
+        boolean sw = flipLineCheck(1, -1, r, c, fieldstatus, move, player);
+        boolean ss = flipLineCheck(1, 0, r, c, fieldstatus, move, player);
+        boolean se = flipLineCheck(1, 1, r, c, fieldstatus, move, player);
 
         if (nw) {
             //System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
 //                    + fieldstatus.getValue() + " in de richting NW");
-            flipLine(-1, -1, r, c, fieldstatus, move);
+            flipLine(-1, -1, r, c, fieldstatus, move, player);
         }
         if (nn) {
             //System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
 //                    + fieldstatus.getValue() + " in de richting NN");
-            flipLine(-1, 0, r, c, fieldstatus, move);
+            flipLine(-1, 0, r, c, fieldstatus, move, player);
         }
         if (ne) {
             //System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
 //                    + fieldstatus.getValue() + " in de richting NE");
-            flipLine(-1, 1, r, c, fieldstatus, move);
+            flipLine(-1, 1, r, c, fieldstatus, move, player);
         }
 
         if (ww) {
             //System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
 //                    + fieldstatus.getValue() + " in de richting WW");
-            flipLine(0, -1, r, c, fieldstatus, move);
+            flipLine(0, -1, r, c, fieldstatus, move, player);
         }
         if (ee) {
             //System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
 //                    + fieldstatus.getValue() + " in de richting EE");
-            flipLine(0, 1, r, c, fieldstatus, move);
+            flipLine(0, 1, r, c, fieldstatus, move, player);
         }
 
         if (sw) {
             //System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
 //                    + fieldstatus.getValue() + " in de richting SW");
-            flipLine(1, -1, r, c, fieldstatus, move);
+            flipLine(1, -1, r, c, fieldstatus, move, player);
         }
         if (ss) {
             //System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
 //                    + fieldstatus.getValue() + " in de richting SS");
-            flipLine(1, 0, r, c, fieldstatus, move);
+            flipLine(1, 0, r, c, fieldstatus, move, player);
         }
         if (se) {
 //            System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
 //                    + fieldstatus.getValue() + " in de richting SE");
-            flipLine(1, 1, r, c, fieldstatus, move);
+            flipLine(1, 1, r, c, fieldstatus, move, player);
         }
 
     }
@@ -327,7 +323,7 @@ public class ReversiModel extends GameModel {
         return false;
     }
 
-    public boolean isCurrentPlayer(int x, int y) {
+    public boolean isCurrentPlayer(int x, int y, int player) {
         if (board.getFieldStatus(x, y).getID() == player)
             return true;
         return false;

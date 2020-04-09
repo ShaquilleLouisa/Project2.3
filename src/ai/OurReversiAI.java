@@ -18,6 +18,11 @@ public class OurReversiAI extends AI implements ReversiAI {
     }
 
     @Override
+    public int calculateNextMove(int player) {
+        return 0;
+    }
+
+    @Override
     public int calculateNextMove() {
         boolean[][] validMoves = aiModel.getValidMoves();
         boolean done = false;
@@ -62,6 +67,5 @@ public class OurReversiAI extends AI implements ReversiAI {
             e.printStackTrace();
         }
         return validMovesArray.get(rnd);
-
     }
 }

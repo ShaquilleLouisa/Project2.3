@@ -68,6 +68,11 @@ public class TicTacToe extends Game {
         return ai.calculateNextMove();
     }
 
+    @Override
+    public int getNextMove(int player) {
+        return 0;
+    }
+
     public void setMove(int move, boolean isOponent) {
         TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
         if (isOponent) {
@@ -91,6 +96,10 @@ public class TicTacToe extends Game {
         return controller;
     }
 
+    @Override
+    public void setMove(int move, boolean isOponent, int player) {
+
+    }
 
 
     // public FieldStatus getFieldStatus(int move) {

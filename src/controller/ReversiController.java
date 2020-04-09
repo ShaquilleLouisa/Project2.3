@@ -36,7 +36,7 @@ public class ReversiController extends GameController {
 // etc...
 
 
-    public void doMove(int move, FieldStatus Fieldstatus) throws MoveException {
+    public void doMove(int move, FieldStatus Fieldstatus, int player) throws MoveException {
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
 //        if(isFirstMove && isOponent){
 //            model.switchPlayer();
@@ -46,23 +46,25 @@ public class ReversiController extends GameController {
 //          model.setFieldStatus(move, fieldStatus);
 //      }
 
-        if (isFirstMove) {
+        if (player == 1) {
             fieldStatus.setBLACK();
-        } else if (model.getPlayer() == 2) {
-            fieldStatus.setWHITE();
         } else {
-            fieldStatus.setBLACK();
+            fieldStatus.setWHITE();
         }
         try {
 // De correcte stenen worden geflipt op het bord
-            model.flipBoard(move, fieldStatus);
-            model.switchPlayer();
-// De zet wordt gedaan op het model
             model.setFieldStatus(move, fieldStatus);
+            model.flipBoard(move, fieldStatus, player);
+// De zet wordt gedaan op het model
 // Het model wordt geswitched van speler
         } catch (MoveException e) {
         }
         isFirstMove = false;
+    }
+
+    @Override
+    public void doMove(int move, FieldStatus fieldStatus) throws MoveException {
+
     }
 
     @Override

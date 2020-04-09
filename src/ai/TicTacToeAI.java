@@ -16,6 +16,11 @@ public class TicTacToeAI extends AI {
     }
 
     @Override
+    public int calculateNextMove(int player) {
+        return 0;
+    }
+
+    @Override
     public int calculateNextMove() {
         Board boardCopy = aiModel.getBoard();
         Move move = findBestMove(boardCopy);

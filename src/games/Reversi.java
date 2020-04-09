@@ -34,7 +34,7 @@ public class Reversi extends Game {
         model.setDoubleAi(doubleai);
 
         if(useAi) {
-            ai = new OurReversiAI(model);
+            ai = new BetterReversiAi(model);
         }
     }
 
@@ -52,11 +52,20 @@ public class Reversi extends Game {
         return controller;
     }
 
+    public int getNextMove(int player) {
+        return ai.calculateNextMove(player);
+    }
+
+    @Override
+    public void setMove(int move, boolean isOponent) {
+
+    }
+
     public int getNextMove() {
         return ai.calculateNextMove();
     }
 
-    public void setMove(int move, boolean isOponent) {
+    public void setMove(int move, boolean isOponent, int player) {
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
         if(model.getPlayer() == ReversiFieldStatus.BLACK) {
             fieldStatus.setBLACK();
@@ -65,7 +74,7 @@ public class Reversi extends Game {
         }
 
         try {
-            controller.doMove(move ,fieldStatus);
+            controller.doMove(move ,fieldStatus, player);
         } catch (MoveException e) {
             e.printStackTrace();
         }

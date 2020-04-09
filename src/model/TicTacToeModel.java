@@ -66,7 +66,7 @@ public class TicTacToeModel extends GameModel {
     }
 
     @Override
-    public boolean[][] calculateValidMoves() {
+    public boolean[][] calculateValidMoves(int player) {
         return new boolean[0][];
     }
 

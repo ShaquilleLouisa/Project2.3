@@ -8,6 +8,11 @@ public class DefaultReversiAI extends AI implements ReversiAI {
     }
 
     @Override
+    public int calculateNextMove(int player) {
+        return 0;
+    }
+
+    @Override
     public int calculateNextMove() {
         return 44;
     }
