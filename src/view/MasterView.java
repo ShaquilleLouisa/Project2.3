@@ -676,10 +676,10 @@ public class MasterView extends View {
                 //lstPlayerList.setId(lstPlayerList.getSelectionModel().getSelectedItem());
 
                 // Check if rivalname is set
-                if (controller.getRivalName() == null) {
-                    lstPlayerList.setId(null);
-                    return;
-                }
+//                if (controller.getRivalName() == null) {
+//                    lstPlayerList.setId(null);
+//                    return;
+//                }
 
                 // Check if rivalname is at same position in the list
                 if (lstPlayerList.getId() == null || lstPlayerList.getId().isEmpty()) {
