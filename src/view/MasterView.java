@@ -297,13 +297,16 @@ public class MasterView extends View {
                         lstPlayersOptions.setVisible(false);
                         return;
                     }
+
+                    String selectedName = lstPlayerList.getSelectionModel().getSelectedItem();
+
                     // Check if playername is valid
-                    if (lstPlayerList.getSelectionModel().getSelectedItem() == null){
+                    if (selectedName == null || selectedName.isEmpty()){
                         return;
                     }
                     headPlayersOptions.setVisible(true);
                     //controller.setRivalName(lstPlayerList.getSelectionModel().getSelectedItem());
-                    lstPlayerList.setId(lstPlayerList.getSelectionModel().getSelectedItem());
+                    lstPlayerList.setId(selectedName);
 
                     // Check if invite is available
                     if (controller.checkChallenger(lstPlayerList.getId())){
@@ -311,7 +314,7 @@ public class MasterView extends View {
                     } else {
                         // Add normal games to gamelist
                         updatePlayerboardChallenges(FXCollections.observableArrayList(GameName.REVERSI.label, GameName.TICTACTOE.label));
-                        headPlayersOptions.setText(lstPlayerList.getSelectionModel().getSelectedItem() + " uitdagen voor:");
+                        headPlayersOptions.setText(selectedName + " uitdagen voor:");
                     }
                     lstPlayersOptions.setVisible(true);
                 } catch(Exception e) {
@@ -522,7 +525,11 @@ public class MasterView extends View {
 
     public void updatePlayersOptions(){
         String playerID = lstPlayerList.getId();
+        if (playerID == null || playerID.isEmpty()){
+            return;
+        }
         String gameTitle = controller.checkChallengerGametype(playerID);
+        System.out.println("playerID "+playerID+ " gameTitle "+ gameTitle);
         if (gameTitle != null && !gameTitle.isEmpty()) {
             headPlayersOptions.setText(playerID + " wil " + gameTitle + " spelen");
             if (gameTitle.equals(GameName.REVERSI.label)) {
@@ -666,30 +673,41 @@ public class MasterView extends View {
             @Override
             public void run() {
                 lstPlayerList.getSelectionModel().select(sel);
+                //lstPlayerList.setId(lstPlayerList.getSelectionModel().getSelectedItem());
 
                 // Check if rivalname is set
                 if (controller.getRivalName() == null) {
-                    lstPlayerList.setId("");
+                    lstPlayerList.setId(null);
                     return;
                 }
 
                 // Check if rivalname is at same position in the list
-                if (lstPlayerList.getId().equals( lstPlayerList.getSelectionModel().getSelectedItem() ) == false) {
+                if (lstPlayerList.getId() == null || lstPlayerList.getId().isEmpty()) {
+                    // Rivalname has left the game
+                    kickRival();
+
+                } else if (lstPlayerList.getId().equals( lstPlayerList.getSelectionModel().getSelectedItem() ) == false) {
                     for (int i=0; i<players.size(); i++) {
                         lstPlayerList.getSelectionModel().select(i);
                         if (lstPlayerList.getSelectionModel().getSelectedItem().equals(controller.getRivalName())) {
+                            lstPlayerList.setId(lstPlayerList.getSelectionModel().getSelectedItem());
                             return;
                         }
                     }
                     // Rivalname has left the game
-                    controller.setRivalName(null);
-                    lstPlayerList.setId("");
-                    lstPlayerList.getSelectionModel().select(null);
-                    enableChallengeOptions(false);
+                    kickRival();
                 }
 
             }
         });
+    }
+
+    private void kickRival(){
+        // Rivalname has left the game
+        controller.setRivalName(null);
+        lstPlayerList.getSelectionModel().select(null);
+        lstPlayerList.setId(null);
+        enableChallengeOptions(false);
     }
 
     private void enableChallengeOptions(boolean state){
@@ -712,6 +730,7 @@ public class MasterView extends View {
         // Clear rival name
         controller.setRivalName(null);
         lstPlayerList.getSelectionModel().select(-1);
+        lstPlayerList.setId(null);
 
         if (state) {
             enableChallengeOptions(!state);
@@ -759,15 +778,24 @@ public class MasterView extends View {
     }
 
     public void challengeAccept(String challengeName){
+
+        if (challengeName == null || challengeName.isEmpty()){
+            enablePlayersOptions(false);
+        }
+
         int getChallengeNumber = controller.getChallengeNumber(challengeName);
 
         if (getChallengeNumber != -1) {
-            lstPlayersOptions.setVisible(false);
-            headPlayersOptions.setVisible(false);
+            enablePlayersOptions(false);
             controller.challengeAccept(getChallengeNumber);
         } else {
-            System.out.println("Challenge got deleted try again");
+            System.out.println("Challenge got deleted try again "+getChallengeNumber + " name " + challengeName);
         }
+    }
+
+    public void enablePlayersOptions(boolean state) {
+        lstPlayersOptions.setVisible(state);
+        headPlayersOptions.setVisible(state);
     }
 
 }

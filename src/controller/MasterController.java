@@ -140,6 +140,7 @@ public class MasterController extends Controller {
                                     view.updatePlayerboardImages();
                                     break;
                                 case "match":
+                                    view.enablePlayersOptions(false);
                                     System.out.println(" ");
                                     System.out.println("Match message: " + inputLowerCase.substring(totalLetters));
                                     // Get rival name using regex
@@ -204,26 +205,32 @@ public class MasterController extends Controller {
                                 case "loss":
                                     System.out.println("You lost");
                                     Platform.runLater(() -> {
+                                        removeChallengeByName(getRivalName());
                                         setRivalName(null);
                                         model.setGame(null);
                                         stage.setScene(view.getScene());
+                                        view.updatePlayerboardImages();
                                     });
                                     //model.getGame().getView().updateNotification("I'm sorry you lost");
                                     break;
                                 case "win":
                                     System.out.println("You won");
                                     Platform.runLater(() -> {
+                                        removeChallengeByName(getRivalName());
                                         setRivalName(null);
                                         model.setGame(null);
                                         stage.setScene(view.getScene());
+                                        view.updatePlayerboardImages();
                                     });
                                     //model.getGame().getView().updateNotification("Congrats you won");
                                     break;
                                 case "draw":
                                     Platform.runLater(() -> {
+                                        removeChallengeByName(getRivalName());
                                         setRivalName(null);
                                         model.setGame(null);
                                         stage.setScene(view.getScene());
+                                        view.updatePlayerboardImages();
                                     });
                                     // DRAW
                                     System.out.println("Draw");
@@ -403,7 +410,14 @@ public class MasterController extends Controller {
         }
     }
 
-    public void removeChallenge(String CHALLENGERNUMBER) {model.removeChallenge(CHALLENGERNUMBER);}
+    public void removeChallengeByName(String CHALLENGER) {
+        model.removeChallengeByName(CHALLENGER);
+    }
+
+    public void removeChallenge(String CHALLENGERNUMBER) {
+        model.removeChallenge(CHALLENGERNUMBER);
+        view.updatePlayerboardImages();
+    }
 
     public boolean checkChallenger(String challengerName) {
         return model.checkChallenger(challengerName);

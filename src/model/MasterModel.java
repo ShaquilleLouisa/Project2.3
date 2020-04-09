@@ -29,6 +29,17 @@ public class MasterModel extends Model {
         doubleAi = false;
     }
 
+    public void removeChallengeByName(String CHALLENGER) {
+        // Check if name is already in the list
+        for (int i=challengesReceived.size()-1; i>=0; i--){
+            if (CHALLENGER.equals(challengesReceived.get(i)[0])){
+                challengesReceived.remove(i);
+                System.out.println("Deleting challenger entries " + CHALLENGER);
+                return;
+            }
+        }
+    }
+
     public void removeChallenge(String CHALLENGERNUMBER) {
         // Check if name is already in the list
         for (int i=challengesReceived.size()-1; i>=0; i--){
