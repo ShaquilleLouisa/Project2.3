@@ -84,6 +84,7 @@ public class ReversiView extends GameView{
             @Override
             public void handle(ActionEvent event) {
                 controller.notifyDone();
+
                 System.out.println("BACK HAS BEEN PRESSED");
             }
         };

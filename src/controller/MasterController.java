@@ -64,7 +64,7 @@ public class MasterController extends Controller {
             public void run() {
                 serverCommunication.getPlayerList();
             }
-        }, 0, 1000);
+        }, 0, 10000);
 
         Thread handleThread = new Thread(() -> {
             while (true) {
@@ -226,7 +226,7 @@ public class MasterController extends Controller {
                                     //System.out.println("inputLowerCase " + words[4]);
                                     System.out.println("Move has been done by opponent: " + inputLowerCase.substring(totalLetters)
                                             + "name: " + getRivalName());
-                                    if (words[4].contains(getRivalName())) {
+                                    if (words[4].contains(getRivalName().toLowerCase())) {
 
                                         System.out.println("Waar is deze print ??????"+words[6].substring(1, words[6].length() -2));
 
