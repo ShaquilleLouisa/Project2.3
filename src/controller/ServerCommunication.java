@@ -28,7 +28,8 @@ public class ServerCommunication {
 
 
         try {
-            socket = new Socket("localhost", 7789);
+            socket = new Socket("145.33.225.170", 7789);
+            //socket = new Socket("77.170.155.250", 7789);
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             connected = true;
