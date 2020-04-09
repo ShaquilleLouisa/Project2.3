@@ -1,6 +1,7 @@
 package view;
 
 import controller.MasterController;
+import games.Game;
 import games.GameName;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -306,17 +307,10 @@ public class MasterView extends View {
 
                     // Check if invite is available
                     if (controller.checkChallenger(lstPlayerList.getId())){
-                        String gameTitle = controller.checkChallengerGametype(lstPlayerList.getId());
-                        System.out.println("gameTitle"+gameTitle);
-                        headPlayersOptions.setText(lstPlayerList.getId() + " wil " + gameTitle + " spelen");
-                        if (gameTitle.equals(GameName.REVERSI.label)){
-                            updatePlayerboardChallenges(FXCollections.observableArrayList("Reversi | Accepteren", "Tic-tac-toe"));
-                        } else {
-                            updatePlayerboardChallenges(FXCollections.observableArrayList("Reversi", "Tic-tac-toe | Accepteren"));
-                        }
+                        updatePlayersOptions();
                     } else {
                         // Add normal games to gamelist
-                        updatePlayerboardChallenges(FXCollections.observableArrayList("Reversi", "Tic-tac-toe"));
+                        updatePlayerboardChallenges(FXCollections.observableArrayList(GameName.REVERSI.label, GameName.TICTACTOE.label));
                         headPlayersOptions.setText(lstPlayerList.getSelectionModel().getSelectedItem() + " uitdagen voor:");
                     }
                     lstPlayersOptions.setVisible(true);
@@ -335,9 +329,11 @@ public class MasterView extends View {
                     return;
                 }
 
+                // Accept rival invite
                 if (lstPlayersOptions.getSelectionModel().getSelectedItem().length()>10) {
-                    if (lstPlayersOptions.getSelectionModel().getSelectedItem().substring(lstPlayersOptions.getSelectionModel().getSelectedItem().length() - 10).equals("Accepteren")) {
+                    if (lstPlayersOptions.getSelectionModel().getSelectedItem().substring(lstPlayersOptions.getSelectionModel().getSelectedItem().length() - 10).equals("accepteren")) {
                         challengeAccept(lstPlayerList.getId());
+                        return;
                     }
                 }
 
@@ -346,6 +342,7 @@ public class MasterView extends View {
                 controller.setRivalName(lstPlayerList.getSelectionModel().getSelectedItem());
                 updatePlayerboardImages();
                 controller.challengeRival(controller.getRivalName(), lstPlayersOptions.getSelectionModel().getSelectedItem());
+
             }
         });
 
@@ -393,7 +390,7 @@ public class MasterView extends View {
             public void handle(ActionEvent event) {
 
                 if (btnQuickPlay.getText() == "Nu spelen!") {
-                    updatePlayerboardChallenges(FXCollections.observableArrayList("Reversi", "Tic-tac-toe"));
+                    updatePlayerboardChallenges(FXCollections.observableArrayList(GameName.REVERSI.label, GameName.TICTACTOE.label));
                     lstGameSelectOptions.getSelectionModel().select(-1);
                     selectGameModeScreen(true);
                     btnQuickPlay.setText("Terug");
@@ -415,7 +412,7 @@ public class MasterView extends View {
             public void handle(ActionEvent event) {
                 System.out.println("Button pressed -> P1 VS Online");
                 controller.setGameSettings(true, false,false);
-                controller.subscribe(getSelectedGameName().label);
+                controller.subscribe(lstGameSelectOptions.getSelectionModel().getSelectedItem());
             }
         });
 
@@ -425,8 +422,8 @@ public class MasterView extends View {
             public void handle(ActionEvent event) {
                 System.out.println("Button pressed -> AI VS Online");
                 controller.setGameSettings(true, true,false);
-                controller.subscribeServer(getSelectedGameName().label);
-                controller.subscribe(getSelectedGameName().label);
+                controller.subscribeServer(lstGameSelectOptions.getSelectionModel().getSelectedItem());
+                controller.subscribe(lstGameSelectOptions.getSelectionModel().getSelectedItem());
 
         }
         });
@@ -437,7 +434,7 @@ public class MasterView extends View {
             public void handle(ActionEvent event) {
                 System.out.println("Button pressed -> P1 VS P2");
                 controller.setGameSettings(false, false,false);
-                controller.subscribe(getSelectedGameName().label);
+                controller.subscribe(lstGameSelectOptions.getSelectionModel().getSelectedItem());
             }
         });
 
@@ -447,7 +444,7 @@ public class MasterView extends View {
             public void handle(ActionEvent event) {
                 System.out.println("Button pressed -> P1 VS AI");
                 controller.setGameSettings(false, true, false);
-                controller.subscribe(getSelectedGameName().label);
+                controller.subscribe(lstGameSelectOptions.getSelectionModel().getSelectedItem());
 
             }
         });
@@ -458,7 +455,7 @@ public class MasterView extends View {
             public void handle(ActionEvent event) {
                 System.out.println("Button pressed -> AI VS AI");
                 controller.setGameSettings(false, true, true);
-                controller.subscribe(getSelectedGameName().label);
+                controller.subscribe(lstGameSelectOptions.getSelectionModel().getSelectedItem());
             }
         });
 
@@ -497,7 +494,7 @@ public class MasterView extends View {
         });
     }
 
-    private void updatePlayerboardImages() {
+    public void updatePlayerboardImages() {
         // Add invitation image
         lstPlayerList.setCellFactory(param -> new ListCell<String>() {
             private ImageView imageView = new ImageView();
@@ -510,6 +507,9 @@ public class MasterView extends View {
                 } else {
                     if(controller.checkChallenger(name)) {
                         imageView.setImage(icoInvitationRecv);
+//                        if (lstPlayerList.getId().equals(controller.getRivalName())){
+                            updatePlayersOptions();
+//                        }
                     } else if(name.equals(controller.getRivalName())) {
                         imageView.setImage(icoInvitationSend);
                     }
@@ -518,6 +518,20 @@ public class MasterView extends View {
                 }
             }
         });
+    }
+
+    public void updatePlayersOptions(){
+        String playerID = lstPlayerList.getId();
+        String gameTitle = controller.checkChallengerGametype(playerID);
+        if (gameTitle != null && !gameTitle.isEmpty()) {
+            headPlayersOptions.setText(playerID + " wil " + gameTitle + " spelen");
+            if (gameTitle.equals(GameName.REVERSI.label)) {
+                updatePlayerboardChallenges(FXCollections.observableArrayList(GameName.REVERSI.label + " → accepteren", GameName.TICTACTOE.label));
+            } else if (gameTitle.equals(GameName.TICTACTOE.label)) {
+                updatePlayerboardChallenges(FXCollections.observableArrayList(GameName.REVERSI.label, GameName.TICTACTOE.label + " → accepteren"));
+            }
+        }
+
     }
 
     // Update leaderboard
@@ -694,15 +708,6 @@ public class MasterView extends View {
         btnAIvsAIOffline.setDisable(state);
     }
 
-    private GameName getSelectedGameName(){
-        if (lstGameSelectOptions.getSelectionModel().getSelectedItem().equals("Reversi")) {
-            return GameName.REVERSI;
-        } else if (lstGameSelectOptions.getSelectionModel().getSelectedItem().equals("Tic-tac-toe")) {
-            return GameName.TICTACTOE;
-        }
-        return null;
-    }
-
     private void selectGameModeScreen(boolean state){
         // Clear rival name
         controller.setRivalName(null);
@@ -754,7 +759,15 @@ public class MasterView extends View {
     }
 
     public void challengeAccept(String challengeName){
-        controller.challengeAccept(controller.getChallengeNumber(challengeName));
+        int getChallengeNumber = controller.getChallengeNumber(challengeName);
+
+        if (getChallengeNumber != -1) {
+            lstPlayersOptions.setVisible(false);
+            headPlayersOptions.setVisible(false);
+            controller.challengeAccept(getChallengeNumber);
+        } else {
+            System.out.println("Challenge got deleted try again");
+        }
     }
 
 }

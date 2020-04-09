@@ -29,11 +29,35 @@ public class MasterModel extends Model {
         doubleAi = false;
     }
 
+    public void removeChallenge(String CHALLENGERNUMBER) {
+        // Check if name is already in the list
+        for (int i=challengesReceived.size()-1; i>=0; i--){
+            if (CHALLENGERNUMBER.equals(challengesReceived.get(i)[1])){
+                challengesReceived.remove(i);
+                System.out.println("Deleting challenge " + CHALLENGERNUMBER);
+                return;
+            }
+        }
+    }
+
     public void addChallenge(String CHALLENGER, String CHALLENGERNUMBER,  String GAMETYPE) {
         String[] finData = new String[3];
         finData[0] = CHALLENGER;
         finData[1] = CHALLENGERNUMBER;
         finData[2] = GAMETYPE;
+
+        // Check if name is already in the list
+        for (int i=challengesReceived.size()-1; i>=0; i--){
+            if (CHALLENGER.equals(challengesReceived.get(i)[0])){
+                challengesReceived.get(i)[1] = CHALLENGERNUMBER;
+                challengesReceived.get(i)[2] = GAMETYPE;
+                System.out.println("Updating old challenge invite from " + CHALLENGER);
+                return;
+            }
+        }
+
+        System.out.println("Adding new challenge invite from " + CHALLENGER);
+        // First invite add to list
         challengesReceived.add(finData);
     }
 
@@ -52,7 +76,7 @@ public class MasterModel extends Model {
                 return challengesReceived.get(i)[2];
             }
         }
-        return "niks";
+        return null;
     }
 
     public int getChallengeNumber(String challengerName) {

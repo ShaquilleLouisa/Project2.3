@@ -22,6 +22,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
+import javax.swing.plaf.synth.SynthMenuBarUI;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
@@ -64,7 +65,7 @@ public class MasterController extends Controller {
             public void run() {
                 serverCommunication.getPlayerList();
             }
-        }, 0, 3000);
+        }, 0, 5000);
 
         Thread handleThread = new Thread(() -> {
             while (true) {
@@ -99,6 +100,9 @@ public class MasterController extends Controller {
                 case "ok":
                     break;
                 case "err":
+                    if (inputLowerCase.substring(0,29).equals("err invalid challenge number ")) {
+                        removeChallenge(inputLowerCase.substring(30,inputLowerCase.length()-1));
+                    }
                     break;
                 case "svr":
                     // All server commands
@@ -133,6 +137,7 @@ public class MasterController extends Controller {
                                         gameType=m.group(1);
                                     }
                                     model.addChallenge(challenger, challengeNumber, gameType);
+                                    view.updatePlayerboardImages();
                                     break;
                                 case "match":
                                     System.out.println(" ");
@@ -199,6 +204,7 @@ public class MasterController extends Controller {
                                 case "loss":
                                     System.out.println("You lost");
                                     Platform.runLater(() -> {
+                                        setRivalName(null);
                                         model.setGame(null);
                                         stage.setScene(view.getScene());
                                     });
@@ -207,6 +213,7 @@ public class MasterController extends Controller {
                                 case "win":
                                     System.out.println("You won");
                                     Platform.runLater(() -> {
+                                        setRivalName(null);
                                         model.setGame(null);
                                         stage.setScene(view.getScene());
                                     });
@@ -214,6 +221,7 @@ public class MasterController extends Controller {
                                     break;
                                 case "draw":
                                     Platform.runLater(() -> {
+                                        setRivalName(null);
                                         model.setGame(null);
                                         stage.setScene(view.getScene());
                                     });
@@ -395,6 +403,8 @@ public class MasterController extends Controller {
         }
     }
 
+    public void removeChallenge(String CHALLENGERNUMBER) {model.removeChallenge(CHALLENGERNUMBER);}
+
     public boolean checkChallenger(String challengerName) {
         return model.checkChallenger(challengerName);
     }
@@ -413,6 +423,7 @@ public class MasterController extends Controller {
 
     public void challengeAccept(int challengeNmr) {
         serverCommunication.challengeAccept(challengeNmr);
+        removeChallenge(Integer.toString(challengeNmr));
     }
 
     public void getGameList() {
