@@ -36,7 +36,8 @@ public class AIModel extends Model {
     public boolean[][] getValidMoves() {return gameModel.getValidMoves();}
 
     public boolean[][] getAnotherOne() {
-        gameModel.switchPlayer();
+        //gameModel.switchPlayer();
+//        System.out.println("Ik ben geswitched van " + ((gameModel.getPlayer() == 1) ? "WHITE" : "BLACK") + " naar " + ((gameModel.getPlayer() == 1) ? "BLACK" : "WHITE"));
         return gameModel.calculateValidMoves();
     }
 

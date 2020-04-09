@@ -2,6 +2,7 @@ package controller;
 
 import ai.OurReversiAI;
 import exceptions.MoveException;
+import games.Reversi;
 import model.Model;
 import model.gameitems.*;
 import view.ReversiView;
@@ -17,7 +18,7 @@ public class ReversiController extends GameController {
     private boolean done = false;
     boolean pauze = false;
     public static boolean isFirstMove = true;
-
+    public int lastMove = 0;
     public ReversiController() {
 
     }
@@ -56,13 +57,13 @@ public class ReversiController extends GameController {
         try {
 // De correcte stenen worden geflipt op het bord
             model.flipBoard(move, fieldStatus);
-            model.switchPlayer();
 // De zet wordt gedaan op het model
             model.setFieldStatus(move, fieldStatus);
 // Het model wordt geswitched van speler
         } catch (MoveException e) {
         }
         isFirstMove = false;
+        lastMove = fieldStatus.getID();
     }
 
     @Override

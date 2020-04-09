@@ -89,6 +89,7 @@ public class MasterController extends Controller {
         }
         if (originalInput != null) {
             String inputLowerCase = originalInput.toLowerCase();
+            System.out.println(originalInput);
             String[] words = inputLowerCase.split(" ");
             int totalLetters = 0;
             if (words.length > 2) {
@@ -106,7 +107,7 @@ public class MasterController extends Controller {
                             // this would not ever happen
                             break;
                         case "game":
-                            System.out.println("Game message");
+                            //System.out.println("Game message");
                             System.out.println(" ");
                             switch (words[2]) {
                                 case "challenge":
@@ -115,21 +116,21 @@ public class MasterController extends Controller {
                                     Pattern p = Pattern.compile("CHALLENGER: \"([^\"]*)\"");
                                     Matcher m = p.matcher(originalInput);
                                     while (m.find()) {
-                                        challenger=m.group(1);
+                                        challenger = m.group(1);
                                     }
                                     String challengeNumber = "";
                                     // Get challengenumber using regex and store
                                     p = Pattern.compile("CHALLENGENUMBER: \"([^\"]*)\"");
                                     m = p.matcher(originalInput);
                                     while (m.find()) {
-                                        challengeNumber=m.group(1);
+                                        challengeNumber = m.group(1);
                                     }
                                     String gameType = "";
                                     // Get gameType using regex and store
                                     p = Pattern.compile("GAMETYPE: \"([^\"]*)\"");
                                     m = p.matcher(originalInput);
                                     while (m.find()) {
-                                        gameType=m.group(1);
+                                        gameType = m.group(1);
                                     }
                                     model.addChallenge(challenger, challengeNumber, gameType);
                                     break;
@@ -149,8 +150,8 @@ public class MasterController extends Controller {
                                     while (m.find()) {
                                         System.out.println("Match gametype received:" + m.group(1));
                                         // Change scene using m.group(1)
-                                        if(model.getGame() == null) {
-                                            setGameSettings(true, true,false);
+                                        if (model.getGame() == null) {
+                                            setGameSettings(true, true, false);
                                             System.out.println(m.group(1));
                                             subscribe(m.group(1));
                                         }
@@ -159,11 +160,19 @@ public class MasterController extends Controller {
                                     break;
 
                                 case "yourturn":
+
                                     System.out.println(" ");
                                     System.out.println("Your turn");
-
                                     int ourMove;
                                     if (model.getGame().getModel().isUseAi()) {
+                                        System.out.println(model.getGame().getModel().getMe());
+                                        if (model.getGame().getModel().getMe() == 0) {
+                                            System.out.println("IN DE IF STATEMENT");
+                                            model.getGame().getModel().setMe(1);
+                                            model.getGame().getModel().setPlayer(model.getGame().getModel().getMe());
+                                        } else {
+                                            model.getGame().getModel().setPlayer(model.getGame().getModel().getMe());
+                                        }
 //                                        try{
 //                                            Thread.sleep(2000);
 //                                        } catch (InterruptedException e){
@@ -171,7 +180,7 @@ public class MasterController extends Controller {
 //                                        }
 
                                         ourMove = model.getGame().getNextMove();
-                                        if(ourMove != -1) {
+                                        if (ourMove != -1) {
                                             //TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
                                             //fieldStatus.setCircle();
                                             //model.getGame().getModel().setFieldStatus(ourMove, fieldStatus);
@@ -223,20 +232,30 @@ public class MasterController extends Controller {
                                 case "move":
                                     System.out.println(" ");
                                     //System.out.println("inputLowerCase " + words[4]);
-                                    System.out.println("Move has been done by opponent: " + inputLowerCase.substring(totalLetters)
-                                            + "name: " + getRivalName());
+
+                                    //        + "name: " + getRivalName());
                                     if (words[4].contains(getRivalName())) {
+                                        if (model.getGame().getModel().getMe() == 0) {
+                                            model.getGame().getModel().setMe(2);
+                                            model.getGame().getModel().setPlayer(1);
 
-                                        System.out.println("Waar is deze print ??????"+words[6].substring(1, words[6].length() -2));
+                                        } else {
+                                            if (model.getGame().getModel().getMe() == 1) {
+                                                model.getGame().getModel().setPlayer(2);
+                                            } else {
+                                                model.getGame().getModel().setPlayer(1);
+                                            }
+                                            System.out.println("Opponnent did: " + inputLowerCase.substring(totalLetters));
+                                            //System.out.println("Waar is deze print ??????"+words[6].substring(1, words[6].length() -2));
 
-                                        int opponentMove = Integer.parseInt(words[6].substring(1, words[6].length() - 2));//Integer.parseInt(words[6]);
-                                        //TicTacToeFieldStatus fieldStatusCross = new TicTacToeFieldStatus();
-                                        //fieldStatusCross.setCross();
-                                        //model.getGame().getModel().setFieldStatus(opponentMove, fieldStatusCross);
-                                        System.out.println("opponentMove: " + opponentMove);
-                                        model.getGame().setMove(opponentMove, true);
-                                        System.out.println("Opponent move has been set");
-
+                                            int opponentMove = Integer.parseInt(words[6].substring(1, words[6].length() - 2));//Integer.parseInt(words[6]);
+                                            //TicTacToeFieldStatus fieldStatusCross = new TicTacToeFieldStatus();
+                                            //fieldStatusCross.setCross();
+                                            //model.getGame().getModel().setFieldStatus(opponentMove, fieldStatusCross);
+                                            System.out.println("opponentMove: " + opponentMove);
+                                            model.getGame().setMove(opponentMove, true);
+                                            //System.out.println("Opponent move has been set");
+                                        }
                                     }
                                     break;
                             }
@@ -319,12 +338,12 @@ public class MasterController extends Controller {
 
     public void subscribe(String gameName) {
         Game game = null;
-        if(gameName.contains("-")) {
+        if (gameName.contains("-")) {
             gameName = gameName.replace("-", "");
             gameName = gameName.toUpperCase();
-            gameName = "games." +GameName.valueOf(gameName).className;
+            gameName = "games." + GameName.valueOf(gameName).className;
         } else {
-            gameName = "games." +gameName;
+            gameName = "games." + gameName;
         }
         try {
             game = (Game) Class.forName(gameName).getConstructor(boolean.class, boolean.class, boolean.class).newInstance(model.isOnlineGame(), model.isUseAi(), model.isDoubleAi());
@@ -360,9 +379,10 @@ public class MasterController extends Controller {
                 Timer timer = new Timer();
                 timer.schedule(new TimerTask() {
                     int userMove = model.getGame().getModel().getUserMove();
+
                     @Override
                     public void run() {
-                        if(model.getGame().getModel().getPlayer() == 1) {
+                        if (model.getGame().getModel().getPlayer() == 1) {
                             int move = model.getGame().getModel().getUserMove();
                             if (userMove != move) {
                                 serverCommunication.move(move);

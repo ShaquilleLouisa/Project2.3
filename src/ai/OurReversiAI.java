@@ -38,14 +38,13 @@ public class OurReversiAI extends AI implements ReversiAI {
                 }
             }
             if (validMovesArray.size() == 0) {
-                if (!skipped) {
+                validMoves = aiModel.getValidMoves();
+                if (!skipped && skippedCount > 0) {
                     validMoves = aiModel.getAnotherOne();
                     System.out.print("Handled skipped turn");
                     skipped = true;
-                } else {
-                    //No more turns left because end of game
-                    return -1;
                 }
+                skippedCount++;
             } else {
                 done = true;
             }

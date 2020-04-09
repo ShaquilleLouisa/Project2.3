@@ -75,6 +75,16 @@ public class TicTacToeModel extends GameModel {
 
     }
 
+    @Override
+    public int getMe() {
+        return 0;
+    }
+
+    @Override
+    public void setMe(int me) {
+
+    }
+
     public int getTurns() {
         return turns;
     }
@@ -171,6 +181,11 @@ public class TicTacToeModel extends GameModel {
 
     public void setUserMove(int userMove) {
         this.userMove = userMove;
+    }
+
+    @Override
+    public void setPlayer(int player) {
+        //TODO
     }
 
     public int getUserMove() {

@@ -16,6 +16,7 @@ public class ReversiModel extends GameModel implements Cloneable {
     private boolean useAi;
     private boolean online;
     private boolean doubleAi;
+    private int me;
 
     public ReversiModel(ReversiView view) {
         this.view = view;
@@ -43,8 +44,6 @@ public class ReversiModel extends GameModel implements Cloneable {
             System.out.println(e);
             return;
         }
-        validMoves = calculateValidMoves();
-
     }
 
     public void setFieldStatus(int move, FieldStatus status) throws MoveException {
@@ -64,14 +63,12 @@ public class ReversiModel extends GameModel implements Cloneable {
             } catch (MoveException e) {
                 throw e;
             }
-
-            validMoves = calculateValidMoves();
         }
         view.update(move, status);
     }
 
     public boolean[][] calculateValidMoves() {
-        System.out.println("Starting setting valid moves for: " + getPlayer());
+        //System.out.println("Starting setting valid moves for: " + getPlayer());
 
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
         fieldStatus.setEmpty();
@@ -145,7 +142,7 @@ public class ReversiModel extends GameModel implements Cloneable {
 
                     }
                     if (se) {
-                        System.out.println("This position is playable in the line of SE : " + (8 * x + y));
+                        //System.out.println("This position is playable in the line of SE : " + (8 * x + y));
                         playableMoves[x][y] = true;
                     }
 
@@ -167,7 +164,6 @@ public class ReversiModel extends GameModel implements Cloneable {
         }
         validMoves = playableMoves;
         return playableMoves;
-
     }
 
     private boolean validMove(int dr, int dc, int r, int c) {
@@ -217,7 +213,7 @@ public class ReversiModel extends GameModel implements Cloneable {
                 board.setFieldStatus(r, c, fieldstatus);
                 int count = (r * 8) + c;
                 view.update(count, fieldstatus);
-                System.out.println("flipped position: " + r + ", " + c + " position on Board: " + count);
+                //System.out.println("flipped position: " + r + ", " + c + " position on Board: " + count);
                 r += dr;
                 c += dc;
             } catch (MoveException e) {
@@ -361,6 +357,7 @@ public class ReversiModel extends GameModel implements Cloneable {
         } else {
             player = 1;
         }
+        System.out.println("Ik ben geswitched van " + ((player == 1) ? "WHITE" : "BLACK") + " naar " + ((player == 1) ? "BLACK" : "WHITE"));
     }
 
     public int getTurns() {
@@ -419,6 +416,12 @@ public class ReversiModel extends GameModel implements Cloneable {
     }
 
     @Override
+    public void setPlayer(int player) {
+        this.player = player;
+        System.out.println("I HAVE BEEN ACTIVATED BITCHES to " + player);
+    }
+
+    @Override
     public void setAiUse(boolean useAi) {
         this.useAi = useAi;
     }
@@ -426,5 +429,14 @@ public class ReversiModel extends GameModel implements Cloneable {
     @Override
     public ReversiModel clone() throws CloneNotSupportedException {
         return (ReversiModel)super.clone();
+    }
+
+    public int getMe() {
+        return me;
+    }
+
+    public void setMe(int me) {
+        System.out.println("IK BEN " + ((me == 1) ? "BLACK" : "WHITE"));
+        this.me = me;
     }
 }

@@ -23,10 +23,15 @@ public abstract class GameModel extends Model {
     abstract public int getUserMove();
     abstract public void setUserMove(int move);
 
+    abstract public void setPlayer(int player);
     abstract public int getPlayer();
     abstract public void switchPlayer();
 
     abstract public boolean[][] calculateValidMoves();
 
     abstract public void setFirstMoves();
+
+    abstract public int getMe();
+
+    abstract public void setMe(int me);
 }
