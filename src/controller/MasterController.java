@@ -64,7 +64,7 @@ public class MasterController extends Controller {
             public void run() {
                 serverCommunication.getPlayerList();
             }
-        }, 0, 10000);
+        }, 0, 3000);
 
         Thread handleThread = new Thread(() -> {
             while (true) {

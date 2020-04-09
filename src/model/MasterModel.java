@@ -38,7 +38,7 @@ public class MasterModel extends Model {
     }
 
     public boolean checkChallenger(String challengerName) {
-        for (int i=challengesReceived.size()-1; i>0; i--){
+        for (int i=challengesReceived.size()-1; i>=0; i--){
             if (challengerName.equals(challengesReceived.get(i)[0])){
                 return true;
             }
@@ -47,7 +47,7 @@ public class MasterModel extends Model {
     }
 
     public String checkChallengerGametype(String challengerName) {
-        for (int i=challengesReceived.size()-1; i>0; i--){
+        for (int i=challengesReceived.size()-1; i>=0; i--){
             if (challengerName.equals(challengesReceived.get(i)[0])){
                 return challengesReceived.get(i)[2];
             }
@@ -56,7 +56,7 @@ public class MasterModel extends Model {
     }
 
     public int getChallengeNumber(String challengerName) {
-        for (int i=challengesReceived.size()-1; i>0; i--){
+        for (int i=challengesReceived.size()-1; i>=0; i--){
             if (challengerName.equals(challengesReceived.get(i)[0])){
                 return Integer.parseInt(challengesReceived.get(i)[1]);
             }
