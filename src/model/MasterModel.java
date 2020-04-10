@@ -7,10 +7,10 @@ import view.MasterView;
 import java.util.ArrayList;
 
 public class MasterModel extends Model {
-
     private MasterView view;
     private Game game;
     private String loginName;
+    private int loginColor = 0;
     private String rivalName;
     private boolean inGame;
     private boolean onlineGame;
@@ -151,5 +151,13 @@ public class MasterModel extends Model {
 
     public boolean isDoubleAi() {
         return doubleAi;
+    }
+
+    public int getLoginColor() {
+        return loginColor;
+    }
+
+    public void setLoginColor(int loginColor) {
+        this.loginColor = loginColor;
     }
 }

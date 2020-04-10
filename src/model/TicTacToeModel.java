@@ -13,7 +13,7 @@ public class TicTacToeModel extends GameModel {
     private int turns;
     private int player = 1;
     private TicTacToeView view;
-    private int FieldSize = 3;
+    private int boardSize = 3;
     private boolean useAi;
     private boolean online;
     private boolean doubleAi;
@@ -21,7 +21,7 @@ public class TicTacToeModel extends GameModel {
     public TicTacToeModel(TicTacToeView view) {
         this.view = view;
         turns = 0;
-        board = new Board(FieldSize, FieldSize, new TicTacToeFieldStatus());
+        board = new Board(boardSize, boardSize);
     }
 
     public void setFieldStatus(int move, FieldStatus fieldStatus) throws MoveException {
@@ -49,24 +49,21 @@ public class TicTacToeModel extends GameModel {
     }
 
     @Override
-    public int getFieldSize() {
-        return FieldSize;
+    public int getBoardSize() {
+        return boardSize;
     }
 
     public int getPlayer() {
         return player;
     }
 
-    public void switchPlayer() {
-        if (player == 1) {
-            player = 2;
-        } else {
-            player = 1;
-        }
+    @Override
+    public void setPlayer(int player) {
+        this.player = player;
     }
 
     @Override
-    public boolean[][] calculateValidMoves() {
+    public boolean[][] calculateValidMoves(FieldStatus fieldStatus) {
         return new boolean[0][];
     }
 
@@ -92,10 +89,6 @@ public class TicTacToeModel extends GameModel {
         return board.getFieldStatus(x, y).getID() != 0;
     }
 
-    @Override
-    public boolean[][] getValidMoves() {
-        return new boolean[0][];
-    }
 
 
     //FOR OFFLINE GAME

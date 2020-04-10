@@ -95,14 +95,14 @@ public class MasterController extends Controller {
             if (words.length > 2) {
                 totalLetters = words[0].length() + words[1].length() + words[2].length() + 3;
             }
-            System.out.println(inputLowerCase);
+            //System.out.println(inputLowerCase);
             switch (words[0]) {
                 case "ok":
                     break;
                 case "err":
-                    if (inputLowerCase.substring(0,29).equals("err invalid challenge number ")) {
-                        removeChallenge(inputLowerCase.substring(30,inputLowerCase.length()-1));
-                    }
+//                    if (inputLowerCase.substring(0, 29).equals("err invalid challenge number ")) {
+//                        removeChallenge(inputLowerCase.substring(30, inputLowerCase.length() - 1));
+//                    }
                     break;
                 case "svr":
                     // All server commands
@@ -111,8 +111,7 @@ public class MasterController extends Controller {
                             // this would not ever happen
                             break;
                         case "game":
-                            System.out.println("Game message");
-                            System.out.println(" ");
+                            //System.out.println("Game message");
                             switch (words[2]) {
                                 case "challenge":
                                     // Get challenger name using regex and store
@@ -120,21 +119,21 @@ public class MasterController extends Controller {
                                     Pattern p = Pattern.compile("CHALLENGER: \"([^\"]*)\"");
                                     Matcher m = p.matcher(originalInput);
                                     while (m.find()) {
-                                        challenger=m.group(1);
+                                        challenger = m.group(1);
                                     }
                                     String challengeNumber = "";
                                     // Get challengenumber using regex and store
                                     p = Pattern.compile("CHALLENGENUMBER: \"([^\"]*)\"");
                                     m = p.matcher(originalInput);
                                     while (m.find()) {
-                                        challengeNumber=m.group(1);
+                                        challengeNumber = m.group(1);
                                     }
                                     String gameType = "";
                                     // Get gameType using regex and store
                                     p = Pattern.compile("GAMETYPE: \"([^\"]*)\"");
                                     m = p.matcher(originalInput);
                                     while (m.find()) {
-                                        gameType=m.group(1);
+                                        gameType = m.group(1);
                                     }
                                     model.addChallenge(challenger, challengeNumber, gameType);
                                     view.updatePlayerboardImages();
@@ -146,9 +145,11 @@ public class MasterController extends Controller {
                                     // Get rival name using regex
                                     p = Pattern.compile("OPPONENT: \"([^\"]*)\"");
                                     m = p.matcher(originalInput);
-                                    while (m.find()) {
-                                        System.out.println("Match rivalname received:" + m.group(1));
-                                        model.setRivalName(m.group(1));
+                                    if(model.getRivalName() == null) {
+                                        while (m.find()) {
+                                            System.out.println("Match rivalname received:" + m.group(1));
+                                            model.setRivalName(m.group(1));
+                                        }
                                     }
                                     // Get rival gametype using regex
                                     p = Pattern.compile("GAMETYPE: \"([^\"]*)\"");
@@ -156,18 +157,22 @@ public class MasterController extends Controller {
                                     while (m.find()) {
                                         System.out.println("Match gametype received:" + m.group(1));
                                         // Change scene using m.group(1)
-                                        if(model.getGame() == null) {
-                                            setGameSettings(true, true,false);
+                                        if (model.getGame() == null) {
+                                            setGameSettings(true, true, false);
                                             System.out.println(m.group(1));
                                             subscribe(m.group(1));
+                                            break;
                                         }
                                     }
 
                                     break;
 
                                 case "yourturn":
-                                    System.out.println(" ");
-                                    System.out.println("Your turn");
+                                    if (model.getLoginColor() == 0) {
+                                        model.setLoginColor(1);
+                                    }
+                                    //System.out.println(" ");
+                                    //System.out.println("Your turn");
 
                                     int ourMove;
                                     if (model.getGame().getModel().isUseAi()) {
@@ -176,82 +181,99 @@ public class MasterController extends Controller {
 //                                        } catch (InterruptedException e){
 //                                            e.printStackTrace();
 //                                        }
+                                        model.getGame().getModel().setPlayer(model.getLoginColor());
+                                        //System.out.println("[YOURTURN]Set player " + model.getLoginColor());
+                                        FieldStatus fieldStatus = new ReversiFieldStatus();
+                                        fieldStatus.setId(model.getLoginColor());
 
-                                        ourMove = model.getGame().getNextMove();
-                                        if(ourMove != -1) {
-                                            //TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
-                                            //fieldStatus.setCircle();
-                                            //model.getGame().getModel().setFieldStatus(ourMove, fieldStatus);
-                                            model.getGame().setMove(ourMove, false);
-                                            serverCommunication.move(ourMove);
-                                        }
+                                        ourMove = model.getGame().getNextMove(fieldStatus);
+
+                                        //TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
+                                        //fieldStatus.setCircle();
+                                        //model.getGame().getModel().setFieldStatus(ourMove, fieldStatus);
+                                        model.getGame().setMove(ourMove, model.getLoginColor());
+                                        serverCommunication.move(ourMove);
+
                                     } else {
-                                        Timer timer = new Timer();
-                                        timer.schedule(new TimerTask() {
-                                            int userMove = model.getGame().getModel().getUserMove();
-
-                                            @Override
-                                            public void run() {
-                                                int move = model.getGame().getModel().getUserMove();
-                                                if (userMove != move) {
-                                                    serverCommunication.move(move);
-                                                    userMove = move;
-                                                }
-                                            }
-                                        }, 0, 1000);
+//                                        Timer timer = new Timer();
+//                                        timer.schedule(new TimerTask() {
+//                                            int userMove = model.getGame().getModel().getUserMove();
+//
+//                                            @Override
+//                                            public void run() {
+//                                                int move = model.getGame().getModel().getUserMove();
+//                                                if (userMove != move) {
+//                                                    serverCommunication.move(move);
+//                                                    userMove = move;
+//                                                }
+//                                            }
+//                                        }, 0, 1000);
                                     }
 
                                     break;
                                 case "loss":
-                                    System.out.println("You lost");
+                                    System.out.println(inputLowerCase);
+                                    //System.out.println("You lost");
                                     Platform.runLater(() -> {
                                         removeChallengeByName(getRivalName());
                                         setRivalName(null);
                                         model.setGame(null);
+                                        model.setLoginColor(0);
                                         stage.setScene(view.getScene());
                                         view.updatePlayerboardImages();
                                     });
                                     //model.getGame().getView().updateNotification("I'm sorry you lost");
                                     break;
                                 case "win":
-                                    System.out.println("You won");
+                                    System.out.println(inputLowerCase);
+                                    //System.out.println("You won");
                                     Platform.runLater(() -> {
                                         removeChallengeByName(getRivalName());
                                         setRivalName(null);
                                         model.setGame(null);
+                                        model.setLoginColor(0);
                                         stage.setScene(view.getScene());
                                         view.updatePlayerboardImages();
                                     });
                                     //model.getGame().getView().updateNotification("Congrats you won");
                                     break;
                                 case "draw":
+                                    System.out.println(inputLowerCase);
                                     Platform.runLater(() -> {
                                         removeChallengeByName(getRivalName());
                                         setRivalName(null);
                                         model.setGame(null);
+                                        model.setLoginColor(0);
                                         stage.setScene(view.getScene());
                                         view.updatePlayerboardImages();
                                     });
                                     // DRAW
-                                    System.out.println("Draw");
+                                    //System.out.println("Draw");
                                     //model.getGame().getView().updateNotification("Its a draw :|");
                                     break;
                                 case "move":
-                                    System.out.println(" ");
-                                    //System.out.println("inputLowerCase " + words[4]);
-                                    System.out.println("Move has been done by opponent: " + inputLowerCase.substring(totalLetters)
-                                            + "name: " + getRivalName());
-                                    if (words[4].contains(getRivalName().toLowerCase())) {
+                                    //System.out.println(model.getRivalName());
+                                    if (words[4].contains(model.getRivalName().toLowerCase())) {
+                                        //System.out.println("Move has been done by opponent: " + inputLowerCase.substring(totalLetters) + "name: " + getRivalName());
+                                        if (model.getLoginColor() == 0) {
+                                            model.setLoginColor(2);
+                                        }
 
-                                        System.out.println("Waar is deze print ??????"+words[6].substring(1, words[6].length() -2));
-
+                                        //System.out.println("Waar is deze print ??????" + words[6].substring(1, words[6].length() - 2));
                                         int opponentMove = Integer.parseInt(words[6].substring(1, words[6].length() - 2));//Integer.parseInt(words[6]);
                                         //TicTacToeFieldStatus fieldStatusCross = new TicTacToeFieldStatus();
                                         //fieldStatusCross.setCross();
                                         //model.getGame().getModel().setFieldStatus(opponentMove, fieldStatusCross);
-                                        System.out.println("opponentMove: " + opponentMove);
-                                        model.getGame().setMove(opponentMove, true);
-                                        System.out.println("Opponent move has been set");
+                                        //System.out.println("opponentMove: " + opponentMove);
+                                        if (model.getLoginColor() == 1) {
+                                            //System.out.println("[MOVE]Set player " + 2);
+                                            model.getGame().setMove(opponentMove, 2);
+                                        } else {
+                                            //System.out.println("[MOVE]Set player " + 1);
+                                            model.getGame().setMove(opponentMove, 1);
+                                        }
+
+                                        //System.out.println("Opponent move has been set");
 
                                     }
                                     break;
@@ -333,14 +355,14 @@ public class MasterController extends Controller {
         return res;
     }
 
-    public void subscribe(String gameName) {
+    public synchronized void subscribe(String gameName) {
         Game game = null;
-        if(gameName.contains("-")) {
+        if (gameName.contains("-")) {
             gameName = gameName.replace("-", "");
             gameName = gameName.toUpperCase();
-            gameName = "games." +GameName.valueOf(gameName).className;
+            gameName = "games." + GameName.valueOf(gameName).className;
         } else {
-            gameName = "games." +gameName;
+            gameName = "games." + gameName;
         }
         try {
             game = (Game) Class.forName(gameName).getConstructor(boolean.class, boolean.class, boolean.class).newInstance(model.isOnlineGame(), model.isUseAi(), model.isDoubleAi());
@@ -348,7 +370,7 @@ public class MasterController extends Controller {
             e.printStackTrace();
             System.out.println("Game not found");
         }
-        if (game != null) {
+        if (game != null && model.getGame() == null) {
             GameController gameController = game.getController();
             model.setGame(game);
             Platform.runLater(new Runnable() {
@@ -373,23 +395,24 @@ public class MasterController extends Controller {
                     }
                 }, 0, 100);
             } else if (!model.isOnlineGame() && model.isUseAi() && !model.isDoubleAi()) {
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    int userMove = model.getGame().getModel().getUserMove();
-                    @Override
-                    public void run() {
-                        if(model.getGame().getModel().getPlayer() == 1) {
-                            int move = model.getGame().getModel().getUserMove();
-                            if (userMove != move) {
-                                serverCommunication.move(move);
-                                userMove = move;
-                            }
-                        } else {
-                            model.getGame().setMove(model.getGame().getNextMove(), true);
-                            model.getGame().getModel().switchPlayer();
-                        }
-                    }
-                }, 0, 1000);
+//                Timer timer = new Timer();
+//                timer.schedule(new TimerTask() {
+//                    int userMove = model.getGame().getModel().getUserMove();
+//
+//                    @Override
+//                    public void run() {
+//                        if (model.getGame().getModel().getPlayer() == 1) {
+//                            int move = model.getGame().getModel().getUserMove();
+//                            if (userMove != move) {
+//                                serverCommunication.move(move);
+//                                userMove = move;
+//                            }
+//                        } else {
+//                            model.getGame().setMove(model.getGame().getNextMove(), true);
+//                            model.getGame().getModel().switchPlayer();
+//                        }
+//                    }
+//                }, 0, 1000);
             }
 
             Timer timer = new Timer();
@@ -488,4 +511,6 @@ public class MasterController extends Controller {
     public void subscribeServer(String gameName) {
         serverCommunication.subscribe(gameName);
     }
+
+
 }

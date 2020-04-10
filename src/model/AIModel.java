@@ -21,7 +21,7 @@ public class AIModel extends Model {
     }
 
     public int getFieldSize() {
-        return gameModel.getFieldSize();
+        return gameModel.getBoardSize();
     }
 
     public FieldStatus getFieldStatus(int move) throws MoveException {
@@ -32,10 +32,5 @@ public class AIModel extends Model {
         return gameModel.getBoard();
     }
 
-    public boolean[][] getValidMoves() {return gameModel.getValidMoves();}
-
-    public boolean[][] getAnotherOne() {
-        gameModel.switchPlayer();
-        return gameModel.calculateValidMoves();
-    }
+    public boolean[][] calculateValidMoves(FieldStatus fieldStatus) {return gameModel.calculateValidMoves(fieldStatus);}
 }

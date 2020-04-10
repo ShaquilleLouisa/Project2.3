@@ -1,7 +1,6 @@
 package model.gameitems;
 
 public class ReversiFieldStatus extends FieldStatus {
-
     public static final int PLAYABLE = -1;
     public static final int BLACK = 1;
     public static final int WHITE = 2;

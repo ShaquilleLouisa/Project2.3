@@ -20,6 +20,7 @@
 
         import controller.Controller;
         import controller.ReversiController;
+        import model.gameitems.Board;
         import model.gameitems.FieldStatus;
         import model.gameitems.ReversiFieldStatus;
 
@@ -124,6 +125,7 @@ public class ReversiView extends GameView{
     @Override
     public void update(int move, FieldStatus fieldStatus) {
         ReversiFieldStatus reversiFieldStatus = (ReversiFieldStatus)fieldStatus;
+        reversiFieldStatus.setId(fieldStatus.getID());
         Platform.runLater(() -> {
             //System.out.println("" + move + fieldStatus.getValue());
             Button button = buttonLocation.get(move);
@@ -147,6 +149,7 @@ public class ReversiView extends GameView{
 
     @Override
     public void updateNotification(String notification) {
-        //TODO add notification to view
+
     }
+
 }

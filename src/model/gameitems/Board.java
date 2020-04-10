@@ -10,7 +10,7 @@ public class Board {
     private HashMap<Integer, ArrayList<Integer>> moves;
     private int fieldSize;
 
-    public <T extends FieldStatus> Board(int xSize, int ySize, T fieldStatus) {
+    public <T extends FieldStatus> Board(int xSize, int ySize) {
         if(xSize == ySize) {
             fieldSize = xSize;
         }
@@ -45,7 +45,6 @@ public class Board {
     }
 
     public FieldStatus getFieldStatus(int x, int y) {
-
         for (Field field : fields) {
             if (field.getX() == x && field.getY() == y) {
                 return field.getFieldStatus();

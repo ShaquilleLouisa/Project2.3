@@ -34,12 +34,12 @@ public class TicTacToe extends Game {
         model.setOnlineUse(online);
         model.setAiUse(useAi);
         model.setDoubleAi(doubleai);
-        if(useAi && !doubleai) {
+        if (useAi && !doubleai) {
             TicTacToeFieldStatus ticTacToeFieldStatus = new TicTacToeFieldStatus();
             ticTacToeFieldStatus.setCircle();
             ai = new TicTacToeAI(model, ticTacToeFieldStatus);
         }
-        System.out.println(online + "" + useAi + "" + doubleai);
+        //System.out.println(online + "" + useAi + "" + doubleai);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class TicTacToe extends Game {
 
     @Override
     public void setAI(AI ai) throws WrongAIException {
-        if(useAi) {
+        if (useAi) {
             if (ai instanceof TicTacToeAI) {
                 this.ai = ai;
             } else {
@@ -64,13 +64,13 @@ public class TicTacToe extends Game {
         return model;
     }
 
-    public int getNextMove() {
-        return ai.calculateNextMove();
+    public int getNextMove(FieldStatus fieldStatus) {
+        return ai.calculateNextMove(fieldStatus);
     }
 
-    public void setMove(int move, boolean isOponent) {
+    public void setMove(int move, int player) {
         TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
-        if (isOponent) {
+        if (player == 1) {
             fieldStatus.setCross();
         } else {
             fieldStatus.setCircle();
@@ -78,7 +78,9 @@ public class TicTacToe extends Game {
         try {
             model.setFieldStatus(move, fieldStatus);
         } catch (MoveException e) {
+            e.printStackTrace();
         }
+
     }
 
     @Override
@@ -90,7 +92,6 @@ public class TicTacToe extends Game {
     public GameController getController() {
         return controller;
     }
-
 
 
     // public FieldStatus getFieldStatus(int move) {

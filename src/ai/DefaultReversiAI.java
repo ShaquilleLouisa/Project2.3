@@ -1,6 +1,7 @@
 package ai;
 
 import model.ReversiModel;
+import model.gameitems.FieldStatus;
 
 public class DefaultReversiAI extends AI implements ReversiAI {
     public DefaultReversiAI(ReversiModel reversiModel) {
@@ -8,7 +9,7 @@ public class DefaultReversiAI extends AI implements ReversiAI {
     }
 
     @Override
-    public int calculateNextMove() {
+    public int calculateNextMove(FieldStatus fieldStatus) {
         return 44;
     }
 }

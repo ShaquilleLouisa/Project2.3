@@ -5,7 +5,9 @@ import controller.GameController;
 import controller.ReversiController;
 import exceptions.MoveException;
 import exceptions.WrongAIException;
+import model.GameModel;
 import model.ReversiModel;
+import model.gameitems.FieldStatus;
 import model.gameitems.ReversiFieldStatus;
 import view.GameView;
 import view.ReversiView;
@@ -16,8 +18,8 @@ public class Reversi extends Game {
     private ReversiController controller;
     private AI ai;
     private boolean useAi;
-    private boolean doubleai;
     private boolean online;
+
 
     public Reversi(boolean online, boolean useAi, boolean doubleai) {
         controller = new ReversiController();
@@ -25,7 +27,6 @@ public class Reversi extends Game {
         model = new ReversiModel(view);
         controller.addModel(model);
         controller.addView(view);
-        this.doubleai = doubleai;
         this.useAi = useAi;
         this.online = online;
 
@@ -33,7 +34,7 @@ public class Reversi extends Game {
         model.setAiUse(useAi);
         model.setDoubleAi(doubleai);
 
-        if(useAi) {
+        if (useAi) {
             ai = new OurReversiAI(model);
         }
     }
@@ -52,24 +53,19 @@ public class Reversi extends Game {
         return controller;
     }
 
-    public int getNextMove() {
-        return ai.calculateNextMove();
+    public int getNextMove(FieldStatus fieldStatus) {
+        return ai.calculateNextMove(fieldStatus);
     }
 
-    public void setMove(int move, boolean isOponent) {
+    @Override
+    public void setMove(int move, int player) {
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
-        if(model.getPlayer() == ReversiFieldStatus.BLACK) {
+        if (player == 1) {
             fieldStatus.setBLACK();
         } else {
             fieldStatus.setWHITE();
         }
-
-        try {
-            controller.doMove(move ,fieldStatus);
-        } catch (MoveException e) {
-            e.printStackTrace();
-        }
-
+        controller.doMove(move, fieldStatus);
     }
 
     @Override
@@ -79,7 +75,7 @@ public class Reversi extends Game {
 
     @Override
     public void setAI(AI ai) throws WrongAIException {
-        if(useAi) {
+        if (useAi) {
             if (ai instanceof TicTacToeAI) {
                 this.ai = ai;
             } else {
@@ -88,13 +84,5 @@ public class Reversi extends Game {
         } else {
             throw new WrongAIException("No AI chosen on startup");
         }
-    }
-
-    public void setOnline(boolean online) {
-        this.online = online;
-    }
-
-    public boolean isOnline() {
-        return online;
     }
 }

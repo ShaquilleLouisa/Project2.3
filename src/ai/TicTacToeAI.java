@@ -5,6 +5,7 @@ import ai.AI;
 import ai.ai_items.Move;
 import model.TicTacToeModel;
 import model.gameitems.Board;
+import model.gameitems.FieldStatus;
 import model.gameitems.TicTacToeFieldStatus;
 
 public class TicTacToeAI extends AI {
@@ -16,21 +17,21 @@ public class TicTacToeAI extends AI {
     }
 
     @Override
-    public int calculateNextMove() {
+    public int calculateNextMove(FieldStatus fieldStatus) {
         Board boardCopy = aiModel.getBoard();
         Move move = findBestMove(boardCopy);
         int counter = 0;
         for (int i = 0; i < fieldSize; i++) {
             for (int j = 0; j < fieldSize; j++) {
                 if (i == move.x && j == move.y) {
-                    System.out.println(counter);
+                    //System.out.println(counter);
                     return counter;
                 } else {
                     counter++;
                 }
             }
         }
-        System.out.println("Counter " + counter + " :-1probleem");
+        //System.out.println("Counter " + counter + " :-1probleem");
         return -1;
     }
 
@@ -53,7 +54,7 @@ public class TicTacToeAI extends AI {
                         }
                         boardCopy.setFieldStatus(i, j, fieldStatus);
                         int moveVal = minmax(boardCopy, 0, false);
-                        System.out.println(moveVal);
+                        //System.out.println(moveVal);
                         try {
                             fieldStatus.setEmpty();
                             boardCopy.setFieldStatus(i, j, fieldStatus);
@@ -61,7 +62,7 @@ public class TicTacToeAI extends AI {
                             System.out.println("OEF");
                         }
                         if (moveVal > bestVal) {
-                            System.out.println(i + " " + j);
+                            //System.out.println(i + " " + j);
                             bestMove.x = i;
                             bestMove.y = j;
                             bestVal = moveVal;

@@ -113,7 +113,7 @@ public class TicTacToeView extends GameView {
     public void update(int move, FieldStatus status) {
         TicTacToeFieldStatus ticTacToeFieldStatus = (TicTacToeFieldStatus)status;
         Platform.runLater(() -> {
-            System.out.println("" + move + status.toString());
+            //System.out.println("" + move + status.toString());
             Button button = buttonLocation.get(move);
             if(ticTacToeFieldStatus.getValue() == "X"){
                 ImageView x = new ImageView("File:assets/boards/x.png");

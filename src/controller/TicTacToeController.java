@@ -45,7 +45,11 @@ public class TicTacToeController extends GameController {
         } catch (MoveException e) {
             throw e;
         }
-        model.switchPlayer();
+        if(model.getPlayer() == 1) {
+            model.setPlayer(2);
+        } else {
+            model.setPlayer(1);
+        }
     }
 
     public void doMove(int move) throws MoveException {
@@ -121,14 +125,14 @@ public class TicTacToeController extends GameController {
         if (model.getPlayer() == 1) {
             ticTacToeFieldStatus.setCircle();
             try {
-                doMove(ticTacToeAICircle.calculateNextMove(), ticTacToeFieldStatus);
+                doMove(ticTacToeAICircle.calculateNextMove(ticTacToeFieldStatus), ticTacToeFieldStatus);
             } catch (MoveException e) {
                 e.printStackTrace();
             }
         } else {
             ticTacToeFieldStatus.setCross();
             try {
-                doMove(ticTacToeAICross.calculateNextMove(), ticTacToeFieldStatus);
+                doMove(ticTacToeAICross.calculateNextMove(ticTacToeFieldStatus), ticTacToeFieldStatus);
             } catch (MoveException e) {
                 e.printStackTrace();
             }

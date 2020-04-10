@@ -342,9 +342,8 @@ public class MasterView extends View {
 
                 // Challenge rival
                 headPlayersOptions.setText(lstPlayerList.getSelectionModel().getSelectedItem() + " is uitgedaagd voor " + lstPlayersOptions.getSelectionModel().getSelectedItem());
-                controller.setRivalName(lstPlayerList.getSelectionModel().getSelectedItem());
                 updatePlayerboardImages();
-                controller.challengeRival(controller.getRivalName(), lstPlayersOptions.getSelectionModel().getSelectedItem());
+                controller.challengeRival(lstPlayerList.getSelectionModel().getSelectedItem(), lstPlayersOptions.getSelectionModel().getSelectedItem());
 
             }
         });
@@ -529,7 +528,7 @@ public class MasterView extends View {
             return;
         }
         String gameTitle = controller.checkChallengerGametype(playerID);
-        System.out.println("playerID "+playerID+ " gameTitle "+ gameTitle);
+        //System.out.println("playerID "+playerID+ " gameTitle "+ gameTitle);
         if (gameTitle != null && !gameTitle.isEmpty()) {
             headPlayersOptions.setText(playerID + " wil " + gameTitle + " spelen");
             if (gameTitle.equals(GameName.REVERSI.label)) {
@@ -684,7 +683,7 @@ public class MasterView extends View {
                 // Check if rivalname is at same position in the list
                 if (lstPlayerList.getId() == null || lstPlayerList.getId().isEmpty()) {
                     // Rivalname has left the game
-                    kickRival();
+                    //kickRival();
 
                 } else if (lstPlayerList.getId().equals( lstPlayerList.getSelectionModel().getSelectedItem() ) == false) {
                     for (int i=0; i<players.size(); i++) {
@@ -695,7 +694,7 @@ public class MasterView extends View {
                         }
                     }
                     // Rivalname has left the game
-                    kickRival();
+                    //kickRival();
                 }
 
             }
