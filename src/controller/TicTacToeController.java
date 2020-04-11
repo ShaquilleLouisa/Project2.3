@@ -45,14 +45,9 @@ public class TicTacToeController extends GameController {
         } catch (MoveException e) {
             throw e;
         }
-        if(model.getPlayer() == 1) {
-            model.setPlayer(2);
-        } else {
-            model.setPlayer(1);
-        }
     }
 
-    public void doMove(int move) throws MoveException {
+    public void doMove(int move)  {
         TicTacToeFieldStatus ticTacToeFieldStatus = new TicTacToeFieldStatus();
         if (!model.isDoubleAi()) {
             if (!model.isOnline() && !model.isUseAi()) {
@@ -65,8 +60,9 @@ public class TicTacToeController extends GameController {
                     }
                     try {
                         doMove(move, ticTacToeFieldStatus);
+                        model.setPlayer((model.getPlayer() == 1 ? 2 : 1));
                     } catch (MoveException e) {
-                        throw e;
+                        System.out.println("Illegal move");
                     }
                     if (model.checkEnd(model.getBoard()) != -1) {
                         String winner;
@@ -80,11 +76,14 @@ public class TicTacToeController extends GameController {
                 }
             } else if(model.isOnline()) {
                 ticTacToeFieldStatus.setCircle();
-                doMove(move, ticTacToeFieldStatus);
+                try {
+                    doMove(move, ticTacToeFieldStatus);
+                } catch (MoveException e) {
+                    System.out.println("ILLEGAL MOVE");
+                }
                 model.setUserMove(move);
             } else if(!model.isOnline() && model.isUseAi()) {
-                ticTacToeFieldStatus.setCircle();
-                doMove(move, ticTacToeFieldStatus);
+                model.setUserMove(move);
             }
         }
     }
@@ -129,6 +128,7 @@ public class TicTacToeController extends GameController {
             } catch (MoveException e) {
                 e.printStackTrace();
             }
+            model.setPlayer(2);
         } else {
             ticTacToeFieldStatus.setCross();
             try {
@@ -136,6 +136,7 @@ public class TicTacToeController extends GameController {
             } catch (MoveException e) {
                 e.printStackTrace();
             }
+            model.setPlayer(1);
         }
     }
 

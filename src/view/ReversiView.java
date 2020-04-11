@@ -1,6 +1,7 @@
 
         package view;
 
+        import exceptions.MoveException;
         import javafx.application.Platform;
         import javafx.event.ActionEvent;
         import javafx.event.EventHandler;
@@ -11,8 +12,7 @@
         import javafx.scene.image.Image;
         import javafx.scene.image.ImageView;
         import javafx.scene.layout.*;
-        import javafx.scene.text.Font;
-        import javafx.scene.text.TextAlignment;
+        import javafx.scene.text.*;
         import javafx.stage.Stage;
 
         import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class ReversiView extends GameView{
     ImageView whiteStone = new ImageView("File:assets/boards/white.png");
     ImageView blackStone = new ImageView("File:assets/boards/black.png");
     Image bg = new Image("File:assets/boards/wood2.jpg");
-
+    Text notification;
     public ReversiView(Controller controller) {
         this.controller = (ReversiController) controller;
         getScene();
@@ -91,9 +91,23 @@ public class ReversiView extends GameView{
         };
         backButton.setOnAction(backHandler);
 
+
+        EventHandler<ActionEvent> buttonHandler = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Button button = (Button) (event.getSource());
+                try {
+                    controller.doMove(Integer.parseInt(button.getText()));
+                } catch (NumberFormatException nfe) {
+                    updateNotification("Cant do move!");
+                }
+            }
+        };
+
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Button button = new Button(""+counter);
+                button.setOnAction(buttonHandler);
                 button.setMinWidth(70);
                 button.setMaxWidth(70);
                 button.setMinHeight(70);
@@ -112,9 +126,14 @@ public class ReversiView extends GameView{
 
         player1Box.getChildren().add(player1);
         player2Box.getChildren().addAll(player2);
+        notification = new Text();
+        notification.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
 
+        GridPane extraPane = new GridPane();
+        extraPane.add(backButton,0,0);
+        extraPane.add(notification,1,0);
         rootPane.setStyle("-fx-background-color: #262626");
-        rootPane.setBottom(backButton);
+        rootPane.setBottom(extraPane);
         rootPane.setLeft(player1Box);
         rootPane.setRight(player2Box);
         rootPane.setTop(reversi);
@@ -124,32 +143,33 @@ public class ReversiView extends GameView{
 
     @Override
     public void update(int move, FieldStatus fieldStatus) {
-        ReversiFieldStatus reversiFieldStatus = (ReversiFieldStatus)fieldStatus;
-        reversiFieldStatus.setId(fieldStatus.getID());
         Platform.runLater(() -> {
+            ReversiFieldStatus reversiFieldStatus = (ReversiFieldStatus)fieldStatus;
+            reversiFieldStatus.setId(fieldStatus.getID());
             //System.out.println("" + move + fieldStatus.getValue());
             Button button = buttonLocation.get(move);
-            String value = reversiFieldStatus.getValue();
-            if(value == "B"){
+            int value = reversiFieldStatus.getID();
+            if(value == 1){
                 ImageView blackStone = new ImageView("File:assets/boards/black.png");
                 button.setText("");
                 button.setGraphic(blackStone);
-            }else if(value == "W"){
+            }else if(value == 2){
                 ImageView whiteStone = new ImageView("File:assets/boards/white.png");
                 button.setText("");
                 button.setGraphic(whiteStone);
-            }else if(value == "*"){
+            }else if(value == -1){
                 ImageView playable = new ImageView("File:assets/boards/playable.png");
                 button.setText("");
                 button.setGraphic(playable);
             }
-
         });
     }
 
     @Override
     public void updateNotification(String notification) {
-
+        Platform.runLater(() -> {
+            this.notification.setText(notification);
+        });
     }
 
 }

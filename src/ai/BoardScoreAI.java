@@ -32,18 +32,18 @@ public class BoardScoreAI extends AI implements ReversiAI {
         movesWithPoints.put(58, 12);
         movesWithPoints.put(61, 12);
 
-        movesWithPoints.put(1,-5);
-        movesWithPoints.put(6,-5);
-        movesWithPoints.put(8,-5);
-        movesWithPoints.put(9,-5);
-        movesWithPoints.put(14,-5);
-        movesWithPoints.put(15,-5);
-        movesWithPoints.put(48,-5);
-        movesWithPoints.put(49,-5);
-        movesWithPoints.put(54,-5);
-        movesWithPoints.put(55,-5);
-        movesWithPoints.put(57,-5);
-        movesWithPoints.put(62,-5);
+        movesWithPoints.put(1, -5);
+        movesWithPoints.put(6, -5);
+        movesWithPoints.put(8, -5);
+        movesWithPoints.put(9, -5);
+        movesWithPoints.put(14, -5);
+        movesWithPoints.put(15, -5);
+        movesWithPoints.put(48, -5);
+        movesWithPoints.put(49, -5);
+        movesWithPoints.put(54, -5);
+        movesWithPoints.put(55, -5);
+        movesWithPoints.put(57, -5);
+        movesWithPoints.put(62, -5);
     }
 
     @Override
@@ -65,14 +65,7 @@ public class BoardScoreAI extends AI implements ReversiAI {
                 }
             }
             if (validMovesArray.size() == 0) {
-                if (!skipped) {
-                    validMoves = aiModel.calculateValidMoves(fieldStatus);
-                    System.out.print("Handled skipped turn");
-                    skipped = true;
-                } else {
-                    //No more turns left because end of game
-                    return -1;
-                }
+                validMoves = aiModel.calculateValidMoves(fieldStatus);
             } else {
                 done = true;
             }
@@ -92,11 +85,11 @@ public class BoardScoreAI extends AI implements ReversiAI {
 
         int max = -999;
         int bestMove = -1;
-        for(Map.Entry<Integer, Integer> point : points.entrySet()) {
+        for (Map.Entry<Integer, Integer> point : points.entrySet()) {
             Integer move = point.getKey();
             Integer movePoints = point.getValue();
 
-            if(movePoints > max) {
+            if (movePoints > max) {
                 bestMove = move;
                 max = movePoints;
             }

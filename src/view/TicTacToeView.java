@@ -71,8 +71,6 @@ public class TicTacToeView extends GameView {
                 Button button = (Button) (event.getSource());
                 try {
                     controller.doMove(Integer.parseInt(button.getText()));
-                } catch (MoveException e) {
-                    System.out.println("Move not available please try again.");
                 } catch (NumberFormatException nfe) {
                     updateNotification("Cant do move!");
                 }
@@ -115,11 +113,11 @@ public class TicTacToeView extends GameView {
         Platform.runLater(() -> {
             //System.out.println("" + move + status.toString());
             Button button = buttonLocation.get(move);
-            if(ticTacToeFieldStatus.getValue() == "X"){
+            if(ticTacToeFieldStatus.getID() == 1){
                 ImageView x = new ImageView("File:assets/boards/x.png");
                 button.setText("");
                 button.setGraphic(x);
-            }else if(ticTacToeFieldStatus.getValue() == "O"){
+            }else if(ticTacToeFieldStatus.getID() == 2){
                 ImageView o = new ImageView("File:assets/boards/o.png");
                 button.setText("");
                 button.setGraphic(o);

@@ -145,7 +145,7 @@ public class MasterController extends Controller {
                                     // Get rival name using regex
                                     p = Pattern.compile("OPPONENT: \"([^\"]*)\"");
                                     m = p.matcher(originalInput);
-                                    if(model.getRivalName() == null) {
+                                    if (model.getRivalName() == null) {
                                         while (m.find()) {
                                             System.out.println("Match rivalname received:" + m.group(1));
                                             model.setRivalName(m.group(1));
@@ -171,6 +171,7 @@ public class MasterController extends Controller {
                                     if (model.getLoginColor() == 0) {
                                         model.setLoginColor(1);
                                     }
+
                                     //System.out.println(" ");
                                     //System.out.println("Your turn");
 
@@ -181,7 +182,7 @@ public class MasterController extends Controller {
 //                                        } catch (InterruptedException e){
 //                                            e.printStackTrace();
 //                                        }
-                                        model.getGame().getModel().setPlayer(model.getLoginColor());
+
                                         //System.out.println("[YOURTURN]Set player " + model.getLoginColor());
                                         FieldStatus fieldStatus = new ReversiFieldStatus();
                                         fieldStatus.setId(model.getLoginColor());
@@ -191,29 +192,42 @@ public class MasterController extends Controller {
                                         //TicTacToeFieldStatus fieldStatus = new TicTacToeFieldStatus();
                                         //fieldStatus.setCircle();
                                         //model.getGame().getModel().setFieldStatus(ourMove, fieldStatus);
-                                        model.getGame().setMove(ourMove, model.getLoginColor());
+                                        model.getGame().getModel().setPlayer(model.getLoginColor());
+                                        try {
+                                            model.getGame().setMove(ourMove, model.getLoginColor());
+                                        } catch (MoveException e) {
+                                            System.out.println("ILLEGAL MOVE");
+                                        }
                                         serverCommunication.move(ourMove);
 
                                     } else {
-//                                        Timer timer = new Timer();
-//                                        timer.schedule(new TimerTask() {
-//                                            int userMove = model.getGame().getModel().getUserMove();
-//
-//                                            @Override
-//                                            public void run() {
-//                                                int move = model.getGame().getModel().getUserMove();
-//                                                if (userMove != move) {
-//                                                    serverCommunication.move(move);
-//                                                    userMove = move;
-//                                                }
-//                                            }
-//                                        }, 0, 1000);
+                                        Timer timer = new Timer();
+                                        timer.schedule(new TimerTask() {
+                                            int userMove = model.getGame().getModel().getUserMove();
+
+                                            @Override
+                                            public void run() {
+                                                boolean illegal = false;
+                                                int move = model.getGame().getModel().getUserMove();
+                                                if (userMove != move) {
+                                                    try {
+                                                        model.getGame().setMove(move, model.getLoginColor());
+                                                    } catch (MoveException e) {
+                                                        illegal = true;
+                                                    }
+                                                    if(!illegal) {
+                                                        serverCommunication.move(move);
+                                                        userMove = move;
+                                                        this.cancel();
+                                                    }
+                                                }
+                                            }
+                                        }, 0, 100);
                                     }
 
                                     break;
                                 case "loss":
-                                    System.out.println(inputLowerCase);
-                                    //System.out.println("You lost");
+                                    System.out.println("You lost");
                                     Platform.runLater(() -> {
                                         removeChallengeByName(getRivalName());
                                         setRivalName(null);
@@ -225,8 +239,7 @@ public class MasterController extends Controller {
                                     //model.getGame().getView().updateNotification("I'm sorry you lost");
                                     break;
                                 case "win":
-                                    System.out.println(inputLowerCase);
-                                    //System.out.println("You won");
+                                    System.out.println("You won");
                                     Platform.runLater(() -> {
                                         removeChallengeByName(getRivalName());
                                         setRivalName(null);
@@ -238,7 +251,7 @@ public class MasterController extends Controller {
                                     //model.getGame().getView().updateNotification("Congrats you won");
                                     break;
                                 case "draw":
-                                    System.out.println(inputLowerCase);
+                                    System.out.println("Draw");
                                     Platform.runLater(() -> {
                                         removeChallengeByName(getRivalName());
                                         setRivalName(null);
@@ -267,10 +280,18 @@ public class MasterController extends Controller {
                                         //System.out.println("opponentMove: " + opponentMove);
                                         if (model.getLoginColor() == 1) {
                                             //System.out.println("[MOVE]Set player " + 2);
-                                            model.getGame().setMove(opponentMove, 2);
+                                            try {
+                                                model.getGame().setMove(opponentMove, 2);
+                                            } catch (MoveException e) {
+                                                System.out.println("ILLEGAL MOVE");
+                                            }
                                         } else {
                                             //System.out.println("[MOVE]Set player " + 1);
-                                            model.getGame().setMove(opponentMove, 1);
+                                            try {
+                                                model.getGame().setMove(opponentMove, 1);
+                                            } catch (MoveException e) {
+                                                System.out.println("ILLEGAL MOVE");
+                                            }
                                         }
 
                                         //System.out.println("Opponent move has been set");
@@ -381,38 +402,111 @@ public class MasterController extends Controller {
                 }
             });
 
-            System.out.println("blah blah blah");
             Timer timerOffline = new Timer();
 
             if (model.isOnlineGame() && !model.isDoubleAi()) {
-                //serverCommunication.subscribe(gameName);
+                serverCommunication.subscribe(gameName);
                 System.out.println("Subscribed to " + gameName);
-            } else if (!model.isOnlineGame() && model.isDoubleAi()) {
+            }else if (!model.isOnlineGame() && model.isDoubleAi()) {
+                System.out.println("test");
+                final Game gameFinal = game;
                 timerOffline.schedule(new TimerTask() {
+
                     @Override
                     public void run() {
-                        gameController.nextTurn();
+                        gameFinal.getController().nextTurn();
                     }
                 }, 0, 100);
             } else if (!model.isOnlineGame() && model.isUseAi() && !model.isDoubleAi()) {
-//                Timer timer = new Timer();
-//                timer.schedule(new TimerTask() {
-//                    int userMove = model.getGame().getModel().getUserMove();
-//
-//                    @Override
-//                    public void run() {
-//                        if (model.getGame().getModel().getPlayer() == 1) {
-//                            int move = model.getGame().getModel().getUserMove();
-//                            if (userMove != move) {
-//                                serverCommunication.move(move);
-//                                userMove = move;
-//                            }
-//                        } else {
-//                            model.getGame().setMove(model.getGame().getNextMove(), true);
-//                            model.getGame().getModel().switchPlayer();
-//                        }
-//                    }
-//                }, 0, 1000);
+                model.getGame().getModel().setPlayer(1);
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    int userMove = -1;
+
+                    @Override
+                    public void run() {
+                        if (model.getGame().getModel().getPlayer() == 1) {
+                            int move = model.getGame().getModel().getUserMove();
+                            if (userMove != move) {
+                                System.out.println("HEYO");
+                                userMove = move;
+                                boolean isIllegal = false;
+                                try {
+                                    model.getGame().setMove(userMove, 1);
+                                } catch (MoveException e) {
+                                    isIllegal = true;
+                                    System.out.println("oef");
+                                }
+
+                                if (!isIllegal) {
+                                    System.out.println("USER MOVE GEDAAn");
+                                    model.getGame().getModel().setPlayer(2);
+                                    System.out.println("NU WORDT HET DUS WIT");
+                                }
+                            }
+                        } else {
+                            FieldStatus fieldStatus = new ReversiFieldStatus();
+                            fieldStatus.setId(2);
+                            try {
+                                model.getGame().setMove(model.getGame().getNextMove(fieldStatus), 2);
+                            } catch (MoveException e) {
+                                System.out.println("ILLEGAL MOVE");
+                            }
+                            model.getGame().getModel().setPlayer(1);
+                        }
+                        int winner = model.getGame().getModel().checkEnd(model.getGame().getModel().getBoard());
+                        if (winner != -1) {
+                            if(winner == 0) {
+                                model.getGame().getView().updateNotification("draw");
+                            } else {
+                                model.getGame().getView().updateNotification("player " + winner + " has won!");
+                            }
+                            this.cancel();
+                        }
+                    }
+                }, 0, 100);
+            } else if (!model.isDoubleAi() && !model.isUseAi() && !model.isOnlineGame()) {
+                System.out.println("1v1 off");
+                final Game gameFinal = game;
+                timerOffline.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if(gameFinal.getModel().getPlayer() == 0) {
+                            gameFinal.getModel().setPlayer(1);
+                        }
+
+                        int userMove = -1;
+                        boolean doneMove = false;
+                        boolean illegalMove = false;
+                        FieldStatus fieldStatus = new ReversiFieldStatus();
+                        fieldStatus.setId(gameFinal.getModel().getPlayer());
+                        if (gameFinal.getModel().getUserMove() != userMove) {
+                            try {
+                                gameFinal.getController().doMove(gameFinal.getModel().getUserMove(), fieldStatus);
+                            } catch (MoveException e) {
+                                illegalMove = true;
+                            }
+                            doneMove = true;
+                            gameFinal.getModel().setUserMove(-1);
+                        }
+
+                        if (!illegalMove && doneMove) {
+                            int winner = gameFinal.getModel().checkEnd(gameFinal.getModel().getBoard());
+
+                            if (winner != -1) {
+                                if(winner == 0) {
+                                    model.getGame().getView().updateNotification("draw");
+                                } else {
+                                    model.getGame().getView().updateNotification("player " + winner + " has won!");
+                                }
+                                this.cancel();
+                            }
+                            gameFinal.getModel().setPlayer((gameFinal.getModel().getPlayer() == 1 ? 2 : 1));
+                            System.out.println("DID MOVWE CONTROLLER");
+                        }
+
+                    }
+                }, 0, 100);
             }
 
             Timer timer = new Timer();

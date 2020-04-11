@@ -414,6 +414,7 @@ public class MasterView extends View {
             public void handle(ActionEvent event) {
                 System.out.println("Button pressed -> P1 VS Online");
                 controller.setGameSettings(true, false,false);
+                controller.subscribeServer(lstGameSelectOptions.getSelectionModel().getSelectedItem());
                 controller.subscribe(lstGameSelectOptions.getSelectionModel().getSelectedItem());
             }
         });

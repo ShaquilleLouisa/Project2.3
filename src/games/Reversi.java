@@ -1,6 +1,7 @@
 package games;
 
 import ai.*;
+import ai.ai_items.Move;
 import controller.GameController;
 import controller.ReversiController;
 import exceptions.MoveException;
@@ -35,7 +36,7 @@ public class Reversi extends Game {
         model.setDoubleAi(doubleai);
 
         if (useAi) {
-            ai = new OurReversiAI(model);
+            ai = new BoardScoreAI(model);
         }
     }
 
@@ -58,14 +59,18 @@ public class Reversi extends Game {
     }
 
     @Override
-    public void setMove(int move, int player) {
+    public void setMove(int move, int player) throws MoveException {
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
         if (player == 1) {
             fieldStatus.setBLACK();
         } else {
             fieldStatus.setWHITE();
         }
-        controller.doMove(move, fieldStatus);
+        try {
+            controller.doMove(move, fieldStatus);
+        } catch (MoveException e) {
+            throw e;
+        }
     }
 
     @Override

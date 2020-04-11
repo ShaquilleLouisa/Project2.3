@@ -65,7 +65,9 @@ public class TicTacToe extends Game {
     }
 
     public int getNextMove(FieldStatus fieldStatus) {
-        return ai.calculateNextMove(fieldStatus);
+        TicTacToeFieldStatus ticTacToeFieldStatus = new TicTacToeFieldStatus();
+        ticTacToeFieldStatus.setId(fieldStatus.getID());
+        return ai.calculateNextMove(ticTacToeFieldStatus);
     }
 
     public void setMove(int move, int player) {
