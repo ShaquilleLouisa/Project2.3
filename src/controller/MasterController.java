@@ -235,6 +235,8 @@ public class MasterController extends Controller {
                                         model.setLoginColor(0);
                                         stage.setScene(view.getScene());
                                         view.updatePlayerboardImages();
+                                        subscribe("Reversi");
+                                        subscribeServer("Reversi");
                                     });
                                     //model.getGame().getView().updateNotification("I'm sorry you lost");
                                     break;
@@ -247,6 +249,8 @@ public class MasterController extends Controller {
                                         model.setLoginColor(0);
                                         stage.setScene(view.getScene());
                                         view.updatePlayerboardImages();
+                                        subscribe("Reversi");
+                                        subscribeServer("Reversi");
                                     });
                                     //model.getGame().getView().updateNotification("Congrats you won");
                                     break;
@@ -259,6 +263,8 @@ public class MasterController extends Controller {
                                         model.setLoginColor(0);
                                         stage.setScene(view.getScene());
                                         view.updatePlayerboardImages();
+                                        subscribe("Reversi");
+                                        subscribeServer("Reversi");
                                     });
                                     // DRAW
                                     //System.out.println("Draw");

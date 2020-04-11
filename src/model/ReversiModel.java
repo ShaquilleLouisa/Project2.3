@@ -109,7 +109,6 @@ public class ReversiModel extends GameModel {
     @Override
     public void setPlayer(int player) {
         this.player = player;
-        System.out.println("swtiched player" + player);
     }
 
     @Override
