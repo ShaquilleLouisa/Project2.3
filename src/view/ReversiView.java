@@ -57,7 +57,7 @@ public class ReversiView extends GameView{
 
         buttonLocation = new HashMap<>();
 
-        backButton.setText("Back");
+        backButton.setText("Opgeven");
         backButton.setTranslateX(10);
         backButton.setTranslateY(-10);
         backButton.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-font-size: 30; -fx-border-color: #FFFFFF");
