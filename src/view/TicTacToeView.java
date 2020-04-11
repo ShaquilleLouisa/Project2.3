@@ -49,7 +49,7 @@ public class TicTacToeView extends GameView {
         buttonLocation = new HashMap<>();
 
 
-        backButton.setText("Back");
+        backButton.setText("Opgeven");
         backButton.setTranslateX(10);
         backButton.setTranslateY(-10);
         backButton.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-font-size: 30; -fx-border-color: #FFFFFF");
@@ -97,9 +97,10 @@ public class TicTacToeView extends GameView {
         notification.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
 
         rootPane.setStyle("-fx-background-color: #262626");
-        rootPane.setTop(backButton);
+       // rootPane.setTop(backButton);
         rootPane.setCenter(pane);
-        rootPane.setBottom(notification);
+        //rootPane.setBottom(notification);
+        rootPane.setBottom(backButton);
         return new Scene(rootPane, 300, 300);
 
     }
