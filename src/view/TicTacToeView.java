@@ -30,6 +30,7 @@ public class TicTacToeView extends GameView {
     Text notification;
 
     TicTacToeController controller;
+    TicTacToeModel model;
     Image tictactoe = new Image("File:assets/boards/tictactoe.png");
 
     public TicTacToeView() {
@@ -123,6 +124,7 @@ public class TicTacToeView extends GameView {
                 button.setText("");
                 button.setGraphic(o);
             }
+
         });
     }
 }

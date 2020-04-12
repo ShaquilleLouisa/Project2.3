@@ -424,4 +424,27 @@ public class ReversiModel extends GameModel {
             return -1;
         }
     }
+
+    public int checkScore(Board board, int playerID){
+        int fieldCounter1 = 0;
+        int fieldCounter2 = 0;
+        for (int x = 0; x < board.getFieldSize(); x++) {
+            for (int y = 0; y < board.getFieldSize(); y++) {
+                if (board.getFieldStatus(x, y).getID() != 0 && board.getFieldStatus(x, y).getID() != -1) {
+                    if (board.getFieldStatus(x, y).getID() == 1) {
+                        fieldCounter1++;
+                    } else {
+                        fieldCounter2++;
+                    }
+                }
+            }
+        }
+        if(playerID == 1){
+            return fieldCounter1;
+        }else if(playerID == 2){
+            return fieldCounter2;
+        }else{
+            return 0;
+        }
+    }
 }

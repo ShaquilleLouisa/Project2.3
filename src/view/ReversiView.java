@@ -9,10 +9,12 @@
         import javafx.scene.Scene;
         import javafx.scene.control.Button;
         import javafx.scene.control.Label;
+        import javafx.scene.control.SplitPane;
         import javafx.scene.image.Image;
         import javafx.scene.image.ImageView;
         import javafx.scene.layout.*;
         import javafx.scene.text.*;
+        import javafx.stage.Popup;
         import javafx.stage.Stage;
 
         import java.util.ArrayList;
@@ -20,6 +22,7 @@
 
         import controller.Controller;
         import controller.ReversiController;
+        import model.ReversiModel;
         import model.gameitems.Board;
         import model.gameitems.FieldStatus;
         import model.gameitems.ReversiFieldStatus;
@@ -27,22 +30,37 @@
 public class ReversiView extends GameView{
     HashMap<Integer, Button> buttonLocation;
     ReversiController controller;
-    ImageView whiteStone = new ImageView("File:assets/boards/white.png");
-    ImageView blackStone = new ImageView("File:assets/boards/black.png");
+
     Image bg = new Image("File:assets/boards/wood2.jpg");
-    Text notification;
+    ImageView blackStone = new ImageView("File:assets/boards/blackB.png");
+    ImageView whiteStone = new ImageView("File:assets/boards/whiteB.png");
+
+    Label player1;
+    Label player2;
+    Label score1;
+    Label score2;
+    VBox player1Box;
+    VBox player2Box;
+
+    BorderPane rootPane;
+    GridPane extraPane;
+
+    Button backButton;
+
+
+
+
     public ReversiView(Controller controller) {
         this.controller = (ReversiController) controller;
         getScene();
     }
 
     public Scene getScene() {
-        BorderPane rootPane = new BorderPane();
+        rootPane = new BorderPane();
         GridPane pane = new GridPane();
         FlowPane reversi = new FlowPane();
-        VBox player1Box = new VBox();
-        VBox player2Box = new VBox();
-        Button backButton = new Button();
+
+        backButton = new Button();
         Label reversiName = new Label();
 
         reversiName.setText("");
@@ -62,8 +80,15 @@ public class ReversiView extends GameView{
         backButton.setTranslateY(-10);
         backButton.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-font-size: 30; -fx-border-color: #FFFFFF");
 
-        Label player1;
-        Label player2;
+        score1 = new Label();
+        score1.setTranslateY(30);
+        score1.setTranslateX(10);
+        score1.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-padding: 10,10,10,10; -fx-font-size: 30");
+
+        score2 = new Label();
+        score2.setTranslateY(30);
+        score2.setTranslateX(-65);
+        score2.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-padding: 10,10,10,10; -fx-font-size: 30");
 
         player1 = new Label("Player 1");
         player1.setMinWidth(120);
@@ -113,7 +138,6 @@ public class ReversiView extends GameView{
                 button.setMinHeight(70);
                 button.setMaxHeight(70);
                 button.setWrapText(true);
-                //button.setStyle("-fx-background-color: transparant;");
                 button.setStyle(String.format("-fx-font-size: 20; -fx-background-color: transparant; -fx-border-color: #FFFFFF; -fx-background-radius: 0;", (int) (0.35 * 80)));
                 ArrayList<Integer> location = new ArrayList<>();
                 location.add(i);
@@ -123,21 +147,24 @@ public class ReversiView extends GameView{
                 counter++;
             }
         }
+        player1Box = new VBox();
+        player2Box = new VBox();
 
         player1Box.getChildren().add(player1);
-        player2Box.getChildren().addAll(player2);
-        notification = new Text();
-        notification.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        player1Box.getChildren().add(score1);
+        player2Box.getChildren().add(player2);
+        player2Box.getChildren().add(score2);
 
-        GridPane extraPane = new GridPane();
+        extraPane = new GridPane();
         extraPane.add(backButton,0,0);
-        extraPane.add(notification,1,0);
+
         rootPane.setStyle("-fx-background-color: #262626");
         rootPane.setBottom(extraPane);
         rootPane.setLeft(player1Box);
         rootPane.setRight(player2Box);
         rootPane.setTop(reversi);
         rootPane.setCenter(pane);
+
         return new Scene(rootPane, 400, 400);
     }
 
@@ -146,9 +173,9 @@ public class ReversiView extends GameView{
         Platform.runLater(() -> {
             ReversiFieldStatus reversiFieldStatus = (ReversiFieldStatus)fieldStatus;
             reversiFieldStatus.setId(fieldStatus.getID());
-            //System.out.println("" + move + fieldStatus.getValue());
             Button button = buttonLocation.get(move);
             int value = reversiFieldStatus.getID();
+
             if(value == 1){
                 ImageView blackStone = new ImageView("File:assets/boards/black.png");
                 button.setText("");
@@ -162,14 +189,51 @@ public class ReversiView extends GameView{
                 button.setText("");
                 button.setGraphic(playable);
             }
+
+            if(controller.getCurrentPlayer() == 1){
+                blackStone.setTranslateX(65);
+                blackStone.setTranslateY(30);
+                player1Box.getChildren().add(2, blackStone);
+                player2Box.getChildren().remove(2);
+                score1.setText("Aantal stenen:\n" + controller.getScore(1));
+                score2.setText("Aantal stenen:\n" + controller.getScore(2));
+            }else if(controller.getCurrentPlayer() == 2){
+                whiteStone.setTranslateX(-65);
+                whiteStone.setTranslateY(30);
+                player2Box.getChildren().add(2, whiteStone);
+                player1Box.getChildren().remove(2);
+                score1.setText("Aantal stenen:\n" + controller.getScore(1));
+                score2.setText("Aantal stenen:\n" + controller.getScore(2));
+            }
+
+            int end = controller.getEnd();
+            if(end >= 0){
+                Text winner = new Text("");
+                backButton.setText("Terug");
+                winner.setStyle("-fx-fill: #ffffff; -fx-font-weight: bold; -fx-font-size: 30;");
+                if(end == 0){
+                    winner.setText("Het is gelijkspel");
+                    winner.setTranslateX(200);
+                    extraPane.add(winner,1,0);
+                }else if(end == 1){
+                    winner.setText("Zwart heeft gewonnen");
+                    winner.setTranslateX(200);
+                    extraPane.add(winner,1,0);
+                }else if(end ==2){
+                    winner.setText("Wit heeft gewonnen");
+                    winner.setTranslateX(200);
+                    extraPane.add(winner,1,0);
+                }
+            }
+
+
         });
     }
 
     @Override
     public void updateNotification(String notification) {
-        Platform.runLater(() -> {
-            this.notification.setText(notification);
-        });
+
     }
+
 
 }

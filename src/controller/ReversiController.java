@@ -20,6 +20,7 @@ public class ReversiController extends GameController {
 
     }
 
+
     @Override
     public void doMove(int move, FieldStatus fieldStatus) throws MoveException {
         boolean isValidMove = false;
@@ -33,6 +34,7 @@ public class ReversiController extends GameController {
                 }
             }
         }
+
         if(isValidMove) {
             view.updateNotification("");
             ReversiFieldStatus reversiFieldStatus = (ReversiFieldStatus) fieldStatus;
@@ -72,6 +74,17 @@ public class ReversiController extends GameController {
         setDone(true);
     }
 
+    public int getCurrentPlayer(){
+        return model.getPlayer();
+    }
+    public int getEnd(){
+        return model.checkEnd(model.getBoard());
+    }
+
+    public int getScore(int playerID){
+        return model.checkScore(model.getBoard(), playerID);
+    }
+
     //OFFLINE START GAME
     @Override
     public void nextTurn() {
@@ -100,17 +113,6 @@ public class ReversiController extends GameController {
                 System.out.println("ILLEGAL MOVE");
             }
             model.setPlayer(1);
-        }
-        int end = model.checkEnd(model.getBoard());
-        System.out.println(end);
-        if(end >= 0) {
-            if(end == 0) {
-                view.updateNotification("DRAW");
-            } else if(end == 1) {
-                view.updateNotification("BLACK WON");
-            } else if(end == 2) {
-                view.updateNotification("WHITE WON");
-            }
         }
     }
 
