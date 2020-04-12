@@ -152,8 +152,10 @@ public class ReversiView extends GameView{
 
         player1Box.getChildren().add(player1);
         player1Box.getChildren().add(score1);
+        player1Box.getChildren().add(2, blackStone);
         player2Box.getChildren().add(player2);
         player2Box.getChildren().add(score2);
+        player2Box.getChildren().add(2, whiteStone);
 
         extraPane = new GridPane();
         extraPane.add(backButton,0,0);
@@ -193,15 +195,15 @@ public class ReversiView extends GameView{
             if(controller.getCurrentPlayer() == 1){
                 blackStone.setTranslateX(30);
                 blackStone.setTranslateY(50);
-                player1Box.getChildren().add(2, blackStone);
-                player2Box.getChildren().remove(2);
+                whiteStone.setVisible(false);
+                blackStone.setVisible(true);
                 score1.setText("Aantal stenen:\n" + controller.getScore(1));
                 score2.setText("Aantal stenen:\n" + controller.getScore(2));
             }else if(controller.getCurrentPlayer() == 2){
                 whiteStone.setTranslateX(-30);
                 whiteStone.setTranslateY(50);
-                player2Box.getChildren().add(2, whiteStone);
-                player1Box.getChildren().remove(2);
+                whiteStone.setVisible(true);
+                blackStone.setVisible(false);
                 score1.setText("Aantal stenen:\n" + controller.getScore(1));
                 score2.setText("Aantal stenen:\n" + controller.getScore(2));
             }
