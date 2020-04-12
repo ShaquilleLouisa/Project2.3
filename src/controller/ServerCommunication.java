@@ -69,6 +69,7 @@ public class ServerCommunication {
             connected = true;
             return true;
         } catch (IOException e) {
+            connected = false;
             System.out.println("Could not connect with server");
             return false;
         }

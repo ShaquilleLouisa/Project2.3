@@ -717,6 +717,7 @@ public class MasterController extends Controller {
 
     public void setServerAddress(String address){
         model.setServerAddress(address);
+        serverCommunication.updateServerSettings(getServerIP(), getServerPort());
     }
 
     public String getServerIP(){
