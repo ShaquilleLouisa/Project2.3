@@ -11,11 +11,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * @author Anne de Graaff
+ * This AI gives points to specific places on the board
+ * It also calculates the fields captured for every possible move
+ * These parameters are then merged and the highest scoring field will be chosen
+ */
 public class BoardScoreAI extends AI implements ReversiAI {
-
     Board board;
     public HashMap<Integer, Integer> movesWithPoints = new HashMap<>();
 
+    /**
+     * @param gameModel current model of game
+     */
     public BoardScoreAI(GameModel gameModel) {
         super(gameModel);
         movesWithPoints.put(0, 40);
@@ -54,6 +62,15 @@ public class BoardScoreAI extends AI implements ReversiAI {
         movesWithPoints.put(62, -15);
     }
 
+    /**
+     *
+     * @param dr direction for the x-axis
+     * @param dc direction for the y-axis
+     * @param r x-axis location
+     * @param c y-axis location
+     * @param fieldstatus fieldstatus current player
+     * @return counter counter contains the amount of fields will be flipped
+     */
     private int flipLine(int dr, int dc, int r, int c, ReversiFieldStatus fieldstatus) {
         int counter = 0;
         r += dr;
@@ -71,6 +88,16 @@ public class BoardScoreAI extends AI implements ReversiAI {
         return counter;
     }
 
+
+    /**
+     * @param dr direction for the x-axis
+     * @param dc direction for the y-axis
+     * @param r x-axis location
+     * @param c y-axis location
+     * @param fieldstatus fieldstatus current player
+     * @see FieldStatus
+     * @return canBeFlipped true or false if it can be flipped
+     */
     private boolean flipLineCheckMatch(int dr, int dc, int r, int c, ReversiFieldStatus fieldStatus) {
         if (isCurrentPlayer(r, c, fieldStatus)) {
             return true;
@@ -87,6 +114,15 @@ public class BoardScoreAI extends AI implements ReversiAI {
         return flipLineCheckMatch(dr, dc, r + dr, c + dc, fieldStatus);
     }
 
+    /**
+     * @param dr direction for the x-axis
+     * @param dc direction for the y-axis
+     * @param r x-axis location
+     * @param c y-axis location
+     * @param fieldstatus fieldstatus current player
+     * @see FieldStatus
+     * @return canBeFlipped true or false if it can be flipped
+     */
     private boolean flipLineCheck(int dr, int dc, int r, int c, ReversiFieldStatus fieldStatus) {
         if (IsOutOfBounds(r + dr, c + dc)) {
             return false;
@@ -106,6 +142,13 @@ public class BoardScoreAI extends AI implements ReversiAI {
         return flipLineCheckMatch(dr, dc, r + dr, c + dc, fieldStatus);
     }
 
+
+    /**
+     * Calculate the amount of fields that would be flipped for a specific move
+     * @param move move to calculate for
+     * @param fieldstatus player to calculate for
+     * @return value of move int
+     */
     public int calculateMoveValue(int move, ReversiFieldStatus fieldstatus) {
         int totalValue = 0;
 
@@ -168,12 +211,25 @@ public class BoardScoreAI extends AI implements ReversiAI {
         return totalValue;
     }
 
+
+    /**
+     * Check if field is out of bounds
+     * @param x x location
+     * @param y y location
+     * @return boolean
+     */
     public boolean IsOutOfBounds(int x, int y) {
         if ((x > 7 || x < 0) || (y > 7 || y < 0))
             return true;
         return false;
     }
 
+    /**
+     * Check if field is owned by current player
+     * @param x x location
+     * @param y y location
+     * @return boolean
+     */
     public boolean isCurrentPlayer(int x, int y, ReversiFieldStatus fieldStatus) {
         if (board.getFieldStatus(x, y).getID() == fieldStatus.getID() && fieldStatus.getID() != 0) {
             return true;
@@ -182,6 +238,11 @@ public class BoardScoreAI extends AI implements ReversiAI {
     }
 
 
+    /**
+     * Make a copy of a Board without reference (Deep clone)
+     * @param board board to copy
+     * @return new board Board
+     */
     public Board copyBoard(Board board) {
         Board returnBoard = new Board(board.getFieldSize(), board.getFieldSize());
         ReversiFieldStatus reversiFieldStatus = new ReversiFieldStatus();
@@ -199,6 +260,11 @@ public class BoardScoreAI extends AI implements ReversiAI {
     }
 
 
+    /**
+     * Calculate the next move for the player. It will choose the move with the most value
+     * @param fieldStatus Fieldstatus contains player to calculate move for
+     * @return best move int
+     */
     @Override
     public int calculateNextMove(FieldStatus fieldStatus) {
         boolean[][] validMoves = aiModel.calculateValidMoves(fieldStatus);
