@@ -76,7 +76,6 @@ public class MasterController extends Controller {
                 serverCommunication.getPlayerList();
             }
         }, 0, 5000);
-
         Thread handleThread = new Thread(() -> {
             while (true) {
                 handleInput();
@@ -96,8 +95,9 @@ public class MasterController extends Controller {
         } catch (IOException e) {
             System.out.println("No connecting with server:handleInput");
             view.NoConnection(true);
+            serverCommunication.connect(model.getServerIP(), model.getServerPort());
             try {
-                Thread.sleep(500);
+                Thread.sleep(2000);
             } catch (Exception es) {
             }
         }

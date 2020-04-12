@@ -56,6 +56,7 @@ public class MasterModel extends Model {
                 }
             }
         }
+
     }
 
     public String getServerIP(){
