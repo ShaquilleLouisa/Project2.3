@@ -57,7 +57,7 @@ public class MasterController extends Controller {
         // Create control panel
         this.stage = stage;
         view.start(stage);
-        boolean isConnected = serverCommunication.connect();
+        boolean isConnected = serverCommunication.connect(getServerIP(), getServerPort());
         view.connected(isConnected);
         // First read should be empty because garbage 2 lines
         if (isConnected) {
@@ -705,6 +705,30 @@ public class MasterController extends Controller {
      */
     public void subscribeServer(String gameName) {
         serverCommunication.subscribe(gameName);
+    }
+
+    public void setClientTimeout(int timeout){
+        model.setClientTimeout(timeout);
+    }
+
+    public int getClientTimeout(){
+        return model.getClientTimeout();
+    }
+
+    public void setServerAddress(String address){
+        model.setServerAddress(address);
+    }
+
+    public String getServerIP(){
+        return model.getServerIP();
+    }
+
+    public int getServerPort(){
+        return model.getServerPort();
+    }
+
+    public boolean getConnectionState() {
+        return serverCommunication.getConnectionState();
     }
 
 

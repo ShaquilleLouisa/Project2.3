@@ -21,23 +21,49 @@ public class ServerCommunication {
     BufferedReader reader;
     BufferedWriter writer;
     boolean connected = false;
+    String serverIP;
+    int serverPort;
 
     public ServerCommunication() {
 
     }
 
+    public boolean getConnectionState() {
+        return connected;
+    }
+
+    public void updateServerSettings(String sIP, int sPort){
+        serverIP = sIP;
+        serverPort = sPort;
+        try {
+            socket.close();
+        } catch (Exception e){}
+        socket = null;
+        try {
+            reader.close();
+        } catch (Exception e){}
+        reader = null;
+        try {
+            writer.close();
+        } catch (Exception e){}
+        writer = null;
+        connected = false;
+    }
+
+
     /**
      * Try to connect with the server
      * @return if connected return true else false
      */
-    public boolean connect() {
+    public boolean connect(String sIP, int sPort) {
         socket = null;
         reader = null;
         writer = null;
+        serverIP = sIP;
+        serverPort = sPort;
+
         try {
-            //socket = new Socket("localhost", 7789);
-            //socket = new Socket("145.33.225.170", 7789);
-            socket = new Socket("77.170.155.250", 7789);
+            socket = new Socket(serverIP, serverPort);
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             connected = true;
@@ -58,7 +84,7 @@ public class ServerCommunication {
         // Check if name is longer than 0 characters
         if (name.length() > 0) {
             if (!connected) {
-                connect();
+                connect(serverIP, serverPort);
             }
 
             if(connected) {
@@ -226,7 +252,7 @@ public class ServerCommunication {
             } catch (Exception e) {
                 System.out.println("Could not read from server");
                 System.out.println("Reconnecting");
-                connect();
+                connect(serverIP, serverPort);
             }
             return null;
         } else {
