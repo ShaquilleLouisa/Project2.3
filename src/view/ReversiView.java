@@ -77,32 +77,32 @@ public class ReversiView extends GameView{
 
         backButton.setText("Opgeven");
         backButton.setTranslateX(10);
-        backButton.setTranslateY(-10);
+        backButton.setTranslateY(-20);
         backButton.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-font-size: 30; -fx-border-color: #FFFFFF");
 
         score1 = new Label();
         score1.setTranslateY(30);
-        score1.setTranslateX(10);
-        score1.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-padding: 10,10,10,10; -fx-font-size: 30");
+        score1.setTranslateX(20);
+        score1.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-font-size: 30");
 
         score2 = new Label();
         score2.setTranslateY(30);
-        score2.setTranslateX(-65);
-        score2.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-padding: 10,10,10,10; -fx-font-size: 30");
+        score2.setTranslateX(-20);
+        score2.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-font-size: 30");
 
         player1 = new Label("Player 1");
         player1.setMinWidth(120);
         player1.setTextAlignment(TextAlignment.RIGHT);
-        player1.setTranslateX(65);
+        player1.setTranslateX(20);
         player1.setTranslateY(10);
-        player1.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-padding: 10,10,10,10; -fx-font-size: 30");
+        player1.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-font-size: 30");
 
         player2 = new Label("Player 2");
         player2.setMinWidth(120);
         player2.setTextAlignment(TextAlignment.RIGHT);
-        player2.setTranslateX(-65);
+        player2.setTranslateX(-20);
         player2.setTranslateY(10);
-        player2.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF; -fx-font-weight: bold;  -fx-padding: 10,10,10,10; -fx-font-size: 30");
+        player2.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-font-size: 30");
 
         int counter = 0;
 
@@ -191,15 +191,15 @@ public class ReversiView extends GameView{
             }
 
             if(controller.getCurrentPlayer() == 1){
-                blackStone.setTranslateX(65);
-                blackStone.setTranslateY(30);
+                blackStone.setTranslateX(30);
+                blackStone.setTranslateY(50);
                 player1Box.getChildren().add(2, blackStone);
                 player2Box.getChildren().remove(2);
                 score1.setText("Aantal stenen:\n" + controller.getScore(1));
                 score2.setText("Aantal stenen:\n" + controller.getScore(2));
             }else if(controller.getCurrentPlayer() == 2){
-                whiteStone.setTranslateX(-65);
-                whiteStone.setTranslateY(30);
+                whiteStone.setTranslateX(-30);
+                whiteStone.setTranslateY(50);
                 player2Box.getChildren().add(2, whiteStone);
                 player1Box.getChildren().remove(2);
                 score1.setText("Aantal stenen:\n" + controller.getScore(1));
@@ -210,18 +210,17 @@ public class ReversiView extends GameView{
             if(end >= 0){
                 Text winner = new Text("");
                 backButton.setText("Terug");
-                winner.setStyle("-fx-fill: #ffffff; -fx-font-weight: bold; -fx-font-size: 30;");
+                winner.setStyle("-fx-fill: #ffffff; -fx-font-weight: bold; -fx-font-size: 25;");
+                winner.setTranslateX(250);
+                winner.setTranslateY(-20);
                 if(end == 0){
                     winner.setText("Het is gelijkspel");
-                    winner.setTranslateX(200);
                     extraPane.add(winner,1,0);
                 }else if(end == 1){
                     winner.setText("Zwart heeft gewonnen");
-                    winner.setTranslateX(200);
                     extraPane.add(winner,1,0);
-                }else if(end ==2){
+                }else if(end == 2){
                     winner.setText("Wit heeft gewonnen");
-                    winner.setTranslateX(200);
                     extraPane.add(winner,1,0);
                 }
             }

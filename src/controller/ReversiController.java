@@ -77,6 +77,7 @@ public class ReversiController extends GameController {
     public int getCurrentPlayer(){
         return model.getPlayer();
     }
+
     public int getEnd(){
         return model.checkEnd(model.getBoard());
     }
