@@ -103,7 +103,20 @@ public class MasterView extends View {
     Button btnAIvsAIOffline = new Button("");
     ImageView imgAIvsAIOffline = new ImageView("File:assets/launcherStart/modeAIvsAIOffline.png");
 
+<<<<<<< Updated upstream
     ListView<String> lstGameSelectOptions = new ListView<String>();
+=======
+    /**  Settings **/
+    // Settings - button
+    Button btnSettings = new Button("");
+    ImageView imgSettings = new ImageView("File:assets/launcher/settings.png");
+    Text headServer = new Text("Ip-adres:poort");
+    TextField editServer = new TextField("");
+    Text headTimeout = new Text("Time-out in seconden");
+    TextField editTimeout = new TextField("10");
+    Button btnUpdateSettings = new Button("Toepassen");
+
+>>>>>>> Stashed changes
 
     public void start(Stage masterStage) {
         buttonActions();
@@ -225,8 +238,45 @@ public class MasterView extends View {
         lstGameSelectOptions.setLayoutX(64);
         lstGameSelectOptions.setPrefWidth(256);
 
+<<<<<<< Updated upstream
         // Add games to gamelist
         updatePlayerboardChallenges(FXCollections.observableArrayList("Reversi", "Tic-tac-toe"));
+=======
+        // Settings - button
+        pnLauncher.getChildren().add(btnSettings);
+        btnSettings.setId("btnSettings-closed");
+        btnSettings.setGraphic(imgSettings);
+
+        // Settings - Server field
+        pnLauncher.getChildren().add(headServer);
+        headServer.setVisible(false);
+        headServer.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        headServer.setFill(Color.WHITE);
+        pnLauncher.getChildren().add(editServer);
+        editServer.setVisible(false);
+        editServer.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        editServer.setPrefWidth(192);
+        editServer.setId("settingsBoxes");
+        editServer.setText(controller.getServerIP()+":"+Integer.toString(controller.getServerPort()));
+
+        // Settings - Timeout field
+        pnLauncher.getChildren().add(headTimeout);
+        headTimeout.setVisible(false);
+        headTimeout.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        headTimeout.setFill(Color.WHITE);
+        pnLauncher.getChildren().add(editTimeout);
+        editTimeout.setVisible(false);
+        editTimeout.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        editTimeout.setPrefWidth(192);
+        editTimeout.setId("settingsBoxes");
+
+        // Settings - apply
+        pnLauncher.getChildren().add(btnUpdateSettings);
+        btnUpdateSettings.setVisible(false);
+        btnUpdateSettings.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        btnUpdateSettings.setPrefWidth(192);
+        btnUpdateSettings.setId("btnQuickPlay");
+>>>>>>> Stashed changes
 
         // Application - Window settings
         players.clear();
@@ -283,8 +333,8 @@ public class MasterView extends View {
             public void handle(MouseEvent event) {
                 try {
                     if (controller.getLoginName() == null) {
-                        headPlayersOptions.setVisible(true);
-                        headPlayersOptions.setText("Je moet ingelogt zijn om iemand uit te dagen");
+                        headPlayersOptions.setVisible(false);
+                        //headPlayersOptions.setText("Je moet ingelogt zijn om iemand uit te dagen");
                         lstPlayersOptions.setVisible(false);
                         return;
                     }
@@ -321,37 +371,7 @@ public class MasterView extends View {
         btnChangeName.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (controller.getLoginName() == null) {
-                    String loginStatus = controller.login((usernameEdit.getCharacters().toString()));
-                    if (loginStatus == "ok") {
-                        usernameEdit.setDisable(true);
-//                        bgUsernameUse.setImage(bgUsernameOk);
-                        controller.setLoginName(usernameEdit.getCharacters().toString());
-                        controller.getPlayerList();
-                        enableChallengeOptions(false);
-                        btnChangeName.setGraphic(imgUsernameEdit);
-                        // Update state of online buttons
-                        if (lstGameSelectOptions.getSelectionModel().getSelectedItem() != null) {
-                            if (controller.getLoginName() != null) {
-                                selectGameModeScreenOnlineButtons(false);
-                            }
-                        }
-                    } else if (loginStatus == "short") {
-                        //JOptionPane.showConfirmDialog(null, "Deze naam is niet lang genoeg", "Waarschuwing", JOptionPane.CLOSED_OPTION);
-                    }
-                } else {
-                    controller.logout();
-                    usernameEdit.setDisable(false);
-//                    bgUsernameUse.setImage(bgUsernameEdit);
-                    controller.setLoginName(null);
-                    controller.setRivalName(null);
-                    enableChallengeOptions(false);
-                    btnChangeName.setGraphic(imgUsernameLogin);
-                    // Update state of online buttons
-                    selectGameModeScreenOnlineButtons(true);
-                }
-                // Update visuals
-                NoConnection(false);
+                logout();
             }
         });
 
@@ -382,7 +402,12 @@ public class MasterView extends View {
             public void handle(ActionEvent event) {
                 System.out.println("Button pressed -> P1 VS Online");
                 controller.setGameSettings(true, false,false);
+<<<<<<< Updated upstream
                 controller.subscribe(getSelectedGameName());
+=======
+                controller.subscribeServer(lstGameSelectOptions.getSelectionModel().getSelectedItem());
+                controller.subscribe(lstGameSelectOptions.getSelectionModel().getSelectedItem());
+>>>>>>> Stashed changes
             }
         });
 
@@ -441,6 +466,58 @@ public class MasterView extends View {
             }
         });
 
+        // Settings button
+        btnSettings.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (btnSettings.getId().equals("btnSettings-closed")) {
+                    btnSettings.setId("btnSettings-open");
+                    enableSettingsView(true);
+                } else {
+                    btnSettings.setId("btnSettings-closed");
+                    enableSettingsView(false);
+                }
+            }
+        });
+
+        // Settings - Apply
+        btnUpdateSettings.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (editServer.getCharacters().toString().length() < 1){
+                    editServer.setText(controller.getServerIP()+":"+Integer.toString(controller.getServerPort()));
+                    return;
+                }
+
+                int timeoutValue = 0;
+                try {
+                    timeoutValue = Integer.parseInt(editTimeout.getCharacters().toString());
+                } catch (Exception e){
+                    editTimeout.setText("10");
+                    return;
+                }
+
+                if (timeoutValue>=1) {
+                    // Everything is ok in view continue
+                    if (controller.getLoginName() != null) {
+                        logout();
+                    }
+                    controller.setServerAddress(editServer.getCharacters().toString());
+                    controller.setClientTimeout(timeoutValue);
+                    if (usernameEdit.getCharacters().toString().length()>0){
+                        logout();
+                    }
+
+                    // Hide menu
+                    btnSettings.setId("btnSettings-closed");
+                    enableSettingsView(false);
+                } else {
+                    editTimeout.setText("10");
+                    return;
+                }
+            }
+        });
+
     }
 
 
@@ -469,10 +546,33 @@ public class MasterView extends View {
     }
 
     private void relocatePanes() {
+        setSettingsPosition();
         setUsernamePosition();
         setLeaderboardPosition();
         setQuickPlayPosition();
         setGameModePosition();
+    }
+
+    private void setSettingsPosition() {
+        // Settings - Button
+        btnSettings.setLayoutX(windowWidth-494);
+        btnSettings.setLayoutY(-16);
+
+        // Settings - Server
+        headServer.setLayoutX(windowWidth-224);
+        headServer.setLayoutY(96);
+        editServer.setLayoutX(windowWidth-224);
+        editServer.setLayoutY(102);
+
+        // Settings - Server
+        headTimeout.setLayoutX(windowWidth-224);
+        headTimeout.setLayoutY(96+64);
+        editTimeout.setLayoutX(windowWidth-224);
+        editTimeout.setLayoutY(102+64);
+
+        // Settings - apply
+        btnUpdateSettings.setLayoutX(windowWidth-224);
+        btnUpdateSettings.setLayoutY(96+128);
     }
 
     private void setUsernamePosition(){
@@ -486,8 +586,8 @@ public class MasterView extends View {
 
         // Username - edit field
         usernameEdit.setLayoutY(8);
-        usernameEdit.setLayoutX(windowWidth-400);
-        usernameEdit.setMaxWidth(312);
+        usernameEdit.setLayoutX(windowWidth-(400-8));
+        usernameEdit.setMaxWidth(312-8);
 
         // Set line width
         bgUsernameLine.setWidth(windowWidth);
@@ -665,11 +765,22 @@ public class MasterView extends View {
 
     }
 
+    private void enableSettingsView(boolean state){
+        headServer.setVisible(state);
+        editServer.setVisible(state);
+        headTimeout.setVisible(state);
+        editTimeout.setVisible(state);
+        btnUpdateSettings.setVisible(state);
+    }
+
     public void NoConnection(boolean state){
         // Make background correct color
         if (state == true) {
             bgUsernameLine.setFill(Color.rgb(183, 64, 31));
             bgUsernameUse.setImage(bgUsernameError);
+            usernameEdit.setDisable(true);
+            btnSettings.setId("btnSettings-open");
+            enableSettingsView(true);
         } else {
             if (controller.getLoginName() == null) {
                 bgUsernameLine.setFill(Color.rgb(187, 168, 47));
@@ -682,6 +793,41 @@ public class MasterView extends View {
         // Set button availability in correct state
         btnChangeName.setDisable(state);
         usernameEdit.setDisable(state);
+    }
+
+    private void logout(){
+        if (controller.getLoginName() == null) {
+            String loginStatus = controller.login((usernameEdit.getCharacters().toString()));
+            if (loginStatus == "ok") {
+                usernameEdit.setDisable(true);
+//                        bgUsernameUse.setImage(bgUsernameOk);
+                controller.setLoginName(usernameEdit.getCharacters().toString());
+                controller.getPlayerList();
+                enableChallengeOptions(false);
+                btnChangeName.setGraphic(imgUsernameEdit);
+                // Update state of online buttons
+                if (lstGameSelectOptions.getSelectionModel().getSelectedItem() != null) {
+                    if (controller.getLoginName() != null) {
+                        selectGameModeScreenOnlineButtons(false);
+                    }
+                }
+            } else if (loginStatus == "short") {
+                //JOptionPane.showConfirmDialog(null, "Deze naam is niet lang genoeg", "Waarschuwing", JOptionPane.CLOSED_OPTION);
+            }
+            NoConnection(!controller.getConnectionState());
+        } else {
+            controller.logout();
+            usernameEdit.setDisable(false);
+//                    bgUsernameUse.setImage(bgUsernameEdit);
+            controller.setLoginName(null);
+            controller.setRivalName(null);
+            enableChallengeOptions(false);
+            btnChangeName.setGraphic(imgUsernameLogin);
+            // Update state of online buttons
+            selectGameModeScreenOnlineButtons(true);
+            // Update visuals
+            NoConnection(false);
+        }
     }
 
 }

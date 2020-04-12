@@ -1,6 +1,7 @@
 package games;
 
 import ai.*;
+import ai.ai_items.Move;
 import controller.GameController;
 import controller.ReversiController;
 import exceptions.MoveException;
@@ -33,6 +34,13 @@ public class Reversi extends Game {
         model.setOnlineUse(online);
         model.setAiUse(useAi);
         model.setDoubleAi(doubleai);
+<<<<<<< Updated upstream
+=======
+
+        if (useAi) {
+            ai = new BoardScoreAI(model);
+        }
+>>>>>>> Stashed changes
     }
 
     public ReversiModel getModel() {
@@ -53,7 +61,12 @@ public class Reversi extends Game {
         return ai.calculateNextMove();
     }
 
+<<<<<<< Updated upstream
     public void setMove(int move, boolean isOponent) {
+=======
+    @Override
+    public void setMove(int move, int player) throws MoveException {
+>>>>>>> Stashed changes
         ReversiFieldStatus fieldStatus = new ReversiFieldStatus();
         if (isFirstMove) {
             fieldStatus.setWhite();
@@ -68,7 +81,15 @@ public class Reversi extends Game {
             model.flipBoard(move, fieldStatus);
         } catch (MoveException e) {
         }
+<<<<<<< Updated upstream
         isFirstMove = false;
+=======
+        try {
+            controller.doMove(move, fieldStatus);
+        } catch (MoveException e) {
+            throw e;
+        }
+>>>>>>> Stashed changes
     }
 
     @Override

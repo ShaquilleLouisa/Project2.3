@@ -12,6 +12,7 @@ public class ReversiModel extends GameModel {
     private int player = ReversiFieldStatus.WHITE;
     private ReversiView view;
     private int boardSize = 8;
+<<<<<<< Updated upstream
     private boolean[][] validMoves;
     private boolean useAi;
     private boolean online;
@@ -33,6 +34,26 @@ public class ReversiModel extends GameModel {
         black.setBlack();
         ReversiFieldStatus white = new ReversiFieldStatus();
         white.setWhite();
+=======
+    int player = 0;
+    private boolean useAi;
+    private boolean online;
+    private boolean doubleAi;
+    private ReversiView view;
+    boolean firstMovesSet = false;
+    private int userMove = -1;
+
+    public ReversiModel(ReversiView view) {
+        this.view = view;
+        board = new Board(boardSize, boardSize);
+        ReversiFieldStatus empty = new ReversiFieldStatus();
+        empty.setEmpty();
+        for (int x = 0; x < boardSize; x++) {
+            for (int y = 0; y < boardSize; y++) {
+                try {
+
+                    board.setFieldStatus(x, y, empty);
+>>>>>>> Stashed changes
 
         try {
             setFieldStatus(27, black);
@@ -61,6 +82,7 @@ public class ReversiModel extends GameModel {
             board.setFieldStatus(xPosition, yPosition, status);
         } else {
 
+<<<<<<< Updated upstream
             try {
                 if (isPlayable(xPosition, yPosition)) {
                     board.setFieldStatus(xPosition, yPosition, status);
@@ -68,6 +90,12 @@ public class ReversiModel extends GameModel {
             } catch (MoveException e) {
                 throw e;
             }
+=======
+    @Override
+    public int getPlayer() {
+        return player;
+    }
+>>>>>>> Stashed changes
 
             // board.setFieldStatus(xPosition, yPosition, status);
             validMoves = setValidMoves();
@@ -98,13 +126,63 @@ public class ReversiModel extends GameModel {
             }
         }
 
+<<<<<<< Updated upstream
         boolean[][] playableMoves = new boolean[8][8];
         fieldStatus.setPlayable();
         // Set surrounding positions to playable.
         counter = 0;
+=======
+    @Override
+    public int getUserMove() {
+        return userMove;
+    }
+
+    @Override
+    public void setUserMove(int move) {
+        this.userMove = move;
+    }
+
+    @Override
+    public boolean[][] calculateValidMoves(FieldStatus fieldStatus) {
+        lock.lock();
+        int oldId = (fieldStatus.getID());
+        ReversiFieldStatus reversiFieldStatus = (ReversiFieldStatus) fieldStatus;
+        reversiFieldStatus.setId(oldId);
+        boolean[][] validMoves = new boolean[boardSize][boardSize];
+>>>>>>> Stashed changes
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 if (board.getFieldStatus(x, y).getID() == 0) {
+<<<<<<< Updated upstream
+=======
+                    boolean nw = validMove(-1, -1, x, y, reversiFieldStatus);
+                    boolean nn = validMove(-1, 0, x, y, reversiFieldStatus);
+                    boolean ne = validMove(-1, 1, x, y, reversiFieldStatus);
+
+                    boolean ww = validMove(0, -1, x, y, reversiFieldStatus);
+                    boolean ee = validMove(0, 1, x, y, reversiFieldStatus);
+
+                    boolean sw = validMove(1, -1, x, y, reversiFieldStatus);
+                    boolean ss = validMove(1, 0, x, y, reversiFieldStatus);
+                    boolean se = validMove(1, 1, x, y, reversiFieldStatus);
+
+                    if (nw) {
+                        //System.out.println("This position is playable in the line of NW : " + (8 * x + y));
+                        validMoves[x][y] = true;
+                    }
+                    if (nn) {
+                        //System.out.println("This position is playable in the line of NN : " + (8 * x + y));
+                        validMoves[x][y] = true;
+                    }
+                    if (ne) {
+                        //System.out.println("This position is playable in the line of NE : " + (8 * x + y));
+                        validMoves[x][y] = true;
+
+                    }
+                    if (ww) {
+//                        System.out.println("This position is playable in the line of WW : " + (8 * x + y));
+                        validMoves[x][y] = true;
+>>>>>>> Stashed changes
 
                     // boolean isValid = false;
                     // for (int xx = -1; xx < 2; xx++) {
@@ -180,12 +258,24 @@ public class ReversiModel extends GameModel {
             return false;
         }
 
+<<<<<<< Updated upstream
         if (isCurrentPlayer(r + dr, c + dc)) {
+=======
+        return checkLineMatch(dr, dc, r + dr, c + dc, fieldStatus);
+    }
+
+    private boolean checkLineMatch(int dr, int dc, int r, int c, ReversiFieldStatus fieldStatus) {
+        if (isCurrentPlayer(r, c, fieldStatus)) {
+            return true;
+        }
+        if (board.getFieldStatus(r, c).getID() == 0 || board.getFieldStatus(r, c).getID() == -1) {
+>>>>>>> Stashed changes
             return false;
         }
 
         if (IsOutOfBounds(r + dr + dr, r + dr + dr))
             return false;
+<<<<<<< Updated upstream
 
         if (IsOutOfBounds(c + dc + dc, c + dc + dc))
             return false;
@@ -195,6 +285,41 @@ public class ReversiModel extends GameModel {
 
     private boolean checkLineMatch(int dr, int dc, int r, int c) {
         if (isCurrentPlayer(r, c)) {
+=======
+        }
+        return checkLineMatch(dr, dc, r + dr, c + dc, fieldStatus);
+    }
+
+    private void flipLine(int dr, int dc, int r, int c, ReversiFieldStatus fieldstatus) {
+        r += dr;
+        c += dc;
+        int check = r * 8 + c;
+        //System.out.println("Check value before loop: " + check + " The ID of the checked spot: "
+        //+ board.getFieldStatus(r, c).getID());
+        while (!isCurrentPlayer(r, c, fieldstatus) && board.getFieldStatus(r, c).getID() != 0
+                && board.getFieldStatus(r, c).getID() != -1) {
+            // System.out.println("Check value inside loop: " + check);
+            try {
+                if (board.getFieldStatus(r, c).getID() == 1) {
+                    fieldstatus.setId(2);
+                    //System.out.println("flipped position: " + r + ", " + c + " position on Board: " + ((r*8)+c) + " set to WHITE");
+                } else {
+                    fieldstatus.setId(1);
+                    //System.out.println("flipped position: " + r + ", " + c + " position on Board: " + ((r*8)+c) + " set to BLACK");
+                }
+                board.setFieldStatus(r, c, fieldstatus);
+                int count = (r * 8) + c;
+                view.update(count, fieldstatus);
+                r += dr;
+                c += dc;
+            } catch (MoveException e) {
+            }
+        }
+    }
+
+    private boolean flipLineCheckMatch(int dr, int dc, int r, int c, ReversiFieldStatus fieldStatus) {
+        if (isCurrentPlayer(r, c, fieldStatus)) {
+>>>>>>> Stashed changes
             return true;
         }
         if (board.getFieldStatus(r, c).getID() == 0) {
@@ -379,5 +504,44 @@ public class ReversiModel extends GameModel {
     @Override
     public void setAiUse(boolean useAi) {
         this.useAi = useAi;
+    }
+
+    public int checkEnd(Board board) {
+        boolean player1 = false;
+        boolean player2 = false;
+        int fieldCounter1 = 0;
+        int fieldCounter2 = 0;
+        for (int x = 0; x < board.getFieldSize(); x++) {
+            for (int y = 0; y < board.getFieldSize(); y++) {
+                if (board.getFieldStatus(x, y).getID() != 0 && board.getFieldStatus(x, y).getID() != -1) {
+                    if (board.getFieldStatus(x, y).getID() == 1) {
+                        player1 = true;
+                        fieldCounter1++;
+                    } else {
+                        player2 = true;
+                        fieldCounter2++;
+                    }
+                }
+            }
+        }
+        if(player1 && !player2) {
+            System.out.println("1 dd");
+            return 1;
+        } else if(!player1 && player2) {
+            System.out.println("2 dd");
+            return 2;
+        } else if(player1 && ((fieldCounter1+fieldCounter2) == 64) && fieldCounter1 > fieldCounter2) {
+            System.out.println("3 dd");
+            return 1;
+        } else if(player1 && ((fieldCounter1+fieldCounter2) == 64) && fieldCounter1 < fieldCounter2) {
+            System.out.println("4 dd");
+            System.out.println(fieldCounter1+fieldCounter2);
+            return 2;
+        } else if(player1 && ((fieldCounter1+fieldCounter2) == 64) && fieldCounter1 == fieldCounter2) {
+            System.out.println("5 dd");
+            return 0;
+        } else {
+            return -1;
+        }
     }
 }

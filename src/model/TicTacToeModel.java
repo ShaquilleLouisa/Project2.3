@@ -17,7 +17,7 @@ public class TicTacToeModel extends GameModel {
     private boolean useAi;
     private boolean online;
     private boolean doubleAi;
-    private int userMove;
+    private int userMove = -1;
     public TicTacToeModel(TicTacToeView view) {
         this.view = view;
         turns = 0;
@@ -26,9 +26,13 @@ public class TicTacToeModel extends GameModel {
 
     public void setFieldStatus(int move, FieldStatus fieldStatus) throws MoveException {
         ArrayList<Integer> xAndY = board.getMove(move);
+<<<<<<< Updated upstream
         int x = xAndY.get(0);
         int y = xAndY.get(1);
 
+=======
+        System.out.println(move);
+>>>>>>> Stashed changes
         try {
             board.setFieldStatus(x, y, fieldStatus);
         } catch (MoveException e) {
@@ -157,10 +161,12 @@ public class TicTacToeModel extends GameModel {
         this.doubleAi = doubleAi;
     }
 
+    @Override
     public void setUserMove(int userMove) {
         this.userMove = userMove;
     }
 
+    @Override
     public int getUserMove() {
         return userMove;
     }

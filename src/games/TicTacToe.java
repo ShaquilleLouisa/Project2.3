@@ -64,8 +64,15 @@ public class TicTacToe extends Game {
         return model;
     }
 
+<<<<<<< Updated upstream
     public int getNextMove() {
         return ai.calculateNextMove();
+=======
+    public int getNextMove(FieldStatus fieldStatus) {
+        TicTacToeFieldStatus ticTacToeFieldStatus = new TicTacToeFieldStatus();
+        ticTacToeFieldStatus.setId(fieldStatus.getID());
+        return ai.calculateNextMove(ticTacToeFieldStatus);
+>>>>>>> Stashed changes
     }
 
     public void setMove(int move, boolean isOponent) {

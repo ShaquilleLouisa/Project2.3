@@ -9,40 +9,100 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Class that is used to communicate with the server
+ * @author Anne de Graaff
+ */
+
 public class ServerCommunication {
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     Socket socket;
     BufferedReader reader;
     BufferedWriter writer;
     boolean connected = false;
+    String serverIP;
+    int serverPort;
 
     public ServerCommunication() {
 
     }
 
+<<<<<<< HEAD
+    public boolean getConnectionState() {
+        return connected;
+    }
+
+    public void updateServerSettings(String sIP, int sPort){
+        serverIP = sIP;
+        serverPort = sPort;
+        try {
+            socket.close();
+        } catch (Exception e){}
+        socket = null;
+        try {
+            reader.close();
+        } catch (Exception e){}
+        reader = null;
+        try {
+            writer.close();
+        } catch (Exception e){}
+        writer = null;
+        connected = false;
+    }
+
+    public boolean connect(String sIP, int sPort) {
+        socket = null;
+        reader = null;
+        writer = null;
+        serverIP = sIP;
+        serverPort = sPort;
+
+
+        try {
+            socket = new Socket(serverIP, serverPort);
+=======
+    /**
+     * Try to connect with the server
+     * @return if connected return true else false
+     */
     public boolean connect() {
         socket = null;
         reader = null;
         writer = null;
-
-
         try {
+<<<<<<< Updated upstream
             socket = new Socket("localhost", 7789);
+=======
+            //socket = new Socket("localhost", 7789);
+>>>>>>> 89fcfa32e0b8340451bec2f190dc3879be4174c4
+            //socket = new Socket("145.33.225.170", 7789);
+            socket = new Socket("77.170.155.250", 7789);
+>>>>>>> Stashed changes
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             connected = true;
             return true;
         } catch (IOException e) {
+            connected = false;
             System.out.println("Could not connect with server");
             return false;
         }
 
     }
 
+    /**
+     * Login to the server with a specfic name
+     * @param name String name to login with
+     * @return login status String
+     */
     public String login(String name) {
         // Check if name is longer than 0 characters
         if (name.length() > 0) {
             if (!connected) {
-                connect();
+                connect(serverIP, serverPort);
             }
 
             if(connected) {
@@ -77,6 +137,9 @@ public class ServerCommunication {
         // //return "inUse"; // Invalid name -- Already in use
     }
 
+    /**
+     * Logout the server
+     */
     public void logout() {
         try {
             socket.close();
@@ -94,6 +157,9 @@ public class ServerCommunication {
 
     }
 
+    /**
+     * get gamelist from server
+     */
     public void getGameList() {
         try {
             write("get gamelist");
@@ -102,6 +168,9 @@ public class ServerCommunication {
         }
     }
 
+    /**
+     * Get the current player list
+     */
     public void getPlayerList() {
         if (connected == true) {
             try {
@@ -112,7 +181,15 @@ public class ServerCommunication {
         }
     }
 
+<<<<<<< Updated upstream
     public void challengeAccept(String challengeNmr) {
+=======
+    /**
+     * Accept a specfic challenge
+     * @param challengeNmr challenge to accept
+     */
+    public void challengeAccept(int challengeNmr) {
+>>>>>>> Stashed changes
         try {
             write("challenge accept " + challengeNmr);
         } catch (IOException e) {
@@ -120,6 +197,9 @@ public class ServerCommunication {
         }
     }
 
+    /**
+     * Forfeit a game
+     */
     public void forfeit() {
         try {
             write("forfeit");
@@ -128,7 +208,15 @@ public class ServerCommunication {
         }
     }
 
+<<<<<<< Updated upstream
     public void subscribe(GameName game) {
+=======
+    /**
+     * Subscribe to game
+     * @param gameName game to subscribe to
+     */
+    public void subscribe(String gameName) {
+>>>>>>> Stashed changes
         try {
             write("subscribe " + game.label);
         } catch (IOException e) {
@@ -136,6 +224,11 @@ public class ServerCommunication {
         }
     }
 
+    /**
+     * Challenge rival for a specifc game
+     * @param rivalName Rival to challenge
+     * @param gameName Game for challenge
+     */
     public void challengeRival(String rivalName, String gameName) {
         try {
             write("challenge \"" + rivalName + "\" \"" + gameName + "\"");
@@ -144,6 +237,10 @@ public class ServerCommunication {
         }
     }
 
+    /**
+     * Ask for help to the server
+     * @param helpType
+     */
     // HelpType can be empty
     public void help(String helpType) {
         try {
@@ -157,7 +254,10 @@ public class ServerCommunication {
         }
     }
 
-    // Their should be some checks here.
+    /**
+     * Do a move
+     * @param move move to do
+     */
     public void move(int move) {
         try {
             write("move " + move);
@@ -166,9 +266,11 @@ public class ServerCommunication {
         }
     }
 
-    // This function is always executed when creating the servercom
-    // Read() will read the text the server sends and will act accordingly by
-    // executing functions required.
+    /**
+     * Read the server
+     * @return server text
+     * @throws IOException
+     */
     public String read() throws IOException {
         if (connected) {
             try {
@@ -176,7 +278,7 @@ public class ServerCommunication {
             } catch (Exception e) {
                 System.out.println("Could not read from server");
                 System.out.println("Reconnecting");
-                connect();
+                connect(serverIP, serverPort);
             }
             return null;
         } else {
@@ -184,9 +286,12 @@ public class ServerCommunication {
         }
     }
 
-    // Write is to give an awnser back to the server.
-    // Write should never be public because only methods (commands) should be able
-    // to use it.
+    /**
+     * Write something to the server
+     * THIS SHOULD ALWAYS BE PRIVATE because otherwise you can write custom things to the server and that should only be done through methods
+     * @param command command to send to the server
+     * @throws IOException
+     */
     private void write(String command) throws IOException {
         if (connected) {
             try {
