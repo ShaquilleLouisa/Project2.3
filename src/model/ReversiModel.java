@@ -236,6 +236,14 @@ public class ReversiModel extends GameModel {
         return checkLineMatch(dr, dc, r + dr, c + dc, fieldStatus);
     }
 
+    /**
+     * Flips the fieldstatuses of the line that have to be flipped
+     * @param dr is the X-axis direction
+     * @param dc is the Y-axis direction
+     * @param r is the X-axis position
+     * @param c is the Y-axis position
+     * @param fieldStatus is the fieldstatus of the current player
+     */
     private void flipLine(int dr, int dc, int r, int c, ReversiFieldStatus fieldstatus) {
         r += dr;
         c += dc;
@@ -263,6 +271,15 @@ public class ReversiModel extends GameModel {
         }
     }
 
+    /**
+     *
+     * @param dr is the X-axis direction
+     * @param dc is the Y-axis direction
+     * @param r is the X-axis position
+     * @param c is the Y-axis position
+     * @param fieldStatus is the fieldstatus of the current player
+     * @return returns the recursive function to traverse the board
+     */
     private boolean flipLineCheckMatch(int dr, int dc, int r, int c, ReversiFieldStatus fieldStatus) {
         if (isCurrentPlayer(r, c, fieldStatus)) {
             return true;
@@ -279,6 +296,15 @@ public class ReversiModel extends GameModel {
         return flipLineCheckMatch(dr, dc, r + dr, c + dc, fieldStatus);
     }
 
+    /**
+     *
+     * @param dr is the X-axis direction
+     * @param dc is the Y-axis direction
+     * @param r is the X-axis position
+     * @param c is the Y-axis position
+     * @param fieldStatus is the fieldstatus of the current player
+     * @return flipLineCheckMatch to traverse the rest of the line that has to be flipped
+     */
     private boolean flipLineCheck(int dr, int dc, int r, int c, ReversiFieldStatus fieldStatus) {
         if (IsOutOfBounds(r + dr, c + dc)) {
             return false;
@@ -298,6 +324,11 @@ public class ReversiModel extends GameModel {
         return flipLineCheckMatch(dr, dc, r + dr, c + dc, fieldStatus);
     }
 
+    /**
+     * This method flips the board accordingly with the move that is given to the method
+     * @param move is the move that has been set
+     * @param fieldstatus is the fieldstatus that the stones have to be flipped to
+     */
     public synchronized void flipBoard(int move, ReversiFieldStatus fieldstatus) {
         //System.out.println("In flip board with " + fieldstatus.getID());
         int r = move / 8;
@@ -314,56 +345,51 @@ public class ReversiModel extends GameModel {
         boolean se = flipLineCheck(1, 1, r, c, fieldstatus);
 
         if (nw) {
-            //System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
-//                    + fieldstatus.getValue() + " in de richting NW");
             flipLine(-1, -1, r, c, fieldstatus);
         }
         if (nn) {
-            //System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
-//                    + fieldstatus.getValue() + " in de richting NN");
             flipLine(-1, 0, r, c, fieldstatus);
         }
         if (ne) {
-            //System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
-//                    + fieldstatus.getValue() + " in de richting NE");
             flipLine(-1, 1, r, c, fieldstatus);
         }
 
         if (ww) {
-            //System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
-//                    + fieldstatus.getValue() + " in de richting WW");
             flipLine(0, -1, r, c, fieldstatus);
         }
         if (ee) {
-            //System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
-//                    + fieldstatus.getValue() + " in de richting EE");
             flipLine(0, 1, r, c, fieldstatus);
         }
-
         if (sw) {
-            //System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
-//                    + fieldstatus.getValue() + " in de richting SW");
             flipLine(1, -1, r, c, fieldstatus);
         }
         if (ss) {
-            //System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
-//                    + fieldstatus.getValue() + " in de richting SS");
             flipLine(1, 0, r, c, fieldstatus);
         }
         if (se) {
-//            System.out.println("flipping for position: " + r + ", " + c + " fieldstatus value: "
-//                    + fieldstatus.getValue() + " in de richting SE");
             flipLine(1, 1, r, c, fieldstatus);
         }
-
     }
 
+    /**
+     *
+     * @param x is the position on the X-axis
+     * @param y is the position on the Y-axis
+     * @return returns true if the X and Y position are in bounds of the board. It returns false if the X or Y positions are out of bounds.
+     */
     public boolean IsOutOfBounds(int x, int y) {
         if ((x > 7 || x < 0) || (y > 7 || y < 0))
             return true;
         return false;
     }
 
+    /**
+     * Checks if the given position on the board is owned by the current player
+     * @param x is the position on the X-axis
+     * @param y is the position on the Y-axis
+     * @param fieldStatus is the fieldstatus of the current player
+     * @return returns true if the position is owned by the current player or else it is false
+     */
     public boolean isCurrentPlayer(int x, int y, ReversiFieldStatus fieldStatus) {
         if (board.getFieldStatus(x, y).getID() == fieldStatus.getID() && fieldStatus.getID() != 0) {
             return true;
@@ -371,13 +397,22 @@ public class ReversiModel extends GameModel {
         return false;
     }
 
-
+    /**
+     * Checks if a position on the board is playable
+     * @param x is the position on the X-axis
+     * @param y is the position on the Y-axis
+     * @return returns true if the position is playable otherwise it returns false
+     */
     public boolean isPlayable(int x, int y) {
         if (board.getFieldStatus(x, y).getID() == ReversiFieldStatus.PLAYABLE)
             return true;
         return false;
     }
 
+    /**
+     * returns whether the first move has been set
+     * @return firstMovesSet
+     */
     public boolean isFirstMovesSet() {
         return firstMovesSet;
     }
@@ -386,6 +421,11 @@ public class ReversiModel extends GameModel {
         this.firstMovesSet = firstMovesSet;
     }
 
+    /**
+     * Checks if all positions on the board are owned by a player
+     * @param board is the board of the game
+     * @return
+     */
     public int checkEnd(Board board) {
         boolean player1 = false;
         boolean player2 = false;
