@@ -1,7 +1,6 @@
 package ai;
 
 import exceptions.MoveException;
-import games.Reversi;
 import model.GameModel;
 import model.gameitems.Board;
 import model.gameitems.FieldStatus;
@@ -80,7 +79,7 @@ public class BoardScoreAI extends AI implements ReversiAI {
         //System.out.println("Check value before loop: " + check + " The ID of the checked spot: "
         //+ board.getFieldStatus(r, c).getID());
         while (!isCurrentPlayer(r, c, fieldstatus) && board.getFieldStatus(r, c).getID() != 0
-                && board.getFieldStatus(r, c).getID() != ReversiFieldStatus.PLAYABLE) {
+                && board.getFieldStatus(r, c).getID() != -1) {
             // System.out.println("Check value inside loop: " + check);
             r += dr;
             c += dc;
@@ -109,7 +108,7 @@ public class BoardScoreAI extends AI implements ReversiAI {
         if (board.getFieldStatus(r + dr, c + dc).getID() == 0) {
             return false;
         }
-        if (board.getFieldStatus(r + dr, c + dc).getID() == ReversiFieldStatus.PLAYABLE) {
+        if (board.getFieldStatus(r + dr, c + dc).getID() == -1) {
             return false;
         }
         return flipLineCheckMatch(dr, dc, r + dr, c + dc, fieldStatus);
@@ -132,7 +131,7 @@ public class BoardScoreAI extends AI implements ReversiAI {
         if (board.getFieldStatus(r + dr, c + dc).getID() == 0) {
             return false;
         }
-        if (board.getFieldStatus(r + dr, c + dc).getID() == ReversiFieldStatus.PLAYABLE) {
+        if (board.getFieldStatus(r + dr, c + dc).getID() == -1) {
             return false;
         }
 
