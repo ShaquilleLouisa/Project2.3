@@ -280,12 +280,12 @@ public class MasterController extends Controller {
                                 case "move":
 
                                     // Move using regex
-                                    String playerName = "";
-                                    p = Pattern.compile("PLAYER: \"([^\"]*)\"");
-                                    m = p.matcher(originalInput);
-                                    while (m.find()) {
-                                        playerName = m.group(1);
-                                    }
+//                                    String playerName = "";
+//                                    p = Pattern.compile("PLAYER: \"([^\"]*)\"");
+//                                    m = p.matcher(originalInput);
+//                                    while (m.find()) {
+//                                        playerName = m.group(1);
+//                                    }
 
 //                                    System.out.println("playerName------------------------------------------------------:"+playerName+":");
 //                                    System.out.println("model.getRivalName().toLowerCase():"+model.getRivalName().toLowerCase());
@@ -298,16 +298,16 @@ public class MasterController extends Controller {
                                         }
 
                                         // Move using regex
-                                        String moveID = "-2";
-                                        p = Pattern.compile("MOVE: \"([^\"]*)\"");
-                                        m = p.matcher(originalInput);
-                                        while (m.find()) {
-                                            moveID = m.group(1);
-                                        }
-                                        System.out.println("Move name received:" + moveID);
+//                                        String moveID = "-2";
+//                                        p = Pattern.compile("MOVE: \"([^\"]*)\"");
+//                                        m = p.matcher(originalInput);
+//                                        while (m.find()) {
+//                                            moveID = m.group(1);
+//                                        }
+//                                        System.out.println("Move name received:" + moveID);
                                         //System.out.println("oude:"+words[6].substring(1, words[6].length() - 2));
                                         //System.out.println("Waar is deze print ??????" + words[6].substring(1, words[6].length() - 2));
-                                        int opponentMove = Integer.parseInt(moveID);//Integer.parseInt(words[6]);
+                                        int opponentMove = Integer.parseInt(words[6].substring(1, words[6].length() - 2));//Integer.parseInt(words[6]);
                                         //TicTacToeFieldStatus fieldStatusCross = new TicTacToeFieldStatus();
                                         //fieldStatusCross.setCross();
                                         //model.getGame().getModel().setFieldStatus(opponentMove, fieldStatusCross);
