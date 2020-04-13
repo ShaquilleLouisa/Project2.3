@@ -290,8 +290,7 @@ public class MasterController extends Controller {
 //                                    System.out.println("playerName------------------------------------------------------:"+playerName+":");
 //                                    System.out.println("model.getRivalName().toLowerCase():"+model.getRivalName().toLowerCase());
                                     //System.out.println(model.getRivalName());
-//                                    if (playerName.contains(model.getRivalName().toLowerCase())) {
-                                    if (words[4].contains(model.getRivalName().toLowerCase())) {
+                                    if (playerName.contains(model.getRivalName().toLowerCase())) {
                                         //System.out.println("Move has been done by opponent: " + inputLowerCase.substring(totalLetters) + "name: " + getRivalName());
                                         if (model.getLoginColor() == 0) {
                                             model.setLoginColor(2);
