@@ -23,6 +23,11 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * Class that is used to display the launcher
+ * @author Dennis Smid
+ */
+
 public class MasterView extends View {
     MasterController controller;
 
@@ -120,6 +125,10 @@ public class MasterView extends View {
     TextField editTimeout = new TextField("10");
     Button btnUpdateSettings = new Button("Toepassen");
 
+    /**
+     * Setup view
+     * @param masterStage Stage used for all views
+     */
     public void start(Stage masterStage) {
         // Put triggers on buttons
         buttonWatchdogs();
@@ -325,10 +334,18 @@ public class MasterView extends View {
         masterStage.setHeight(windowHeight);
     }
 
+
+    /**
+     * Get the launcher scene
+     * @return launcher scene
+     */
     public Scene getScene() {
         return scene;
     }
 
+    /**
+     * Watch all buttons if clicked
+     */
     private void buttonWatchdogs(){
         // Player name clicked
         lstPlayerList.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -543,13 +560,18 @@ public class MasterView extends View {
         });
     }
 
-
-    // Executed when client has connected
+    /**
+     * Executed when client has connected
+     * @param isConnected Boolean If there is a connection
+     */
     public void connected(Boolean isConnected){
         NoConnection(!isConnected);
     }
 
-    // Update leaderboard
+    /**
+     * Update leaderboard
+     * @param newlstPlayerList ObservableList<String> Give latest playerlist
+     */
     public void updatePlayerboard(ObservableList<String> newlstPlayerList){
         Platform.runLater(() -> {
             players.clear();
@@ -562,6 +584,9 @@ public class MasterView extends View {
         });
     }
 
+    /**
+     * Handle player invitation images
+     */
     public void updatePlayerboardImages() {
         // Add invitation image
         lstPlayerList.setCellFactory(param -> new ListCell<String>() {
@@ -588,6 +613,9 @@ public class MasterView extends View {
         });
     }
 
+    /**
+     * Updating the options next to the players view
+     */
     public void updatePlayersOptions(){
         String playerID = lstPlayerList.getId();
         if (playerID == null || playerID.isEmpty()){
@@ -606,7 +634,10 @@ public class MasterView extends View {
 
     }
 
-    // Update leaderboard
+    /**
+     * Update the optionslist for the player
+     * @param newGamelist ObservableList<String> Challenges the player can choose from
+     */
     public void updatePlayerboardChallenges(ObservableList<String> newGamelist){
         Platform.runLater(() -> {
             datPlayersOptions.clear();
@@ -615,6 +646,9 @@ public class MasterView extends View {
         });
     }
 
+    /**
+     * Link all reposition scripts
+     */
     private void relocatePanes() {
         setSettingsPosition();
         setUsernamePosition();
@@ -623,6 +657,9 @@ public class MasterView extends View {
         setGameModePosition();
     }
 
+    /**
+     * Reposition Server settings ui
+     */
     private void setSettingsPosition() {
         // Settings - Button
         btnSettings.setLayoutX(windowWidth-494);
@@ -645,6 +682,9 @@ public class MasterView extends View {
         btnUpdateSettings.setLayoutY(96+128);
     }
 
+    /**
+     * Reposition username ui
+     */
     private void setUsernamePosition(){
         // Username - background
         bgUsernameUse.setLayoutX(windowWidth-480); // Top right
@@ -664,6 +704,9 @@ public class MasterView extends View {
 
     }
 
+    /**
+     * Reposition playerlist ui
+     */
     private void setLeaderboardPosition(){
         int lstPlayerListWidth = windowWidth/3;
         if (lstPlayerListWidth < 320) {
@@ -679,6 +722,9 @@ public class MasterView extends View {
         headPlayersOptions.setLayoutX(lstPlayerListWidth+64);
     }
 
+    /**
+     * Reposition quickplay buttons
+     */
     private void setQuickPlayPosition(){
         // Get smallest dimension
         int smDimension = windowHeight;
@@ -698,6 +744,9 @@ public class MasterView extends View {
 
     }
 
+    /**
+     * Reposition quickplay choice buttons
+     */
     private void setGameModePosition(){
         // Get smallest dimension
         int smDimension = windowHeight;
@@ -752,10 +801,18 @@ public class MasterView extends View {
         lstGameSelectOptions.setPrefHeight(windowHeight*0.5);
     }
 
+    /**
+     * Give playerlist id to requester
+     * @return playerlist id int
+     */
     public int getNameSelected() {
         return lstPlayerList.getSelectionModel().getSelectedIndex();
     }
 
+    /**
+     * Set select player
+     * @param sel int set select box in playerlist
+     */
     public void setNameSelected(int sel) {
         Platform.runLater(new Runnable() {
             @Override
@@ -790,6 +847,9 @@ public class MasterView extends View {
         });
     }
 
+    /**
+     * Kick rival from the game
+     */
     private void kickRival(){
         // Rivalname has left the game
         controller.setRivalName(null);
@@ -798,22 +858,38 @@ public class MasterView extends View {
         enableChallengeOptions(false);
     }
 
+    /**
+     * Make challenge options visible or invisible
+     * @param state boolean enable or disable options
+     */
     private void enableChallengeOptions(boolean state){
         lstPlayersOptions.setVisible(state);
         headPlayersOptions.setVisible(state);
     }
 
+    /**
+     * Make gamemode screen online buttons visible or invisible
+     * @param state boolean enable or disable buttons
+     */
     private void selectGameModeScreenOnlineButtons(boolean state){
         btnP1Online.setDisable(state);
         btnAIOnline.setDisable(state);
     }
 
+    /**
+     * Make gamemode screen offline buttons visible or invisible
+     * @param state boolean enable or disable buttons
+     */
     private void selectGameModeScreenOfflineButtons(boolean state){
         btnP1vsP2Offline.setDisable(state);
         btnP1vsAIOffline.setDisable(state);
         btnAIvsAIOffline.setDisable(state);
     }
 
+    /**
+     * Make gamemode screen visible
+     * @param state boolean enable or disable screen
+     */
     private void selectGameModeScreen(boolean state){
         // Clear rival name
         controller.setRivalName(null);
@@ -845,6 +921,10 @@ public class MasterView extends View {
 
     }
 
+    /**
+     * Enable or disable server settings view
+     * @param state boolean enable or disable screen
+     */
     private void enableSettingsView(boolean state){
         headServer.setVisible(state);
         editServer.setVisible(state);
@@ -853,6 +933,10 @@ public class MasterView extends View {
         btnUpdateSettings.setVisible(state);
     }
 
+    /**
+     * Trigger connection status of topbar
+     * @param state boolean change color of topbar
+     */
     public void NoConnection(boolean state){
         // Make background correct color
         if (state == true) {
@@ -876,6 +960,10 @@ public class MasterView extends View {
         btnChangeName.setDisable(state);
     }
 
+    /**
+     * Send challengename of rival forward if valid
+     * @param challengeName String Receive challengename of rival
+     */
     public void challengeAccept(String challengeName){
 
         if (challengeName == null || challengeName.isEmpty()){
@@ -892,11 +980,18 @@ public class MasterView extends View {
         }
     }
 
+    /**
+     * Make playeroptions visible or invisible
+     * @param state boolean visible or invisible
+     */
     public void enablePlayersOptions(boolean state) {
         lstPlayersOptions.setVisible(state);
         headPlayersOptions.setVisible(state);
     }
 
+    /**
+     * Change login state of the user
+     */
     private void logout(){
         if (controller.getLoginName() == null) {
             String loginStatus = controller.login((usernameEdit.getCharacters().toString()));
