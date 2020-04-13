@@ -405,20 +405,20 @@ public class ReversiModel extends GameModel {
             }
         }
         if(player1 && !player2) {
-            System.out.println("1 dd");
+//            System.out.println("1 dd");
             return 1;
         } else if(!player1 && player2) {
-            System.out.println("2 dd");
+//            System.out.println("2 dd");
             return 2;
         } else if(player1 && ((fieldCounter1+fieldCounter2) == 64) && fieldCounter1 > fieldCounter2) {
-            System.out.println("3 dd");
+//            System.out.println("3 dd");
             return 1;
         } else if(player1 && ((fieldCounter1+fieldCounter2) == 64) && fieldCounter1 < fieldCounter2) {
-            System.out.println("4 dd");
+//            System.out.println("4 dd");
             System.out.println(fieldCounter1+fieldCounter2);
             return 2;
         } else if(player1 && ((fieldCounter1+fieldCounter2) == 64) && fieldCounter1 == fieldCounter2) {
-            System.out.println("5 dd");
+//            System.out.println("5 dd");
             return 0;
         } else {
             return -1;

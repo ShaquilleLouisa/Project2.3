@@ -26,40 +26,69 @@ public class BoardScoreAI extends AI implements ReversiAI {
      */
     public BoardScoreAI(GameModel gameModel) {
         super(gameModel);
-        movesWithPoints.put(0, 40);
-        movesWithPoints.put(7, 40);
-        movesWithPoints.put(24, 8);
-        movesWithPoints.put(39, 8);
-        movesWithPoints.put(4, 8);
-        movesWithPoints.put(3, 8);
-        movesWithPoints.put(31, 8);
-        movesWithPoints.put(56, 40);
-        movesWithPoints.put(63, 40);
-        movesWithPoints.put(5, 15);
-        movesWithPoints.put(16, 15);
-        movesWithPoints.put(18, 12);
-        movesWithPoints.put(21, 12);
-        movesWithPoints.put(23, 15);
-        movesWithPoints.put(40, 15);
-        movesWithPoints.put(42, 12);
-        movesWithPoints.put(45, 12);
-        movesWithPoints.put(47, 15);
-        movesWithPoints.put(58, 15);
-        movesWithPoints.put(61, 15);
-        movesWithPoints.put(60, 8);
-        movesWithPoints.put(1, -15);
-        movesWithPoints.put(6, -15);
-        movesWithPoints.put(8, -15);
-        movesWithPoints.put(9, -15);
-        movesWithPoints.put(14, -15);
-        movesWithPoints.put(15, -15);
-        movesWithPoints.put(48, -15);
-        movesWithPoints.put(49, -15);
-        movesWithPoints.put(54, -15);
-        movesWithPoints.put(55, -15);
-        movesWithPoints.put(59, 8);
-        movesWithPoints.put(57, -15);
-        movesWithPoints.put(62, -15);
+//        movesWithPoints.put(0, 40);
+//        movesWithPoints.put(7, 40);
+//        movesWithPoints.put(24, 8);
+//        movesWithPoints.put(39, 8);
+//        movesWithPoints.put(4, 8);
+//        movesWithPoints.put(3, 8);
+//        movesWithPoints.put(31, 8);
+//        movesWithPoints.put(56, 40);
+//        movesWithPoints.put(63, 40);
+//        movesWithPoints.put(5, 15);
+//        movesWithPoints.put(16, 15);
+//        movesWithPoints.put(18, 12);
+//        movesWithPoints.put(21, 12);
+//        movesWithPoints.put(23, 15);
+//        movesWithPoints.put(40, 15);
+//        movesWithPoints.put(42, 12);
+//        movesWithPoints.put(45, 12);
+//        movesWithPoints.put(47, 15);
+//        movesWithPoints.put(58, 15);
+//        movesWithPoints.put(61, 15);
+//        movesWithPoints.put(60, 8);
+//        movesWithPoints.put(1, -15);
+//        movesWithPoints.put(6, -15);
+//        movesWithPoints.put(8, -15);
+//        movesWithPoints.put(9, -15);
+//        movesWithPoints.put(14, -15);
+//        movesWithPoints.put(15, -15);
+//        movesWithPoints.put(48, -15);
+//        movesWithPoints.put(49, -15);
+//        movesWithPoints.put(54, -15);
+//        movesWithPoints.put(55, -15);
+//        movesWithPoints.put(59, 8);
+//        movesWithPoints.put(57, -15);
+//        movesWithPoints.put(62, -15);
+
+
+//        // Rip Singh
+        double[] scores = {1.010000 	,-0.270000 	,0.560000 	,-0.253853 	,-0.253853 	,0.560000 	,-0.270000 	,1.010000, -0.270000 	,-0.740000 	,-0.384101 	,-0.080000 	,-0.080000 	,-0.384101 	,-0.740000 	,-0.270000, 0.560000 	,-0.384101 	,-0.239954 	,-0.155662 	,-0.155662 	,-0.239954 	,-0.384101 	,0.560000, -0.253853 	,-0.080000 	,-0.155662 	,-0.010000 	,-0.010000 	,-0.155662 	,-0.080000 	,-0.253853, -0.253853 	,-0.080000 	,-0.155662 	,-0.010000 	,-0.010000 	,-0.155662 	,-0.080000 	,-0.253853, 0.560000 	,-0.384101 	,-0.239954 	,-0.155662 	,-0.155662 	,-0.239954 	,-0.384101 	,0.560000, -0.270000 	,-0.740000 	,-0.384101 	,-0.080000 	,-0.080000 	,-0.384101 	,-0.740000 	,-0.270000, 1.010000 	,-0.270000 	,0.560000 	,-0.253853 	,-0.253853 	,0.560000 	,-0.270000 	,1.010000};
+
+        for (int i=0; i<63; i++){
+            movesWithPoints.put(i, (int)scores[i]*100);
+        }
+
+        // Rip Nick
+//        double[][] scores = {
+//                {1.010000 	,-0.270000 	,0.560000 	,-0.253853 	,-0.253853 	,0.560000 	,-0.270000 	,1.010000},
+//                {-0.270000 	,-0.740000 	,-0.384101 	,-0.080000 	,-0.080000 	,-0.384101 	,-0.740000 	,-0.270000},
+//                {0.560000 	,-0.384101 	,-0.239954 	,-0.155662 	,-0.155662 	,-0.239954 	,-0.384101 	,0.560000},
+//                {-0.253853 	,-0.080000 	,-0.155662 	,-0.010000 	,-0.010000 	,-0.155662 	,-0.080000 	,-0.253853},
+//                {-0.253853 	,-0.080000 	,-0.155662 	,-0.010000 	,-0.010000 	,-0.155662 	,-0.080000 	,-0.253853},
+//                {0.560000 	,-0.384101 	,-0.239954 	,-0.155662 	,-0.155662 	,-0.239954 	,-0.384101 	,0.560000},
+//                {-0.270000 	,-0.740000 	,-0.384101 	,-0.080000 	,-0.080000 	,-0.384101 	,-0.740000 	,-0.270000},
+//                {1.010000 	,-0.270000 	,0.560000 	,-0.253853 	,-0.253853 	,0.560000 	,-0.270000 	,1.010000},
+//        };
+//
+//        int i=0;
+//        for (int x=0; x<8; x++){
+//            for (int y=0; y<8; y++) {
+//                movesWithPoints.put(i, (int) scores[x][y] * 100);
+//            }
+//            i++;
+//        }
+//        i++;
     }
 
     /**
