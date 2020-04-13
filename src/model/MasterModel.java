@@ -18,8 +18,8 @@ public class MasterModel extends Model {
     private boolean doubleAi;
     ArrayList<String[]> challengesReceived = new ArrayList<String[]>();
 
-    private String serverIP = "127.0.0.1";
-//    private String serverIP = "145.33.225.170";
+//    private String serverIP = "127.0.0.1";
+    private String serverIP = "145.33.225.170";
 //    private String serverIP = "77.170.155.250";
     private int serverPort = 7789;
     private int clientTimeout = 10;
