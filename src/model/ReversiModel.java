@@ -248,10 +248,10 @@ public class ReversiModel extends GameModel {
             // System.out.println("Check value inside loop: " + check);
             try {
                 if (board.getFieldStatus(r, c).getID() == ReversiFieldStatus.BLACK) {
-                    fieldstatus.setId(2);
+                    fieldstatus.setId(ReversiFieldStatus.WHITE);
                     //System.out.println("flipped position: " + r + ", " + c + " position on Board: " + ((r*8)+c) + " set to WHITE");
                 } else {
-                    fieldstatus.setId(1);
+                    fieldstatus.setId(ReversiFieldStatus.BLACK);
                     //System.out.println("flipped position: " + r + ", " + c + " position on Board: " + ((r*8)+c) + " set to BLACK");
                 }
                 board.setFieldStatus(r, c, fieldstatus);
