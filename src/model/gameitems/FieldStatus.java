@@ -1,16 +1,9 @@
 package model.gameitems;
 
-/**
- * Abstract fieldStatus class.
- */
 public abstract class FieldStatus {
     private int id;
     private String value;
 
-    /**
-     * Empty this fieldStatus.
-     * @param id direction for the x-axis.
-     */
     public void setEmpty() {
          setId(0);
          setValue(" ");
@@ -28,10 +21,6 @@ public abstract class FieldStatus {
         return value;
     }
 
-    /**
-     * Set the state of this fieldStatus.
-     * @param id direction for the x-axis.
-     */
     public void setId(int id) {
         this.id = id;
     }
