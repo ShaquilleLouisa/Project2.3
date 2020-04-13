@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * The board class holds the fields on which the game is played.
+ * The board class holds the fields on which the game is played
  */
 public class Board {
     public ArrayList<Field> fields;
@@ -14,9 +14,9 @@ public class Board {
     private int fieldSize;
 
     /**
-     * Constructor.
-     * @param xSize The width of this board.
-     * @param ySize The height of this board.
+     * 
+     * @param xSize The width of this board
+     * @param ySize The height of this board
      */
     public <T extends FieldStatus> Board(int xSize, int ySize) {
         if(xSize == ySize) {
@@ -42,10 +42,10 @@ public class Board {
     }
 
     /**
-     * Update one field with a new fieldStatus. 
-     * @param x The x position.
-     * @param y The y position.
-     * @param fieldStatus Contains the new fieldStatus for the field on the given position.
+     * Update one field with a new fieldStatus
+     * @param x The x position
+     * @param y The y position
+     * @param fieldStatus Contains the new fieldStatus for the field on the given position
      */
     public void setFieldStatus(int x, int y, FieldStatus fieldStatus) throws MoveException {
         for (Field field : fields) {
@@ -58,10 +58,10 @@ public class Board {
     }
 
     /**
-     * Get the fieldStatus from a field.
-     * @param x The x position.
-     * @param y The y position.
-     * @return The fieldStatus of the field on the given position.
+     * Get the fieldStatus from a field
+     * @param x The x position
+     * @param y The y position
+     * @return The fieldStatus of the field on the given position
      */
     public FieldStatus getFieldStatus(int x, int y) {
         for (Field field : fields) {

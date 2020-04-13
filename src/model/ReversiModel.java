@@ -1,11 +1,9 @@
 package model;
 
 import exceptions.MoveException;
-import games.Reversi;
 import model.gameitems.*;
 import view.ReversiView;
 
-import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -21,6 +19,10 @@ public class ReversiModel extends GameModel {
     boolean firstMovesSet = false;
     private int userMove = -1;
 
+    /**
+     * 
+     * @param ReversiView The view of this model.
+     */
     public ReversiModel(ReversiView view) {
         this.view = view;
         board = new Board(boardSize, boardSize);
@@ -111,18 +113,21 @@ public class ReversiModel extends GameModel {
         this.player = player;
     }
 
+    /**
+     * Prepare the board for a game of Reversi.
+     */
     @Override
     public void setFirstMoves() {
-        ReversiFieldStatus WHITE = new ReversiFieldStatus();
-        WHITE.setWHITE();
-        ReversiFieldStatus BLACK = new ReversiFieldStatus();
-        BLACK.setBLACK();
+        ReversiFieldStatus white = new ReversiFieldStatus();
+        white.setWHITE();
+        ReversiFieldStatus black = new ReversiFieldStatus();
+        black.setBLACK();
 
         try {
-            setFieldStatus(27, WHITE);
-            setFieldStatus(28, BLACK);
-            setFieldStatus(36, WHITE);
-            setFieldStatus(35, BLACK);
+            setFieldStatus(27, white);
+            setFieldStatus(28, black);
+            setFieldStatus(36, white);
+            setFieldStatus(35, black);
             System.out.println("Board starting positions done!");
         } catch (Exception e) {
             e.printStackTrace();
@@ -140,6 +145,11 @@ public class ReversiModel extends GameModel {
         this.userMove = move;
     }
 
+    /**
+     * Find all playable moves for the current player
+     * @param fieldStatus is the fieldStatus of the current player
+     * @return boolean[][] with all playable move positions [x][y] set to true.
+     */
     @Override
     public boolean[][] calculateValidMoves(FieldStatus fieldStatus) {
         lock.lock();
@@ -149,7 +159,6 @@ public class ReversiModel extends GameModel {
         boolean[][] validMoves = new boolean[boardSize][boardSize];
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                //System.out.println((x*8) + y + " | " + board.getFieldStatus(x, y).getID() + " DIT IS " + reversiFieldStatus.getID());
                 if (board.getFieldStatus(x, y).getID() == 0) {
                     boolean nw = validMove(-1, -1, x, y, reversiFieldStatus);
                     boolean nn = validMove(-1, 0, x, y, reversiFieldStatus);
@@ -162,43 +171,9 @@ public class ReversiModel extends GameModel {
                     boolean ss = validMove(1, 0, x, y, reversiFieldStatus);
                     boolean se = validMove(1, 1, x, y, reversiFieldStatus);
 
-                    if (nw) {
-                        //System.out.println("This position is playable in the line of NW : " + (8 * x + y));
+                    if (nw || nn || ne || ww || ee || sw || ss || se) {
                         validMoves[x][y] = true;
                     }
-                    if (nn) {
-                        //System.out.println("This position is playable in the line of NN : " + (8 * x + y));
-                        validMoves[x][y] = true;
-                    }
-                    if (ne) {
-                        //System.out.println("This position is playable in the line of NE : " + (8 * x + y));
-                        validMoves[x][y] = true;
-
-                    }
-                    if (ww) {
-//                        System.out.println("This position is playable in the line of WW : " + (8 * x + y));
-                        validMoves[x][y] = true;
-
-                    }
-                    if (ee) {
-//                        System.out.println("This position is playable in the line of EE : " + (8 * x + y));
-                        validMoves[x][y] = true;
-                    }
-                    if (sw) {
-//                        System.out.println("This position is playable in the line of SW : " + (8 * x + y));
-                        validMoves[x][y] = true;
-
-                    }
-                    if (ss) {
-//                        System.out.println("This position is playable in the line of SS : " + (8 * x + y));
-                        validMoves[x][y] = true;
-
-                    }
-                    if (se) {
-//                        System.out.println("This position is playable in the line of SE : " + (8 * x + y));
-                        validMoves[x][y] = true;
-                    }
-
                 }
             }
         }
@@ -206,6 +181,15 @@ public class ReversiModel extends GameModel {
         return validMoves;
     }
 
+    /**
+     *
+     * @param dr is the X-axis direction
+     * @param dc is the Y-axis direction
+     * @param r is the X-axis position
+     * @param c is the Y-axis position
+     * @param fieldStatus is the fieldstatus of the current player
+     * @return returns the recursive function to traverse the board
+     */
     private boolean validMove(int dr, int dc, int r, int c, ReversiFieldStatus fieldStatus) {
         if (IsOutOfBounds(r + dr, c + dc)) {
             return false;
@@ -222,6 +206,15 @@ public class ReversiModel extends GameModel {
         return checkLineMatch(dr, dc, r + dr, c + dc, fieldStatus);
     }
 
+    /**
+     *
+     * @param dr is the X-axis direction
+     * @param dc is the Y-axis direction
+     * @param r is the X-axis position
+     * @param c is the Y-axis position
+     * @param fieldStatus is the fieldstatus of the current player
+     * @return checkLineMatch to traverse the rest of the line that has to be checked for playable moves.
+     */
     private boolean checkLineMatch(int dr, int dc, int r, int c, ReversiFieldStatus fieldStatus) {
         if (isCurrentPlayer(r, c, fieldStatus)) {
             return true;
