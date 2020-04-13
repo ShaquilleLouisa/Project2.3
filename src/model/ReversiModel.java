@@ -195,7 +195,7 @@ public class ReversiModel extends GameModel {
             return false;
         }
 
-        if (board.getFieldStatus(r + dr, c + dc).getID() == 0 || board.getFieldStatus(r + dr, c + dc).getID() == -1) {
+        if (board.getFieldStatus(r + dr, c + dc).getID() == 0 || board.getFieldStatus(r + dr, c + dc).getID() == ReversiFieldStatus.PLAYABLE) {
             return false;
         }
 
@@ -219,7 +219,7 @@ public class ReversiModel extends GameModel {
         if (isCurrentPlayer(r, c, fieldStatus)) {
             return true;
         }
-        if (board.getFieldStatus(r, c).getID() == 0 || board.getFieldStatus(r, c).getID() == -1) {
+        if (board.getFieldStatus(r, c).getID() == 0 || board.getFieldStatus(r, c).getID() ==  ReversiFieldStatus.PLAYABLE) {
             return false;
         }
 
@@ -244,10 +244,10 @@ public class ReversiModel extends GameModel {
         //System.out.println("Check value before loop: " + check + " The ID of the checked spot: "
         //+ board.getFieldStatus(r, c).getID());
         while (!isCurrentPlayer(r, c, fieldstatus) && board.getFieldStatus(r, c).getID() != 0
-                && board.getFieldStatus(r, c).getID() != -1) {
+                && board.getFieldStatus(r, c).getID() !=  ReversiFieldStatus.PLAYABLE) {
             // System.out.println("Check value inside loop: " + check);
             try {
-                if (board.getFieldStatus(r, c).getID() == 1) {
+                if (board.getFieldStatus(r, c).getID() == ReversiFieldStatus.BLACK) {
                     fieldstatus.setId(2);
                     //System.out.println("flipped position: " + r + ", " + c + " position on Board: " + ((r*8)+c) + " set to WHITE");
                 } else {
@@ -283,7 +283,7 @@ public class ReversiModel extends GameModel {
         if (board.getFieldStatus(r + dr, c + dc).getID() == 0) {
             return false;
         }
-        if (board.getFieldStatus(r + dr, c + dc).getID() == -1) {
+        if (board.getFieldStatus(r + dr, c + dc).getID() ==  ReversiFieldStatus.PLAYABLE) {
             return false;
         }
         return flipLineCheckMatch(dr, dc, r + dr, c + dc, fieldStatus);
@@ -306,7 +306,7 @@ public class ReversiModel extends GameModel {
         if (board.getFieldStatus(r + dr, c + dc).getID() == 0) {
             return false;
         }
-        if (board.getFieldStatus(r + dr, c + dc).getID() == -1) {
+        if (board.getFieldStatus(r + dr, c + dc).getID() ==  ReversiFieldStatus.PLAYABLE) {
             return false;
         }
 
@@ -426,8 +426,8 @@ public class ReversiModel extends GameModel {
         int fieldCounter2 = 0;
         for (int x = 0; x < board.getFieldSize(); x++) {
             for (int y = 0; y < board.getFieldSize(); y++) {
-                if (board.getFieldStatus(x, y).getID() != 0 && board.getFieldStatus(x, y).getID() != -1) {
-                    if (board.getFieldStatus(x, y).getID() == 1) {
+                if (board.getFieldStatus(x, y).getID() != 0 && board.getFieldStatus(x, y).getID() !=  ReversiFieldStatus.PLAYABLE) {
+                    if (board.getFieldStatus(x, y).getID() == ReversiFieldStatus.BLACK) {
                         player1 = true;
                         fieldCounter1++;
                     } else {
@@ -463,8 +463,8 @@ public class ReversiModel extends GameModel {
         int fieldCounter2 = 0;
         for (int x = 0; x < board.getFieldSize(); x++) {
             for (int y = 0; y < board.getFieldSize(); y++) {
-                if (board.getFieldStatus(x, y).getID() != 0 && board.getFieldStatus(x, y).getID() != -1) {
-                    if (board.getFieldStatus(x, y).getID() == 1) {
+                if (board.getFieldStatus(x, y).getID() != 0 && board.getFieldStatus(x, y).getID() != ReversiFieldStatus.PLAYABLE) {
+                    if (board.getFieldStatus(x, y).getID() == ReversiFieldStatus.BLACK) {
                         fieldCounter1++;
                     } else {
                         fieldCounter2++;
@@ -472,9 +472,9 @@ public class ReversiModel extends GameModel {
                 }
             }
         }
-        if(playerID == 1){
+        if(playerID == ReversiFieldStatus.BLACK){
             return fieldCounter1;
-        }else if(playerID == 2){
+        }else if(playerID == ReversiFieldStatus.WHITE){
             return fieldCounter2;
         }else{
             return 0;
