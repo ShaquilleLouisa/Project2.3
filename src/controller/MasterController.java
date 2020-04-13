@@ -33,21 +33,31 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * The masterController is the master ruler of the whole framework and makes all of the decisions
+ */
 public class MasterController extends Controller {
     MasterModel model;
     MasterView view;
     Stage stage;
     private ServerCommunication serverCommunication;
 
+    /**
+     * MasterController constructor
+     */
     public MasterController() {
         serverCommunication = new ServerCommunication();
     }
 
+    /**
+     * This method is used to start the application, to start listening to the selected server.
+     * @param stage main stage created when launching application.
+     */
     public void start(Stage stage) {
         // Create control panel
         this.stage = stage;
         view.start(stage);
-        boolean isConnected = serverCommunication.connect();
+        boolean isConnected = serverCommunication.connect(getServerIP(), getServerPort());
         view.connected(isConnected);
         // First read should be empty because garbage 2 lines
         if (isConnected) {
@@ -66,7 +76,6 @@ public class MasterController extends Controller {
                 serverCommunication.getPlayerList();
             }
         }, 0, 5000);
-
         Thread handleThread = new Thread(() -> {
             while (true) {
                 handleInput();
@@ -81,6 +90,9 @@ public class MasterController extends Controller {
 
     }
 
+    /**
+     * This method is used to handle all of the commands server send to us.
+     */
     private void handleInput() {
         String originalInput = null;
         try {
@@ -88,8 +100,9 @@ public class MasterController extends Controller {
         } catch (IOException e) {
             System.out.println("No connecting with server:handleInput");
             view.NoConnection(true);
+            serverCommunication.connect(model.getServerIP(), model.getServerPort());
             try {
-                Thread.sleep(500);
+                Thread.sleep(2000);
             } catch (Exception es) {
             }
         }
@@ -240,8 +253,6 @@ public class MasterController extends Controller {
                                         model.setLoginColor(0);
                                         stage.setScene(view.getScene());
                                         view.updatePlayerboardImages();
-                                        subscribe("Reversi");
-                                        subscribeServer("Reversi");
                                     });
                                     //model.getGame().getView().updateNotification("I'm sorry you lost");
                                     break;
@@ -254,8 +265,6 @@ public class MasterController extends Controller {
                                         model.setLoginColor(0);
                                         stage.setScene(view.getScene());
                                         view.updatePlayerboardImages();
-                                        subscribe("Reversi");
-                                        subscribeServer("Reversi");
                                     });
                                     //model.getGame().getView().updateNotification("Congrats you won");
                                     break;
@@ -268,21 +277,40 @@ public class MasterController extends Controller {
                                         model.setLoginColor(0);
                                         stage.setScene(view.getScene());
                                         view.updatePlayerboardImages();
-                                        subscribe("Reversi");
-                                        subscribeServer("Reversi");
                                     });
                                     // DRAW
                                     //System.out.println("Draw");
                                     //model.getGame().getView().updateNotification("Its a draw :|");
                                     break;
                                 case "move":
+
+                                    // Move using regex
+//                                    String playerName = "";
+//                                    p = Pattern.compile("PLAYER: \"([^\"]*)\"");
+//                                    m = p.matcher(originalInput);
+//                                    while (m.find()) {
+//                                        playerName = m.group(1);
+//                                    }
+
+//                                    System.out.println("playerName------------------------------------------------------:"+playerName+":");
+//                                    System.out.println("model.getRivalName().toLowerCase():"+model.getRivalName().toLowerCase());
                                     //System.out.println(model.getRivalName());
+//                                    if (playerName.contains(model.getRivalName().toLowerCase())) {
                                     if (words[4].contains(model.getRivalName().toLowerCase())) {
                                         //System.out.println("Move has been done by opponent: " + inputLowerCase.substring(totalLetters) + "name: " + getRivalName());
                                         if (model.getLoginColor() == 0) {
                                             model.setLoginColor(2);
                                         }
 
+                                        // Move using regex
+//                                        String moveID = "-2";
+//                                        p = Pattern.compile("MOVE: \"([^\"]*)\"");
+//                                        m = p.matcher(originalInput);
+//                                        while (m.find()) {
+//                                            moveID = m.group(1);
+//                                        }
+//                                        System.out.println("Move name received:" + moveID);
+                                        //System.out.println("oude:"+words[6].substring(1, words[6].length() - 2));
                                         //System.out.println("Waar is deze print ??????" + words[6].substring(1, words[6].length() - 2));
                                         int opponentMove = Integer.parseInt(words[6].substring(1, words[6].length() - 2));//Integer.parseInt(words[6]);
                                         //TicTacToeFieldStatus fieldStatusCross = new TicTacToeFieldStatus();
@@ -294,14 +322,14 @@ public class MasterController extends Controller {
                                             try {
                                                 model.getGame().setMove(opponentMove, 2);
                                             } catch (MoveException e) {
-                                                System.out.println("ILLEGAL MOVE");
+                                                System.out.println("ILLEGAL MOVE:1");
                                             }
                                         } else {
                                             //System.out.println("[MOVE]Set player " + 1);
                                             try {
                                                 model.getGame().setMove(opponentMove, 1);
                                             } catch (MoveException e) {
-                                                System.out.println("ILLEGAL MOVE");
+                                                System.out.println("ILLEGAL MOVE:2");
                                             }
                                         }
 
@@ -373,11 +401,19 @@ public class MasterController extends Controller {
         }
     }
 
+    /**
+     * Send logout command to server
+     */
     public void logout() {
         System.out.println("logout");
         serverCommunication.logout();
     }
 
+    /**
+     * Send login command to server
+      * @param name name is used to select a name to login with
+     * @return returns if login was "ok".
+     */
     public String login(String name) {
         String res = serverCommunication.login(name);
         if (res == "ok") {
@@ -387,6 +423,10 @@ public class MasterController extends Controller {
         return res;
     }
 
+    /**
+     * This method will subscribe to a specifc game and set it up (and if connected send a subscribe command)
+     * @param gameName name of the game to subscribe to
+     */
     public synchronized void subscribe(String gameName) {
         Game game = null;
         if (gameName.contains("-")) {
@@ -538,83 +578,184 @@ public class MasterController extends Controller {
         }
     }
 
+    /**
+     * Remove challenge by name
+     * @param CHALLENGER name of challenger
+     */
     public void removeChallengeByName(String CHALLENGER) {
         model.removeChallengeByName(CHALLENGER);
     }
 
+    /**
+     * Remove challenge by challengenumber
+     * @param CHALLENGERNUMBER challengenumber
+     */
     public void removeChallenge(String CHALLENGERNUMBER) {
         model.removeChallenge(CHALLENGERNUMBER);
         view.updatePlayerboardImages();
     }
 
+    /**
+     * Check if challenger is current challenger
+     * @param challengerName challengerName to check
+     * @return if challenger is current challenger return true, else return false
+     */
     public boolean checkChallenger(String challengerName) {
         return model.checkChallenger(challengerName);
     }
 
+    /**
+     * Check the gametype of challenger
+     * @param challengerName challenger to check
+     * @return String gameName
+     */
     public String checkChallengerGametype(String challengerName) {
         return model.checkChallengerGametype(challengerName);
     }
 
+    /**
+     * Get challenge number from challenge name
+     * @param challengerName challengername
+     * @return challengeNumber int
+     */
     public int getChallengeNumber(String challengerName) {
         return model.getChallengeNumber(challengerName);
     }
 
+    /**
+     * Challenge rival with specifc gamename command to server
+     * @param rivalName name of rival
+     * @param gameName name of game
+     */
     public void challengeRival(String rivalName, String gameName) {
         serverCommunication.challengeRival(rivalName, gameName);
     }
 
+    /**
+     * Accept challenge command to server
+     * @param challengeNmr challenge number to accept
+     */
     public void challengeAccept(int challengeNmr) {
         serverCommunication.challengeAccept(challengeNmr);
         removeChallenge(Integer.toString(challengeNmr));
     }
 
+    /**
+     * Get game list
+     * This info will be handled in the inputHandle method
+     */
     public void getGameList() {
         serverCommunication.getGameList();
     }
 
+    /**
+     * Get player list
+     * This info will be handled in the inputHandle method
+     */
     public void getPlayerList() {
         serverCommunication.getPlayerList();
     }
 
+    /**
+     * Get login name
+     * @return loginname String
+     */
     public String getLoginName() {
         return model.getLoginName();
     }
 
+    /**
+     * Set login name
+     * @param loginName name to login with
+     */
     public void setLoginName(String loginName) {
         model.setLoginName(loginName);
     }
 
-
+    /**
+     * Get rival name
+     * @return rivalname String
+     */
     public String getRivalName() {
         return model.getRivalName();
     }
 
+    /**
+     * Set rival name
+     * @param rivalName name of rival to set
+     */
     public void setRivalName(String rivalName) {
         model.setRivalName(rivalName);
     }
 
+    /**
+     * Add View to Controller (MVC)
+     * @param view view to add to controller
+     */
     @Override
     public void addView(View view) {
         this.view = (MasterView) view;
     }
 
 
+    /**
+     * Add Model to controller (MVC)
+     * @param model model to add to controller
+     */
     @Override
     public void addModel(Model model) {
         this.model = (MasterModel) model;
     }
 
+    /**
+     * Reset stage to default scene (masterview)
+     */
     public void resetStage() {
         stage.setScene(view.getScene());
     }
 
+    /**
+     * Set game settings
+     * @param online is the game online
+     * @param ai does the game use an AI
+     * @param doubleAi does the game use 2 AI's
+     */
     public void setGameSettings(boolean online, boolean ai, boolean doubleAi) {
         model.setOnlineGame(online);
         model.setUseAi(ai, doubleAi);
     }
 
+    /**
+     * Subscribe to game command to server
+     * @param gameName gamename to subscribe to
+     */
     public void subscribeServer(String gameName) {
         serverCommunication.subscribe(gameName);
+    }
+
+    public void setClientTimeout(int timeout){
+        model.setClientTimeout(timeout);
+    }
+
+    public int getClientTimeout(){
+        return model.getClientTimeout();
+    }
+
+    public void setServerAddress(String address){
+        model.setServerAddress(address);
+        serverCommunication.updateServerSettings(getServerIP(), getServerPort());
+    }
+
+    public String getServerIP(){
+        return model.getServerIP();
+    }
+
+    public int getServerPort(){
+        return model.getServerPort();
+    }
+
+    public boolean getConnectionState() {
+        return serverCommunication.getConnectionState();
     }
 
 

@@ -8,6 +8,10 @@ import model.gameitems.Board;
 import model.gameitems.FieldStatus;
 import model.gameitems.TicTacToeFieldStatus;
 
+/**
+ * @author Anne de Graaff
+ * The TicTacToeAI is an AI for the game TicTacToe. This AI uses a min-max algorithm to calculate the best next move for a specific player.
+ */
 public class TicTacToeAI extends AI {
     private TicTacToeFieldStatus playerToCalc;
 
@@ -16,6 +20,11 @@ public class TicTacToeAI extends AI {
         this.playerToCalc = playerToCalc;
     }
 
+    /**
+     * Calculate next move
+     * @param fieldStatus Fieldstatus contains player to calculate move for
+     * @return move int
+     */
     @Override
     public int calculateNextMove(FieldStatus fieldStatus) {
         Board boardCopy = aiModel.getBoard();
@@ -37,6 +46,12 @@ public class TicTacToeAI extends AI {
 
     int fieldSize = aiModel.getFieldSize();
 
+
+    /**
+     * Find the best move with the current gameboard
+     * @param boardCopy board with current gamestatus
+     * @return best move Move
+     */
     private Move findBestMove(Board boardCopy) {
         Move bestMove = new Move(-1, -1);
         int bestVal = -1000;
@@ -79,6 +94,13 @@ public class TicTacToeAI extends AI {
         return bestMove;
     }
 
+    /**
+     * MinMax algorithm
+     * @param board board
+     * @param depth depth of algorithm
+     * @param isMax if it should min or max
+     * @return score int
+     */
     private int minmax(Board board, int depth, boolean isMax) {
         int score = evaluate(board);
         if (score == 10) {
@@ -170,6 +192,12 @@ public class TicTacToeAI extends AI {
         }
     }
 
+
+    /**
+     * Check if there are any moves left
+     * @param boardCopy board
+     * @return true or false boolean
+     */
     private boolean isMovesLeft(Board boardCopy) {
         int fieldSize = boardCopy.getFieldSize();
         for (int i = 0; i < fieldSize; i++) {
@@ -183,6 +211,11 @@ public class TicTacToeAI extends AI {
         return false;
     }
 
+    /**
+     * Check if the game is over.
+     * @param boardCopy board
+     * @return 10 if player won -10 if enemy won 0 if draw or no winner
+     */
     private int evaluate(Board boardCopy) {
         for (int y = 0; y < boardCopy.getFieldSize(); y++) {
             if (boardCopy.getFieldStatus(0, y).getID() == boardCopy.getFieldStatus(1, y).getID() && boardCopy.getFieldStatus(1, y).getID() == boardCopy.getFieldStatus(2, y).getID()) {

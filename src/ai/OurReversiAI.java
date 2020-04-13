@@ -11,12 +11,20 @@ import java.util.Random;
 
 import java.util.ArrayList;
 
+/**
+ * An AI that is mostly used for testing purpouses. It will choose a random valid move.
+ */
 public class OurReversiAI extends AI implements ReversiAI {
 
     public OurReversiAI(ReversiModel model) {
         super(model);
     }
 
+    /**
+     * Calculate next move for player
+     * @param fieldStatus Fieldstatus contains player to calculate move for
+     * @return move int
+     */
     @Override
     public int calculateNextMove(FieldStatus fieldStatus) {
         boolean[][] validMoves = aiModel.calculateValidMoves(fieldStatus);

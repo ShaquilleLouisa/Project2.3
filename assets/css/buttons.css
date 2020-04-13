@@ -30,6 +30,26 @@
 }
 
 
+/* btnSettings */
+#btnSettings-closed {
+    -fx-border-width: 0px;
+    -fx-background-color: transparent;
+}
+
+#btnSettings-closed:hover {
+    /*-fx-translate-y: 6px;*/
+}
+
+#btnSettings-open {
+    -fx-border-width: 0px;
+    -fx-background-color: transparent;
+    -fx-translate-y: 6px;
+}
+
+#btnSettings-open:pressed {
+    /*-fx-translate-y: 0px;*/
+}
+
 /* btnQuickPlay */
 #btnQuickPlay {
     -fx-effect: dropshadow( three-pass-box , rgba(255, 255, 255, 0.4), 5, 0.0 , 0 , 1 );
@@ -70,4 +90,10 @@
     -fx-border-color: #fbff00;
     -fx-border-width: 8px;
     -fx-border-radius: 2px;
+}
+
+/* settingsBoxes */
+#settingsBoxes {
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
 }
