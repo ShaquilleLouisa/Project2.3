@@ -1,7 +1,7 @@
 package model.gameitems;
 
 /**
- * This fieldStatus class can be used for Reversi games
+ * This fieldStatus class can be used for Reversi games.
  */
 public class ReversiFieldStatus extends FieldStatus {
     public static final int PLAYABLE = -1;
