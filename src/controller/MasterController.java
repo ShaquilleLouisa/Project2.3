@@ -278,35 +278,15 @@ public class MasterController extends Controller {
                                     //model.getGame().getView().updateNotification("Its a draw :|");
                                     break;
                                 case "move":
-
-                                    // Move using regex
-                                    String playerName = "";
-                                    p = Pattern.compile("PLAYER: \"([^\"]*)\"");
-                                    m = p.matcher(originalInput);
-                                    while (m.find()) {
-                                        playerName = m.group(1);
-                                    }
-
-//                                    System.out.println("playerName------------------------------------------------------:"+playerName+":");
-//                                    System.out.println("model.getRivalName().toLowerCase():"+model.getRivalName().toLowerCase());
                                     //System.out.println(model.getRivalName());
-                                    if (playerName.contains(model.getRivalName().toLowerCase())) {
+                                    if (words[4].contains(model.getRivalName().toLowerCase())) {
                                         //System.out.println("Move has been done by opponent: " + inputLowerCase.substring(totalLetters) + "name: " + getRivalName());
                                         if (model.getLoginColor() == 0) {
                                             model.setLoginColor(2);
                                         }
 
-                                        // Move using regex
-                                        String moveID = "-2";
-                                        p = Pattern.compile("MOVE: \"([^\"]*)\"");
-                                        m = p.matcher(originalInput);
-                                        while (m.find()) {
-                                            moveID = m.group(1);
-                                        }
-                                        System.out.println("Move name received:" + moveID);
-                                        //System.out.println("oude:"+words[6].substring(1, words[6].length() - 2));
                                         //System.out.println("Waar is deze print ??????" + words[6].substring(1, words[6].length() - 2));
-                                        int opponentMove = Integer.parseInt(moveID);//Integer.parseInt(words[6]);
+                                        int opponentMove = Integer.parseInt(words[6].substring(1, words[6].length() - 2));//Integer.parseInt(words[6]);
                                         //TicTacToeFieldStatus fieldStatusCross = new TicTacToeFieldStatus();
                                         //fieldStatusCross.setCross();
                                         //model.getGame().getModel().setFieldStatus(opponentMove, fieldStatusCross);
@@ -316,14 +296,14 @@ public class MasterController extends Controller {
                                             try {
                                                 model.getGame().setMove(opponentMove, 2);
                                             } catch (MoveException e) {
-                                                System.out.println("ILLEGAL MOVE:1");
+                                                System.out.println("ILLEGAL MOVE");
                                             }
                                         } else {
                                             //System.out.println("[MOVE]Set player " + 1);
                                             try {
                                                 model.getGame().setMove(opponentMove, 1);
                                             } catch (MoveException e) {
-                                                System.out.println("ILLEGAL MOVE:2");
+                                                System.out.println("ILLEGAL MOVE");
                                             }
                                         }
 
