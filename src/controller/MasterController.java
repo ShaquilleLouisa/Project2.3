@@ -244,9 +244,9 @@ public class MasterController extends Controller {
                                     Platform.runLater(() -> {
                                         removeChallengeByName(getRivalName());
                                         setRivalName(null);
-                                        model.setGame(null);
+                                        //model.setGame(null);
                                         model.setLoginColor(0);
-                                        stage.setScene(view.getScene());
+                                        //stage.setScene(view.getScene());
                                         view.updatePlayerboardImages();
                                     });
                                     //model.getGame().getView().updateNotification("I'm sorry you lost");
@@ -256,9 +256,9 @@ public class MasterController extends Controller {
                                     Platform.runLater(() -> {
                                         removeChallengeByName(getRivalName());
                                         setRivalName(null);
-                                        model.setGame(null);
+                                        //model.setGame(null);
                                         model.setLoginColor(0);
-                                        stage.setScene(view.getScene());
+                                        //stage.setScene(view.getScene());
                                         view.updatePlayerboardImages();
                                     });
                                     //model.getGame().getView().updateNotification("Congrats you won");
@@ -268,9 +268,9 @@ public class MasterController extends Controller {
                                     Platform.runLater(() -> {
                                         removeChallengeByName(getRivalName());
                                         setRivalName(null);
-                                        model.setGame(null);
+                                        //model.setGame(null);
                                         model.setLoginColor(0);
-                                        stage.setScene(view.getScene());
+                                        //stage.setScene(view.getScene());
                                         view.updatePlayerboardImages();
                                     });
                                     // DRAW
@@ -302,6 +302,9 @@ public class MasterController extends Controller {
                                         m = p.matcher(originalInput);
                                         while (m.find()) {
                                             moveID = m.group(1);
+                                        }
+                                        if (moveID.equals("-2")){
+                                            return;
                                         }
                                         System.out.println("Move name received:" + moveID);
                                         //System.out.println("oude:"+words[6].substring(1, words[6].length() - 2));
