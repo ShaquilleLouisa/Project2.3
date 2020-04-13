@@ -5,17 +5,24 @@ import exceptions.MoveException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * The board class holds the fields on which the game is played.
+ */
 public class Board {
     public ArrayList<Field> fields;
     private HashMap<Integer, ArrayList<Integer>> moves;
     private int fieldSize;
 
+    /**
+     * Constructor.
+     * @param xSize The width of this board.
+     * @param ySize The height of this board.
+     */
     public <T extends FieldStatus> Board(int xSize, int ySize) {
         if(xSize == ySize) {
             fieldSize = xSize;
         }
         fields = new ArrayList<>(xSize * ySize);
-        // set fieldsstatus in fields.
         moves = new HashMap<>();
 
         int counter = 0;
@@ -34,6 +41,12 @@ public class Board {
         }
     }
 
+    /**
+     * Update one field with a new fieldStatus. 
+     * @param x The x position.
+     * @param y The y position.
+     * @param fieldStatus Contains the new fieldStatus for the field on the given position.
+     */
     public void setFieldStatus(int x, int y, FieldStatus fieldStatus) throws MoveException {
         for (Field field : fields) {
             if (field.getX() == x && field.getY() == y) {
@@ -44,6 +57,12 @@ public class Board {
         throw new MoveException("Field does not exist");
     }
 
+    /**
+     * Get the fieldStatus from a field.
+     * @param x The x position.
+     * @param y The y position.
+     * @return The fieldStatus of the field on the given position.
+     */
     public FieldStatus getFieldStatus(int x, int y) {
         for (Field field : fields) {
             if (field.getX() == x && field.getY() == y) {
