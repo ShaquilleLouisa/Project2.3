@@ -214,7 +214,7 @@ public class ReversiView extends GameView{
             Button button = buttonLocation.get(move);
             int value = reversiFieldStatus.getID();
 
-            /** Sets the right stone immage on fields after a move */
+            /** Sets the right stone image on fields after a move */
             if(value == reversiFieldStatus.BLACK){
                 ImageView blackStone = new ImageView("File:assets/boards/black.png");
                 button.setText("");

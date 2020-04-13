@@ -25,40 +25,56 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Class that is used to show the tictactoeboard
+ * @author Anna van Rosmalen
+ */
 public class TicTacToeView extends GameView {
     HashMap<Integer, Button> buttonLocation;
     Text notification;
     GridPane extraPane;
 
     TicTacToeController controller;
-    TicTacToeModel model;
+
     Image tictactoe = new Image("File:assets/boards/tictactoeB.png");
 
 
     public TicTacToeView() {
 
     }
-
+    /**
+     * TicTacToeView constructor
+     * @param controller TicTacToeController
+     */
     public TicTacToeView(Controller controller) {
         this.controller = (TicTacToeController) controller;
     }
 
+    /**
+     * Setup of the scene
+     * @return scene
+     */
     public Scene getScene() {
         BorderPane rootPane = new BorderPane();
         GridPane pane = new GridPane();
         Button backButton = new Button();
+
+        /** Set board background */
         pane.setAlignment(Pos.CENTER);
         pane.setBackground(new Background(new BackgroundImage(tictactoe, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+
         buttonLocation = new HashMap<>();
         extraPane = new GridPane();
 
         extraPane.add(backButton,0,0);
 
+        /** Forfeit button setup */
         backButton.setText("Opgeven");
         backButton.setTranslateX(10);
         backButton.setTranslateY(-10);
         backButton.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-font-size: 30; -fx-border-color: #FFFFFF");
 
+        /** handle forfeitbutton/backbutton being pressed */
         EventHandler<ActionEvent> backHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -68,6 +84,7 @@ public class TicTacToeView extends GameView {
         };
 
 
+        /** handle illegal move */
         backButton.setOnAction(backHandler);
         EventHandler<ActionEvent> buttonHandler = new EventHandler<ActionEvent>() {
             @Override
@@ -81,6 +98,7 @@ public class TicTacToeView extends GameView {
             }
         };
 
+        /** Setup gridpane with 3*3 buttons */
         int counter = 0;
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
@@ -98,6 +116,7 @@ public class TicTacToeView extends GameView {
             }
         }
 
+        /** Rootpane layout setup */
         rootPane.setStyle("-fx-background-color: #262626");
         rootPane.setCenter(pane);
         rootPane.setBottom(extraPane);
@@ -105,17 +124,27 @@ public class TicTacToeView extends GameView {
         return new Scene(rootPane, 600, 600);
 
     }
-
+    /**
+     * Updates notification
+     * @param text
+     */
     public void updateNotification(String text) {
         Platform.runLater(() -> {
             notification.setText(text);
         });
     }
 
+    /**
+     * Updates the scene
+     * @param move
+     * @param status
+     */
     public void update(int move, FieldStatus status) {
         TicTacToeFieldStatus ticTacToeFieldStatus = (TicTacToeFieldStatus)status;
         Platform.runLater(() -> {
             //System.out.println("" + move + status.toString());
+
+            /** Sets the right image on fields after a move */
             Button button = buttonLocation.get(move);
             if(ticTacToeFieldStatus.getID() == 1){
                 ImageView x = new ImageView("File:assets/boards/crossB.png");
@@ -127,6 +156,7 @@ public class TicTacToeView extends GameView {
                 button.setGraphic(o);
             }
 
+            /** Determines if the game has ended and shows who has won */
             int end = controller.getEnd();
             if(end != -1){
                 Text winner = new Text("");
