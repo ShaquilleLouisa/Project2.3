@@ -70,6 +70,11 @@ public class MasterController extends Controller {
         Thread handleThread = new Thread(() -> {
             while (true) {
                 handleInput();
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    System.out.println("sleep exception");
+                }
             }
         });
         handleThread.start();
