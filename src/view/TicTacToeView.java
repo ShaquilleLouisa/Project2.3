@@ -28,10 +28,12 @@ import java.util.HashMap;
 public class TicTacToeView extends GameView {
     HashMap<Integer, Button> buttonLocation;
     Text notification;
+    GridPane extraPane;
 
     TicTacToeController controller;
     TicTacToeModel model;
-    Image tictactoe = new Image("File:assets/boards/tictactoe.png");
+    Image tictactoe = new Image("File:assets/boards/tictactoeB.png");
+
 
     public TicTacToeView() {
 
@@ -48,13 +50,14 @@ public class TicTacToeView extends GameView {
         pane.setAlignment(Pos.CENTER);
         pane.setBackground(new Background(new BackgroundImage(tictactoe, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
         buttonLocation = new HashMap<>();
+        extraPane = new GridPane();
 
+        extraPane.add(backButton,0,0);
 
         backButton.setText("Opgeven");
         backButton.setTranslateX(10);
         backButton.setTranslateY(-10);
         backButton.setStyle("-fx-background-color: #262626; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-font-size: 30; -fx-border-color: #FFFFFF");
-        int counter = 0;
 
         EventHandler<ActionEvent> backHandler = new EventHandler<ActionEvent>() {
             @Override
@@ -77,13 +80,15 @@ public class TicTacToeView extends GameView {
                 }
             }
         };
+
+        int counter = 0;
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
                 Button button = new Button(""+counter);
-                button.setMinWidth(100);
-                button.setMaxWidth(100);
-                button.setMinHeight(100);
-                button.setMaxHeight(100);
+                button.setMinWidth(200);
+                button.setMaxWidth(200);
+                button.setMinHeight(200);
+                button.setMaxHeight(200);
                 button.setWrapText(true);
                 button.setStyle(String.format("-fx-font-size: %dpx; -fx-background-color: transparant", (int) (0.45 * 100)));
                 button.setOnAction(buttonHandler);
@@ -92,15 +97,12 @@ public class TicTacToeView extends GameView {
                 counter++;
             }
         }
-        notification = new Text();
-        notification.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
 
         rootPane.setStyle("-fx-background-color: #262626");
-       // rootPane.setTop(backButton);
         rootPane.setCenter(pane);
-        //rootPane.setBottom(notification);
-        rootPane.setBottom(backButton);
-        return new Scene(rootPane, 300, 300);
+        rootPane.setBottom(extraPane);
+
+        return new Scene(rootPane, 600, 600);
 
     }
 
@@ -116,15 +118,29 @@ public class TicTacToeView extends GameView {
             //System.out.println("" + move + status.toString());
             Button button = buttonLocation.get(move);
             if(ticTacToeFieldStatus.getID() == 1){
-                ImageView x = new ImageView("File:assets/boards/x.png");
+                ImageView x = new ImageView("File:assets/boards/crossB.png");
                 button.setText("");
                 button.setGraphic(x);
             }else if(ticTacToeFieldStatus.getID() == 2){
-                ImageView o = new ImageView("File:assets/boards/o.png");
+                ImageView o = new ImageView("File:assets/boards/circleB.png");
                 button.setText("");
                 button.setGraphic(o);
             }
 
+            int end = controller.getEnd();
+            if(end != -1){
+                Text winner = new Text("");
+                winner.setStyle("-fx-fill: #ffffff; -fx-font-weight: bold; -fx-font-size: 25;");
+                winner.setTranslateX(250);
+                winner.setTranslateY(-20);
+                if(end == 1){
+                    winner.setText("Cross heeft gewonnen");
+                    extraPane.add(winner,1,0);
+                }else{
+                    winner.setText("Circle heeft gewonnen");
+                    extraPane.add(winner,1,0);
+                }
+            }
         });
     }
 }

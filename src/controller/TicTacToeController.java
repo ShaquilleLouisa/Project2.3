@@ -64,15 +64,7 @@ public class TicTacToeController extends GameController {
                     } catch (MoveException e) {
                         System.out.println("Illegal move");
                     }
-                    if (model.checkEnd(model.getBoard()) != -1) {
-                        String winner;
-                        if (model.checkEnd(model.getBoard()) == 1) {
-                            winner = "Cross";
-                        } else {
-                            winner = "Circle";
-                        }
-                        view.updateNotification("Player with " + winner + " has won");
-                    }
+
                 }
             } else if(model.isOnline()) {
                 ticTacToeFieldStatus.setCircle();
@@ -87,6 +79,10 @@ public class TicTacToeController extends GameController {
             }
         }
     }
+
+    public int getEnd(){ return model.checkEnd(model.getBoard());}
+
+
 
 
     @Override

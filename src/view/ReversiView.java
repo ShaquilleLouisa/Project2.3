@@ -197,6 +197,7 @@ public class ReversiView extends GameView{
             }
         }
 
+
         return new Scene(rootPane, 400, 400);
     }
 
@@ -245,7 +246,7 @@ public class ReversiView extends GameView{
                 score2.setText("Aantal stenen:\n" + controller.getScore(2));
             }
 
-            /** Checks if the game has ended en shows the winner or a draw */
+            /** Checks if the game has ended en shows the winner or draw*/
             int end = controller.getEnd();
             if(end >= 0){
                 Text winner = new Text("");
